@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "570674157033",
+    "firebase_url": "https://mindbloom-d0608-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "mindbloom-d0608",
+    "storage_bucket": "mindbloom-d0608.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:570674157033:android:a03672aba0e672ef162778",
+        "android_client_info": {
+          "package_name": "com.aryalsadi.mood_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "570674157033-o8c9u2doa5thh6f0kfk24fgb13gp2eas.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aryalsadi.mood_tracker",
+            "certificate_hash": "5c24ae51358d213c56a276f1ad6e87afce15cdcb"
+          }
+        },
+        {
+          "client_id": "570674157033-868arr8t9djra53aoolevahvm15eqhuq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsbg0Drl2I-Gjb-Ty6W3f-Q42JfFz1yu8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "570674157033-868arr8t9djra53aoolevahvm15eqhuq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "570674157033-brpq6dc0jlu34rslbt1hnttgao3v754d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aryalsadi.moodTracker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

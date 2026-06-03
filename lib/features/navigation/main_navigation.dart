@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mood_tracker/features/insights/mood_calendar_screen.dart';
 import '../../core/navigation/soft_page_route.dart';
 import '../../core/theme/app_colours.dart';
-import '../home/home_screen.dart';
-import '../mood/history_screen.dart';
+import '../home/screens/home_screen.dart';
+import '../mood/screen/journal_screen.dart';
 import '../profile/profile_screen.dart';
-import '../mood/add_mood_screen.dart';
+import '../mood/screen/add_mood_screen.dart';
 import '../insights/insights_screen.dart';
+import '../wellness/wellness_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../settings/screens/notification_permission_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -20,20 +22,45 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<Widget> screens = [
     const HomeScreen(),
-    const HistoryScreen(),
+    const JournalScreen(),
     const InsightsScreen(),
-    const _PlaceholderScreen(title: "Wellness"),
+    const WellnessScreen(),
     const ProfileScreen(),
-    const MoodCalendarScreen()
+
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    askNotificationOnce();
+  }
+
+  Future<void> askNotificationOnce() async {
+    final prefs = await SharedPreferences.getInstance();
+    final alreadyAsked = prefs.getBool("askedNotificationPermission") ?? false;
+
+    if (alreadyAsked) return;
+
+    await prefs.setBool("askedNotificationPermission", true);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+
+      openSoftPage(
+        context,
+        const NotificationPermissionScreen(),
+      );
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
       body: screens[currentIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: const _BreathingFab(),
+      floatingActionButton: currentIndex == 0
+          ? const _BreathingFab()
+          : null,
 
       bottomNavigationBar: Container(
         margin: const EdgeInsets.all(14),
@@ -98,24 +125,7 @@ class _MainNavigationState extends State<MainNavigation> {
   }
 }
 
-class _PlaceholderScreen extends StatelessWidget {
-  final String title;
 
-  const _PlaceholderScreen({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.cream,
-      body: Center(
-        child: Text(
-          "$title coming soon",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-      ),
-    );
-  }
-}
 class _BreathingFab extends StatefulWidget {
   const _BreathingFab();
 

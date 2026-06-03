@@ -1,5 +1,5 @@
-import '../mood/mood_model.dart';
-import '../mood/streak_service.dart';
+import '../mood/models/mood_model.dart';
+import '../mood/services/streak_service.dart';
 import 'achievement_model.dart';
 
 class AchievementService {

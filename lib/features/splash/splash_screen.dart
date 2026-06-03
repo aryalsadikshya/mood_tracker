@@ -5,9 +5,8 @@ import 'package:mood_tracker/features/navigation/main_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../onboarding/onboarding_screen.dart';
-import '../auth/auth_screen.dart';
-import '../home/home_screen.dart';
-import '../navigation/main_navigation.dart';
+import '../auth/screen/auth_screen.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -159,8 +158,16 @@ class _SplashScreenState extends State<SplashScreen>
                     AssetImage('assets/images/logosplash.jpg'),
                   ),
                 ),
+                const Text(
+                  "MindBloom",
+                  style: TextStyle(
+                    fontSize: 38,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF263238),
+                  ),
+                ),
 
-                const SizedBox(height: 30),
+
 
                 const Text(
                   "Pause. Reflect. Grow.",
@@ -171,7 +178,7 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ),
 
-                const SizedBox(height: 30),
+                const SizedBox(height: 23),
 
                 buildDots(),
               ],

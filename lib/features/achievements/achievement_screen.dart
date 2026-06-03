@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/theme/app_colours.dart';
-import '../mood/mood_model.dart';
-import '../mood/mood_service.dart';
+import '../mood/models/mood_model.dart';
+import '../mood/services/mood_service.dart';
 import 'achievement_service.dart';
 
 class AchievementScreen extends StatelessWidget {

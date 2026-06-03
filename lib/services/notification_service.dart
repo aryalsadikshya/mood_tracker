@@ -9,22 +9,40 @@ class NotificationService {
   static final FlutterLocalNotificationsPlugin _notifications =
   FlutterLocalNotificationsPlugin();
 
+  static bool _initialized = false;
+
   static Future<void> initialize() async {
+    if (_initialized) return;
+
     tz_data.initializeTimeZones();
 
-    final timezone = await FlutterTimezone.getLocalTimezone();
+    String timezone = await FlutterTimezone.getLocalTimezone();
+
+    if (timezone == "Asia/Katmandu") {
+      timezone = "Asia/Kathmandu";
+    }
+
     final location = tz.getLocation(timezone);
     tz.setLocalLocation(location);
 
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const iosSettings = DarwinInitializationSettings();
 
     const initializationSettings = InitializationSettings(
       android: androidSettings,
-      iOS: DarwinInitializationSettings(),
+      iOS: iosSettings,
     );
 
     await _notifications.initialize(initializationSettings);
 
+    await _requestPermission();
+
+    _initialized = true;
+  }
+
+  static Future<void> _requestPermission() async {
     await _notifications
         .resolvePlatformSpecificImplementation<
         AndroidFlutterLocalNotificationsPlugin>()
@@ -47,13 +65,13 @@ class NotificationService {
     await _notifications.zonedSchedule(
       1,
       'Time for a gentle check-in',
-      'Take a quiet moment to log how you feel today.',
+      'Take a quiet moment to reflect with MindBloom.',
       _nextReminderTime(hour, minute),
       const NotificationDetails(
         android: AndroidNotificationDetails(
           'daily_mood_reminder',
           'Daily Mood Reminder',
-          channelDescription: 'Daily reminder to log your mood in MindBloom',
+          channelDescription: 'Daily reminder to reflect in MindBloom',
           importance: Importance.high,
           priority: Priority.high,
         ),
@@ -90,13 +108,13 @@ class NotificationService {
   static Future<void> showTestNotification() async {
     await _notifications.show(
       99,
-      'MindBloom test notification',
-      'If you see this, notifications are working.',
+      'MindBloom',
+      'Notifications are working.',
       const NotificationDetails(
         android: AndroidNotificationDetails(
           'test_notification',
           'Test Notification',
-          channelDescription: 'Used for testing notifications',
+          channelDescription: 'Used to test MindBloom notifications',
           importance: Importance.high,
           priority: Priority.high,
         ),

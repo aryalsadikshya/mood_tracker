@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/theme/app_colours.dart';
+import '../../../core/theme/app_radius.dart';
 import '../memory_model.dart';
 
 class BestMemoryCard extends StatelessWidget {
@@ -31,7 +32,7 @@ class BestMemoryCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(36),
+        borderRadius: BorderRadius.circular(AppRadius.xl),
         border: Border.all(
           color: Colors.white.withOpacity(0.9),
         ),

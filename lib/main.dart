@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'features/splash/splash_screen.dart';
 import 'core/theme/app_theme.dart';
-import 'services/notification_service.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +16,7 @@ void main() async {
 
   runApp(const MindBloomApp());
 }
-
+final ValueNotifier<bool> isDarkMode = ValueNotifier(false);
 class MindBloomApp extends StatelessWidget {
   const MindBloomApp({super.key});
 

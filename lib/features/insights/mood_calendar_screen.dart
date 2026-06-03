@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../core/theme/app_colours.dart';
-import '../mood/mood_model.dart';
-import '../mood/mood_service.dart';
+import '../mood/models/mood_model.dart';
+import '../mood/services/mood_service.dart';
 
 class MoodCalendarScreen extends StatefulWidget {
   const MoodCalendarScreen({super.key});

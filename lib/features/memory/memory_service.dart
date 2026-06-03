@@ -1,4 +1,5 @@
-import '../mood/mood_model.dart';
+
+import '../mood/models/mood_model.dart';
 import 'memory_model.dart';
 
 class MemoryService {
@@ -6,17 +7,18 @@ class MemoryService {
     if (moods.isEmpty) return null;
 
     final positiveMoods = moods.where((mood) {
-      final hasNote = mood.note.trim().isNotEmpty;
-      final isPositiveMood =
-          mood.moodLabel == "Happy" || mood.moodLabel == "Calm";
-
-      return hasNote && isPositiveMood;
+      return mood.hasNote && mood.isPositiveMood;
     }).toList();
 
     if (positiveMoods.isEmpty) return null;
 
     positiveMoods.sort(
-          (a, b) => b.moodValue.compareTo(a.moodValue),
+          (a, b) {
+        final scoreA = _memoryScore(a);
+        final scoreB = _memoryScore(b);
+
+        return scoreB.compareTo(scoreA);
+      },
     );
 
     final best = positiveMoods.first;
@@ -27,5 +29,21 @@ class MemoryService {
       date: best.createdAt,
       moodValue: best.moodValue,
     );
+  }
+
+  int _memoryScore(MoodModel mood) {
+    int score = 0;
+
+    score += mood.moodValue * 10;
+
+    if (mood.note.length > 80) {
+      score += 20;
+    }
+
+    if (mood.activities.isNotEmpty) {
+      score += 10;
+    }
+
+    return score;
   }
 }

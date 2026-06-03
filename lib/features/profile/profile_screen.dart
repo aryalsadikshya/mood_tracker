@@ -7,10 +7,11 @@ import '../../core/navigation/soft_page_route.dart';
 import '../../core/theme/app_colours.dart';
 import '../../core/widgets/soft_tap.dart';
 
-import '../auth/auth_screen.dart';
-import '../mood/mood_model.dart';
-import '../mood/mood_service.dart';
-import '../settings/settings_screen.dart';
+import '../auth/screen/auth_screen.dart';
+import '../auth/services/auth_service.dart';
+import '../mood/models/mood_model.dart';
+import '../mood/services/mood_service.dart';
+import '../settings/screens/settings_screen.dart';
 import 'avator_catalog.dart';
 import 'edit_profile_screen.dart';
 
@@ -117,6 +118,18 @@ class ProfileScreen extends StatelessWidget {
 
                       const SizedBox(height: 30),
 
+                      const SizedBox(height: 30),
+
+                      const _SectionTitle(title: "Your Emotional Energy"),
+
+                      const SizedBox(height: 14),
+
+                      _EmotionMeter(
+                        moods: moods,
+                      ),
+
+                      const SizedBox(height: 30),
+
                       const _SectionTitle(title: "Account"),
 
                       const SizedBox(height: 14),
@@ -151,7 +164,7 @@ class ProfileScreen extends StatelessWidget {
                         icon: Icons.logout_rounded,
                         isDanger: true,
                         onTap: () async {
-                          await FirebaseAuth.instance.signOut();
+                          await AuthService().logout();
 
                           if (!context.mounted) return;
 
@@ -164,6 +177,8 @@ class ProfileScreen extends StatelessWidget {
                           );
                         },
                       ),
+
+
                     ],
                   ),
                 );
@@ -461,6 +476,112 @@ class _ActionTile extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+class _EmotionMeter extends StatelessWidget {
+  final List<MoodModel> moods;
+
+  const _EmotionMeter({
+    required this.moods,
+  });
+
+  double calculateEnergy() {
+    if (moods.isEmpty) return 0.5;
+
+    final total = moods.fold<double>(
+      0,
+          (sum, mood) => sum + mood.moodValue,
+    );
+
+    return (total / moods.length) / 5;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final energy = calculateEnergy();
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            AppColors.blush,
+            AppColors.lavender,
+            AppColors.paleBlue,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(32),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.9),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.softPurple.withOpacity(0.18),
+            blurRadius: 24,
+            offset: const Offset(0, 12),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Your emotional energy has been",
+            style: GoogleFonts.poppins(
+              fontSize: 13,
+              color: AppColors.textSoft,
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          Text(
+            energy >= 0.75
+                ? "Bright & Positive"
+                : energy >= 0.5
+                ? "Balanced & Calm"
+                : "Emotionally Heavy",
+            style: GoogleFonts.playfairDisplay(
+              fontSize: 28,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textDark,
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          ClipRRect(
+            borderRadius: BorderRadius.circular(18),
+            child: LinearProgressIndicator(
+              value: energy,
+              minHeight: 16,
+              backgroundColor: Colors.white.withOpacity(0.55),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                energy >= 0.75
+                    ? AppColors.softPink
+                    : energy >= 0.5
+                    ? AppColors.mint
+                    : AppColors.softPurple,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 14),
+
+          Text(
+            "This gently reflects your recent emotional patterns.",
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              height: 1.5,
+              color: AppColors.textSoft,
+            ),
+          ),
+        ],
       ),
     );
   }

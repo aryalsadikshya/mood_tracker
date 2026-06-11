@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../memory/memory_service.dart';
 import '../../../core/theme/app_colours.dart';
 import '../../../core/widgets/app_loading.dart';
 import '../../mood/models/mood_model.dart';
@@ -116,6 +117,8 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,8 +133,10 @@ class _HomeScreenState extends State<HomeScreen>
 
           final moods = snapshot.data ?? [];
           final latestMood = moods.isEmpty ? null : moods.first;
-          final color =
-          latestMood == null ? AppColors.lavender : moodColor(latestMood.moodLabel);
+
+          final color = latestMood == null
+              ? AppColors.lavender
+              : moodColor(latestMood.moodLabel);
 
           final streak = StreakService.calculateStreak(moods);
 
@@ -168,6 +173,8 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
 
                       const SizedBox(height: 24),
+
+
 
                       _CuteInsightCard(
                         insight: MoodAnalyzer.getInsight(moods),
@@ -291,6 +298,7 @@ class _FloatingPastelPatternPainter extends CustomPainter {
     final random = Random(18);
 
     final icons = ["♡", "✦", "✧", "•", "˚"];
+
     final colors = [
       Colors.white.withOpacity(0.45),
       AppColors.blush.withOpacity(0.35),
@@ -315,7 +323,8 @@ class _FloatingPastelPatternPainter extends CustomPainter {
       textPainter.layout();
 
       final dx = random.nextDouble() * size.width;
-      final dy = (random.nextDouble() * size.height) + (sin(value * pi * 2 + i) * 10);
+      final dy =
+          (random.nextDouble() * size.height) + (sin(value * pi * 2 + i) * 10);
 
       textPainter.paint(
         canvas,
@@ -491,7 +500,6 @@ class _TodayMoodBox extends StatelessWidget {
                       displayEmoji,
                       style: const TextStyle(
                         fontSize: 58,
-                        fontFamily: 'NotoColorEmoji',
                       ),
                     ),
                   ),

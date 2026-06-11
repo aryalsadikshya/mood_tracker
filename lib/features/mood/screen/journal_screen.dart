@@ -5,9 +5,103 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/theme/app_colours.dart';
 import '../../../core/widgets/app_loading.dart';
-import '../../../core/widgets/empty_state_card.dart';
 import '../models/mood_model.dart';
 import '../services/mood_service.dart';
+
+void showMindBloomSnackBar(
+    BuildContext context, {
+      required String title,
+      required String message,
+      IconData icon = Icons.check_rounded,
+      bool isError = false,
+    }) {
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      duration: const Duration(seconds: 3),
+      margin: const EdgeInsets.fromLTRB(20, 0, 20, 28),
+      content: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: isError
+                ? [
+              const Color(0xFFFFE1E1),
+              const Color(0xFFFFF5F5),
+            ]
+                : [
+              AppColors.lavender.withOpacity(0.95),
+              AppColors.paleBlue.withOpacity(0.95),
+              AppColors.mint.withOpacity(0.90),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.85),
+            width: 1.2,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.softPurple.withOpacity(0.18),
+              blurRadius: 24,
+              offset: const Offset(0, 12),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              height: 42,
+              width: 42,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.65),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                icon,
+                color: isError ? Colors.redAccent : AppColors.deepBlue,
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textDark,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    message,
+                    style: GoogleFonts.poppins(
+                      fontSize: 12.5,
+                      height: 1.4,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textSoft,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
 
 class JournalScreen extends StatefulWidget {
   const JournalScreen({super.key});
@@ -42,10 +136,12 @@ class _JournalScreenState extends State<JournalScreen> {
     final text = journalController.text.trim();
 
     if (text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Write something before saving."),
-        ),
+      showMindBloomSnackBar(
+        context,
+        title: "Your diary is still empty",
+        message: "Write a few thoughts before saving this note.",
+        icon: Icons.edit_note_rounded,
+        isError: true,
       );
       return;
     }
@@ -68,18 +164,21 @@ class _JournalScreenState extends State<JournalScreen> {
 
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Journal saved."),
-        ),
+      showMindBloomSnackBar(
+        context,
+        title: "Diary note saved",
+        message: "Your reflection has been added to your memories.",
+        icon: Icons.favorite_rounded,
       );
     } catch (e) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Failed to save journal: $e"),
-        ),
+      showMindBloomSnackBar(
+        context,
+        title: "Could not save note",
+        message: "Something went wrong. Please try again.",
+        icon: Icons.error_outline_rounded,
+        isError: true,
       );
     } finally {
       if (mounted) {
@@ -146,7 +245,6 @@ class _JournalScreenState extends State<JournalScreen> {
       body: Stack(
         children: [
           const _PastelNotebookBackground(),
-
           SafeArea(
             child: StreamBuilder<List<MoodModel>>(
               stream: moodService.getMoods(),
@@ -165,23 +263,17 @@ class _JournalScreenState extends State<JournalScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const _DiaryTitle(),
-
                       const SizedBox(height: 24),
-
                       _PromptCard(
                         prompt: journalPrompt(moods),
                       ),
-
                       const SizedBox(height: 24),
-
                       _BigDiaryPaper(
                         controller: journalController,
                         isSaving: isSaving,
                         onSave: saveJournal,
                       ),
-
                       const SizedBox(height: 30),
-
                       _JournalHistory(
                         stream: journalStream(),
                         formatDate: formatDate,
@@ -205,9 +297,7 @@ class _PastelNotebookBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          color: AppColors.cream,
-        ),
+        Container(color: AppColors.cream),
         Positioned.fill(
           child: CustomPaint(
             painter: _PastelGridPainter(),
@@ -477,9 +567,7 @@ class _BigDiaryPaper extends StatelessWidget {
                   ),
                 ],
               ),
-
               const SizedBox(height: 20),
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -514,13 +602,11 @@ class _BigDiaryPaper extends StatelessWidget {
             ],
           ),
         ),
-
         const Positioned(
           top: -18,
           right: 24,
           child: _Star(size: 26),
         ),
-
         const Positioned(
           left: 18,
           bottom: 82,
@@ -595,20 +681,33 @@ class _JournalHistory extends StatelessWidget {
       BuildContext context,
       String docId,
       ) async {
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection("journals")
-        .doc(docId)
-        .delete();
+    try {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("journals")
+          .doc(docId)
+          .delete();
 
-    if (!context.mounted) return;
+      if (!context.mounted) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Diary note deleted."),
-      ),
-    );
+      showMindBloomSnackBar(
+        context,
+        title: "Diary note deleted",
+        message: "That reflection has been removed from your memories.",
+        icon: Icons.delete_outline_rounded,
+      );
+    } catch (e) {
+      if (!context.mounted) return;
+
+      showMindBloomSnackBar(
+        context,
+        title: "Could not delete note",
+        message: "Something went wrong. Please try again.",
+        icon: Icons.error_outline_rounded,
+        isError: true,
+      );
+    }
   }
 
   @override
@@ -665,9 +764,7 @@ class _JournalHistory extends StatelessWidget {
                     style: TextStyle(fontSize: 40),
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
                 Text(
                   "Your diary is still empty",
                   textAlign: TextAlign.center,
@@ -677,9 +774,7 @@ class _JournalHistory extends StatelessWidget {
                     color: AppColors.textDark,
                   ),
                 ),
-
                 const SizedBox(height: 14),
-
                 Text(
                   "The thoughts you write here become quiet emotional memories you can revisit later.",
                   textAlign: TextAlign.center,
@@ -689,9 +784,7 @@ class _JournalHistory extends StatelessWidget {
                     color: AppColors.textSoft,
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -726,9 +819,7 @@ class _JournalHistory extends StatelessWidget {
                 color: AppColors.textDark,
               ),
             ),
-
             const SizedBox(height: 16),
-
             ...docs.map((doc) {
               final data = doc.data();
 
@@ -833,9 +924,7 @@ class _SavedDiaryCard extends StatelessWidget {
                   ),
                 ),
               ),
-
               const Spacer(),
-
               IconButton(
                 onPressed: onDelete,
                 icon: const Icon(
@@ -845,9 +934,7 @@ class _SavedDiaryCard extends StatelessWidget {
               ),
             ],
           ),
-
           const SizedBox(height: 12),
-
           Text(
             text,
             style: GoogleFonts.poppins(

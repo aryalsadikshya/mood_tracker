@@ -111,7 +111,7 @@ class _WellnessScreenState extends State<WellnessScreen> {
                   _CuteMusicGrid(
                     items: [
                       _CuteWellnessItem(
-                        emoji: "🌙",
+                        imagePath: "assets/wellness/calm.jpg",
                         title: "Calm",
                         subtitle: "soft relaxing songs",
                         color: AppColors.paleBlue,
@@ -120,7 +120,7 @@ class _WellnessScreenState extends State<WellnessScreen> {
                         ),
                       ),
                       _CuteWellnessItem(
-                        emoji: "📚",
+                        imagePath: "assets/wellness/focus.jpg",
                         title: "Focus",
                         subtitle: "study flow music",
                         color: AppColors.mint,
@@ -129,7 +129,7 @@ class _WellnessScreenState extends State<WellnessScreen> {
                         ),
                       ),
                       _CuteWellnessItem(
-                        emoji: "☀️",
+                        imagePath: "assets/wellness/happy.jpg",
                         title: "Happy",
                         subtitle: "feel-good songs",
                         color: AppColors.warmYellow,
@@ -138,7 +138,7 @@ class _WellnessScreenState extends State<WellnessScreen> {
                         ),
                       ),
                       _CuteWellnessItem(
-                        emoji: "🪩",
+                        imagePath: "assets/wellness/dance.jpg",
                         title: "Dance",
                         subtitle: "move your mood",
                         color: AppColors.softPink,
@@ -599,14 +599,14 @@ class _CuteMusicGrid extends StatelessWidget {
 }
 
 class _CuteWellnessItem extends StatelessWidget {
-  final String emoji;
+  final String imagePath;
   final String title;
   final String subtitle;
   final Color color;
   final VoidCallback onTap;
 
   const _CuteWellnessItem({
-    required this.emoji,
+    required this.imagePath,
     required this.title,
     required this.subtitle,
     required this.color,
@@ -617,9 +617,7 @@ class _CuteWellnessItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        padding: const EdgeInsets.all(18),
+      child: Container(
         decoration: BoxDecoration(
           color: color.withOpacity(0.78),
           borderRadius: BorderRadius.circular(34),
@@ -635,31 +633,80 @@ class _CuteWellnessItem extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              emoji,
-              style: const TextStyle(fontSize: 38),
-            ),
-            const Spacer(),
-            Text(
-              title,
-              style: GoogleFonts.poppins(
-                fontSize: 17,
-                fontWeight: FontWeight.w800,
-                color: AppColors.textDark,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(34),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              subtitle,
-              style: GoogleFonts.poppins(
-                fontSize: 12,
-                color: AppColors.textSoft,
+
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white.withOpacity(0.08),
+                        color.withOpacity(0.35),
+                        Colors.black.withOpacity(0.28),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ],
+
+              Positioned(
+                top: 14,
+                right: 14,
+                child: Container(
+                  height: 34,
+                  width: 34,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.72),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.music_note_rounded,
+                    size: 20,
+                    color: AppColors.deepBlue,
+                  ),
+                ),
+              ),
+
+              Positioned(
+                left: 18,
+                right: 18,
+                bottom: 18,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      subtitle,
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white.withOpacity(0.88),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

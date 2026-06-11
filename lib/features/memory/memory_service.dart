@@ -1,8 +1,11 @@
 
+
 import '../mood/models/mood_model.dart';
 import 'memory_model.dart';
 
 class MemoryService {
+
+
   MemoryCardData? getBestMemory(List<MoodModel> moods) {
     if (moods.isEmpty) return null;
 
@@ -30,6 +33,7 @@ class MemoryService {
       moodValue: best.moodValue,
     );
   }
+
 
   int _memoryScore(MoodModel mood) {
     int score = 0;

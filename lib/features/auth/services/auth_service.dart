@@ -1,8 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  static const String webClientId =
+      "570674157033-868arr8t9djra53aoolevahvm15eqhuq.apps.googleusercontent.com";
 
   Future<UserCredential> login({
     required String email,
@@ -25,7 +29,18 @@ class AuthService {
   }
 
   Future<UserCredential> signInWithGoogle() async {
-    await GoogleSignIn.instance.initialize();
+    if (kIsWeb) {
+      final googleProvider = GoogleAuthProvider();
+
+      googleProvider.addScope("email");
+      googleProvider.addScope("profile");
+
+      return await _auth.signInWithPopup(googleProvider);
+    }
+
+    await GoogleSignIn.instance.initialize(
+      serverClientId: webClientId,
+    );
 
     final GoogleSignInAccount googleUser =
     await GoogleSignIn.instance.authenticate();
@@ -41,9 +56,11 @@ class AuthService {
   }
 
   Future<void> logout() async {
-    try {
-      await GoogleSignIn.instance.signOut();
-    } catch (_) {}
+    if (!kIsWeb) {
+      try {
+        await GoogleSignIn.instance.signOut();
+      } catch (_) {}
+    }
 
     await _auth.signOut();
   }

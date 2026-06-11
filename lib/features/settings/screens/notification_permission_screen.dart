@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/theme/app_colours.dart';
 import '../../../services/notification_service.dart';
@@ -22,7 +23,20 @@ class _NotificationPermissionScreenState
     });
 
     try {
+      final prefs = await SharedPreferences.getInstance();
+
+      final hour = prefs.getInt("reminderHour") ?? 20;
+      final minute = prefs.getInt("reminderMinute") ?? 0;
+
       await NotificationService.initialize();
+
+      await NotificationService.scheduleDailyReminder(
+        hour: 20,
+        minute: 0,
+      );
+
+      await prefs.setBool("notificationsEnabled", true);
+
       await NotificationService.showTestNotification();
 
       if (!mounted) return;
@@ -62,7 +76,6 @@ class _NotificationPermissionScreenState
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-
                   Container(
                     height: 92,
                     width: 92,
@@ -81,7 +94,6 @@ class _NotificationPermissionScreenState
                             shape: BoxShape.circle,
                           ),
                         ),
-
                         const Icon(
                           Icons.notifications_active_rounded,
                           size: 40,
@@ -94,7 +106,7 @@ class _NotificationPermissionScreenState
                   const SizedBox(height: 24),
 
                   Text(
-                    "Notifications are ready",
+                    "Gentle reminders are on",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.playfairDisplay(
                       fontSize: 32,
@@ -106,7 +118,7 @@ class _NotificationPermissionScreenState
                   const SizedBox(height: 14),
 
                   Text(
-                    "MindBloom will gently remind you to pause, breathe, and reconnect with yourself throughout the day.",
+                    "MindBloom will remind you daily to pause, breathe, and check in with yourself.",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
                       fontSize: 14,
@@ -126,24 +138,12 @@ class _NotificationPermissionScreenState
                       color: Colors.white.withOpacity(0.42),
                       borderRadius: BorderRadius.circular(24),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                          "🌸",
-                          style: TextStyle(fontSize: 20),
-                        ),
-
-                        const SizedBox(width: 10),
-
-                        Text(
-                          "Gentle reminders enabled",
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.deepBlue,
-                          ),
-                        ),
-                      ],
+                    child: Text(
+                      "Daily reminder scheduled",
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.deepBlue,
+                      ),
                     ),
                   ),
 
@@ -180,12 +180,7 @@ class _NotificationPermissionScreenState
         },
       );
 
-      if (!context.mounted) return;
-
-
-
-
-
+      if (!mounted) return;
       Navigator.pop(context);
     } catch (e) {
       if (!mounted) return;
@@ -202,6 +197,14 @@ class _NotificationPermissionScreenState
         });
       }
     }
+  }
+
+  Future<void> skipNotifications() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("notificationsEnabled", false);
+
+    if (!mounted) return;
+    Navigator.pop(context);
   }
 
   @override
@@ -274,11 +277,7 @@ class _NotificationPermissionScreenState
               const SizedBox(height: 14),
 
               TextButton(
-                onPressed: isLoading
-                    ? null
-                    : () {
-                  Navigator.pop(context);
-                },
+                onPressed: isLoading ? null : skipNotifications,
                 child: const Text("Maybe Later"),
               ),
             ],

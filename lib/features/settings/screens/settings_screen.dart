@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core/navigation/soft_page_route.dart';
 import '../../../core/theme/app_colours.dart';
 import '../../../services/notification_service.dart';
 import '../../auth/screen/auth_screen.dart';
@@ -53,7 +52,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> saveReminderTime(TimeOfDay time) async {
     final prefs = await SharedPreferences.getInstance();
-
     await prefs.setInt("reminderHour", time.hour);
     await prefs.setInt("reminderMinute", time.minute);
   }
@@ -74,6 +72,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     if (notificationsEnabled) {
       await NotificationService.initialize();
+
       await NotificationService.scheduleDailyReminder(
         hour: picked.hour,
         minute: picked.minute,
@@ -84,7 +83,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text("Reminder time set to ${formatTime(picked)}."),
+        content: Text(
+          "Reminder time changed to ${formatTime(picked)}.",
+        ),
       ),
     );
   }
@@ -97,18 +98,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
     await saveBool("notificationsEnabled", value);
 
     if (value) {
-      await openSoftPage(
+      await Navigator.push(
         context,
-        const NotificationPermissionScreen(),
+        MaterialPageRoute(
+          builder: (_) => const NotificationPermissionScreen(),
+        ),
       );
 
       await NotificationService.initialize();
+
       await NotificationService.scheduleDailyReminder(
         hour: reminderTime.hour,
         minute: reminderTime.minute,
       );
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Daily reminder set for ${formatTime(reminderTime)}.",
+          ),
+        ),
+      );
     } else {
       await NotificationService.cancelDailyReminder();
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Daily reminders turned off."),
+        ),
+      );
     }
   }
 
@@ -407,8 +429,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
 
             const SizedBox(height: 18),
-
-
           ],
         ),
       ),

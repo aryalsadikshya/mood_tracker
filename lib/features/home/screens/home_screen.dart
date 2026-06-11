@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../memory/memory_service.dart';
 import '../../../core/theme/app_colours.dart';
 import '../../../core/widgets/app_loading.dart';
 import '../../mood/models/mood_model.dart';
@@ -22,24 +21,24 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   final MoodService moodService = MoodService();
 
-  late AnimationController _controller;
-  late Animation<double> _float;
+  late AnimationController controller;
+  late Animation<double> floatAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
+    controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
     )..repeat(reverse: true);
 
-    _float = Tween<double>(
-      begin: -8,
-      end: 8,
+    floatAnimation = Tween<double>(
+      begin: -5,
+      end: 5,
     ).animate(
       CurvedAnimation(
-        parent: _controller,
+        parent: controller,
         curve: Curves.easeInOut,
       ),
     );
@@ -47,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   void dispose() {
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -57,6 +56,20 @@ class _HomeScreenState extends State<HomeScreen>
     if (hour < 12) return "Good Morning";
     if (hour < 17) return "Good Afternoon";
     return "Good Evening";
+  }
+
+  String greetingMessage() {
+    final hour = DateTime.now().hour;
+
+    if (hour < 12) {
+      return "Start softly. Check in with yourself.";
+    }
+
+    if (hour < 17) {
+      return "A small pause can reset your whole day.";
+    }
+
+    return "Let today settle gently.";
   }
 
   Color moodColor(String label) {
@@ -117,7 +130,104 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
+  List<_WeeklyMoodData> buildWeeklyOverview(List<MoodModel> moods) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
 
+    final monday = today.subtract(
+      Duration(days: today.weekday - DateTime.monday),
+    );
+
+    final dayNames = [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat",
+      "Sun",
+    ];
+
+    return List.generate(7, (index) {
+      final date = monday.add(Duration(days: index));
+
+      MoodModel? moodForDay;
+
+      for (final mood in moods) {
+        final moodDate = DateTime(
+          mood.createdAt.year,
+          mood.createdAt.month,
+          mood.createdAt.day,
+        );
+
+        if (moodDate.year == date.year &&
+            moodDate.month == date.month &&
+            moodDate.day == date.day) {
+          moodForDay = mood;
+          break;
+        }
+      }
+
+      return _WeeklyMoodData(
+        day: dayNames[index],
+        emoji: moodForDay?.moodEmoji ?? "♡",
+        label: moodForDay?.moodLabel ?? "No check-in",
+        color: moodForDay == null
+            ? Colors.white.withOpacity(0.60)
+            : moodColor(moodForDay.moodLabel),
+        isToday: date.year == today.year &&
+            date.month == today.month &&
+            date.day == today.day,
+        hasMood: moodForDay != null,
+      );
+    });
+  }
+
+  int weeklyEntries(List<MoodModel> moods) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
+    final monday = today.subtract(
+      Duration(days: today.weekday - DateTime.monday),
+    );
+
+    int count = 0;
+
+    for (final mood in moods) {
+      final moodDate = DateTime(
+        mood.createdAt.year,
+        mood.createdAt.month,
+        mood.createdAt.day,
+      );
+
+      if (!moodDate.isBefore(monday) && !moodDate.isAfter(today)) {
+        count++;
+      }
+    }
+
+    return count;
+  }
+
+  double averageMood(List<MoodModel> moods) {
+    if (moods.isEmpty) return 0;
+
+    final recent = moods.take(7).toList();
+
+    final total = recent.fold<int>(
+      0,
+          (sum, mood) => sum + mood.moodValue,
+    );
+
+    return total / recent.length;
+  }
+
+  String averageMoodText(double average) {
+    if (average == 0) return "Not enough data yet";
+    if (average >= 4.3) return "Bright week";
+    if (average >= 3.5) return "Gentle week";
+    if (average >= 2.5) return "Mixed week";
+    return "Soft recovery week";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +237,7 @@ class _HomeScreenState extends State<HomeScreen>
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const AppLoading(
-              message: "Opening your space...",
+              message: "Opening your soft space...",
             );
           }
 
@@ -138,46 +248,43 @@ class _HomeScreenState extends State<HomeScreen>
               ? AppColors.lavender
               : moodColor(latestMood.moodLabel);
 
+          final weeklyData = buildWeeklyOverview(moods);
           final streak = StreakService.calculateStreak(moods);
+          final entriesThisWeek = weeklyEntries(moods);
+          final moodAverage = averageMood(moods);
 
           return Stack(
             children: [
-              _MoodAdaptiveBackground(
+              _AnimatedPastelBackground(
                 colors: moodBackground(latestMood),
-                animation: _controller,
+                animation: controller,
               ),
 
               SafeArea(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(22, 20, 22, 120),
+                  padding: const EdgeInsets.fromLTRB(22, 20, 22, 125),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _GreetingHeader(
                         greeting: greeting(),
-                      ),
-
-                      const SizedBox(height: 30),
-
-                      AnimatedBuilder(
-                        animation: _float,
-                        builder: (context, child) {
-                          return Transform.translate(
-                            offset: Offset(0, _float.value),
-                            child: _TodayMoodBox(
-                              mood: latestMood,
-                              color: color,
-                            ),
-                          );
-                        },
+                        message: greetingMessage(),
                       ),
 
                       const SizedBox(height: 24),
 
-
-
-                      _CuteInsightCard(
-                        insight: MoodAnalyzer.getInsight(moods),
+                      AnimatedBuilder(
+                        animation: floatAnimation,
+                        builder: (context, child) {
+                          return Transform.translate(
+                            offset: Offset(0, floatAnimation.value),
+                            child: _MoodAndWeeklyCard(
+                              mood: latestMood,
+                              color: color,
+                              weeklyData: weeklyData,
+                            ),
+                          );
+                        },
                       ),
 
                       const SizedBox(height: 22),
@@ -185,28 +292,35 @@ class _HomeScreenState extends State<HomeScreen>
                       Row(
                         children: [
                           Expanded(
-                            child: _CuteMiniCard(
+                            child: _SoftStatCard(
                               emoji: "🌷",
                               title: "$streak Day",
-                              subtitle: "Streak",
+                              subtitle: "Reflection streak",
                               color: AppColors.blush,
                             ),
                           ),
                           const SizedBox(width: 14),
                           Expanded(
-                            child: _CuteMiniCard(
-                              emoji: latestMood?.moodEmoji ?? "🫧",
-                              title: latestMood?.moodLabel ?? "Not yet",
-                              subtitle: "Latest mood",
+                            child: _SoftStatCard(
+                              emoji: "🫧",
+                              title: "$entriesThisWeek Logs",
+                              subtitle: "This week",
                               color: AppColors.paleBlue,
                             ),
                           ),
                         ],
                       ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 18),
 
-                      const _CuteWellnessShortcut(),
+                      _InsightCard(
+                        insight: MoodAnalyzer.getInsight(moods),
+                        weeklyTone: averageMoodText(moodAverage),
+                      ),
+
+                      const SizedBox(height: 18),
+
+                      const _TinyResetCard(),
                     ],
                   ),
                 ),
@@ -219,11 +333,11 @@ class _HomeScreenState extends State<HomeScreen>
   }
 }
 
-class _MoodAdaptiveBackground extends StatelessWidget {
+class _AnimatedPastelBackground extends StatelessWidget {
   final List<Color> colors;
   final Animation<double> animation;
 
-  const _MoodAdaptiveBackground({
+  const _AnimatedPastelBackground({
     required this.colors,
     required this.animation,
   });
@@ -239,9 +353,9 @@ class _MoodAdaptiveBackground extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    colors[0].withOpacity(0.78),
-                    colors[1].withOpacity(0.62),
-                    colors[2].withOpacity(0.86),
+                    colors[0].withOpacity(0.72),
+                    colors[1].withOpacity(0.60),
+                    colors[2].withOpacity(0.84),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -251,34 +365,34 @@ class _MoodAdaptiveBackground extends StatelessWidget {
 
             Positioned.fill(
               child: CustomPaint(
-                painter: _FloatingPastelPatternPainter(animation.value),
+                painter: _CuteFloatingPainter(animation.value),
               ),
             ),
 
             Positioned(
-              top: -70 + animation.value * 20,
-              right: -60,
+              top: -80 + animation.value * 24,
+              right: -70,
               child: _SoftBlob(
                 color: colors[0].withOpacity(0.46),
-                size: 240,
-              ),
-            ),
-
-            Positioned(
-              bottom: 120 - animation.value * 20,
-              left: -80,
-              child: _SoftBlob(
-                color: colors[1].withOpacity(0.45),
                 size: 260,
               ),
             ),
 
             Positioned(
-              top: 300 + animation.value * 12,
+              bottom: 110 - animation.value * 24,
+              left: -90,
+              child: _SoftBlob(
+                color: colors[1].withOpacity(0.44),
+                size: 270,
+              ),
+            ),
+
+            Positioned(
+              top: 310 + animation.value * 16,
               right: -90,
               child: _SoftBlob(
-                color: colors[2].withOpacity(0.42),
-                size: 220,
+                color: colors[2].withOpacity(0.40),
+                size: 230,
               ),
             ),
           ],
@@ -288,33 +402,39 @@ class _MoodAdaptiveBackground extends StatelessWidget {
   }
 }
 
-class _FloatingPastelPatternPainter extends CustomPainter {
+class _CuteFloatingPainter extends CustomPainter {
   final double value;
 
-  _FloatingPastelPatternPainter(this.value);
+  _CuteFloatingPainter(this.value);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final random = Random(18);
+    final random = Random(21);
 
-    final icons = ["♡", "✦", "✧", "•", "˚"];
-
-    final colors = [
-      Colors.white.withOpacity(0.45),
-      AppColors.blush.withOpacity(0.35),
-      AppColors.lavender.withOpacity(0.35),
-      AppColors.paleBlue.withOpacity(0.35),
-      AppColors.mint.withOpacity(0.28),
+    final icons = [
+      "♡",
+      "✦",
+      "✧",
+      "˚",
+      "•",
     ];
 
-    for (int i = 0; i < 32; i++) {
+    final colors = [
+      Colors.white.withOpacity(0.50),
+      AppColors.blush.withOpacity(0.34),
+      AppColors.lavender.withOpacity(0.34),
+      AppColors.paleBlue.withOpacity(0.34),
+      AppColors.mint.withOpacity(0.30),
+    ];
+
+    for (int i = 0; i < 42; i++) {
       final textPainter = TextPainter(
         text: TextSpan(
           text: icons[i % icons.length],
           style: TextStyle(
             color: colors[i % colors.length],
-            fontSize: 12 + random.nextDouble() * 12,
-            fontWeight: FontWeight.w600,
+            fontSize: 10 + random.nextDouble() * 13,
+            fontWeight: FontWeight.w700,
           ),
         ),
         textDirection: TextDirection.ltr,
@@ -324,7 +444,7 @@ class _FloatingPastelPatternPainter extends CustomPainter {
 
       final dx = random.nextDouble() * size.width;
       final dy =
-          (random.nextDouble() * size.height) + (sin(value * pi * 2 + i) * 10);
+          random.nextDouble() * size.height + sin(value * pi * 2 + i) * 12;
 
       textPainter.paint(
         canvas,
@@ -334,16 +454,18 @@ class _FloatingPastelPatternPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _FloatingPastelPatternPainter oldDelegate) {
+  bool shouldRepaint(covariant _CuteFloatingPainter oldDelegate) {
     return oldDelegate.value != value;
   }
 }
 
 class _GreetingHeader extends StatelessWidget {
   final String greeting;
+  final String message;
 
   const _GreetingHeader({
     required this.greeting,
+    required this.message,
   });
 
   @override
@@ -351,49 +473,75 @@ class _GreetingHeader extends StatelessWidget {
     return Row(
       children: [
         Container(
-          height: 58,
-          width: 58,
+          height: 62,
+          width: 62,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.56),
+            color: Colors.white.withOpacity(0.58),
             shape: BoxShape.circle,
             border: Border.all(
-              color: Colors.white.withOpacity(0.92),
+              color: Colors.white.withOpacity(0.94),
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.softPurple.withOpacity(0.14),
-                blurRadius: 18,
-                offset: const Offset(0, 8),
+                color: AppColors.softPurple.withOpacity(0.16),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
               ),
             ],
           ),
           alignment: Alignment.center,
           child: const Text(
             "🌸",
-            style: TextStyle(fontSize: 31),
+            style: TextStyle(fontSize: 34),
           ),
         ),
 
         const SizedBox(width: 14),
 
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 18,
-            vertical: 12,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.48),
-            borderRadius: BorderRadius.circular(26),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.85),
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 18,
+              vertical: 13,
             ),
-          ),
-          child: Text(
-            greeting,
-            style: GoogleFonts.playfairDisplay(
-              fontSize: 32,
-              fontWeight: FontWeight.w700,
-              color: AppColors.textDark,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.52),
+              borderRadius: BorderRadius.circular(28),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.88),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.softPurple.withOpacity(0.10),
+                  blurRadius: 18,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  greeting,
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: 31,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textDark,
+                    height: 1.05,
+                  ),
+                ),
+
+                const SizedBox(height: 5),
+
+                Text(
+                  message,
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.textSoft,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -402,13 +550,15 @@ class _GreetingHeader extends StatelessWidget {
   }
 }
 
-class _TodayMoodBox extends StatelessWidget {
+class _MoodAndWeeklyCard extends StatelessWidget {
   final MoodModel? mood;
   final Color color;
+  final List<_WeeklyMoodData> weeklyData;
 
-  const _TodayMoodBox({
+  const _MoodAndWeeklyCard({
     required this.mood,
     required this.color,
+    required this.weeklyData,
   });
 
   @override
@@ -418,21 +568,21 @@ class _TodayMoodBox extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 28),
+      padding: const EdgeInsets.fromLTRB(22, 22, 22, 22),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            color.withOpacity(0.80),
-            Colors.white.withOpacity(0.62),
-            AppColors.cream.withOpacity(0.72),
+            color.withOpacity(0.76),
+            Colors.white.withOpacity(0.66),
+            AppColors.cream.withOpacity(0.80),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(40),
+        borderRadius: BorderRadius.circular(42),
         border: Border.all(
-          color: Colors.white.withOpacity(0.92),
-          width: 1.4,
+          color: Colors.white.withOpacity(0.94),
+          width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
@@ -446,18 +596,18 @@ class _TodayMoodBox extends StatelessWidget {
         children: [
           const Positioned(
             top: 4,
-            right: 8,
+            right: 6,
             child: _StickerBubble(
-              emoji: "✨",
+              emoji: "✦",
               color: AppColors.warmYellow,
             ),
           ),
 
           const Positioned(
-            bottom: 0,
-            right: 58,
+            top: 72,
+            right: 36,
             child: _StickerBubble(
-              emoji: "🫧",
+              emoji: "♡",
               color: AppColors.paleBlue,
             ),
           ),
@@ -465,77 +615,25 @@ class _TodayMoodBox extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Today’s Mood",
-                style: GoogleFonts.poppins(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.deepBlue,
-                ),
+              _TodayMoodSection(
+                emoji: displayEmoji,
+                mood: displayMood,
+                color: color,
+                hasMood: mood != null,
               ),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 22),
 
-              Row(
-                children: [
-                  Container(
-                    height: 106,
-                    width: 106,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.55),
-                      borderRadius: BorderRadius.circular(34),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.92),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: color.withOpacity(0.22),
-                          blurRadius: 20,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      displayEmoji,
-                      style: const TextStyle(
-                        fontSize: 58,
-                      ),
-                    ),
-                  ),
+              Container(
+                height: 1,
+                width: double.infinity,
+                color: Colors.white.withOpacity(0.62),
+              ),
 
-                  const SizedBox(width: 18),
+              const SizedBox(height: 20),
 
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          displayMood,
-                          style: GoogleFonts.playfairDisplay(
-                            fontSize: 42,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.textDark,
-                            height: 1.05,
-                          ),
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        Text(
-                          mood == null
-                              ? "Tap the floating plus button to save your first feeling."
-                              : "This is your latest emotional check-in.",
-                          style: GoogleFonts.poppins(
-                            fontSize: 13,
-                            height: 1.55,
-                            color: AppColors.textSoft,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+              _WeeklyOverviewSection(
+                weeklyData: weeklyData,
               ),
             ],
           ),
@@ -545,48 +643,308 @@ class _TodayMoodBox extends StatelessWidget {
   }
 }
 
-class _StickerBubble extends StatelessWidget {
+class _TodayMoodSection extends StatelessWidget {
   final String emoji;
+  final String mood;
+  final Color color;
+  final bool hasMood;
+
+  const _TodayMoodSection({
+    required this.emoji,
+    required this.mood,
+    required this.color,
+    required this.hasMood,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        TweenAnimationBuilder<double>(
+          tween: Tween(
+            begin: 0.94,
+            end: 1.0,
+          ),
+          duration: const Duration(milliseconds: 650),
+          curve: Curves.easeOutBack,
+          builder: (context, value, child) {
+            return Transform.scale(
+              scale: value,
+              child: Container(
+                height: 98,
+                width: 98,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.60),
+                  borderRadius: BorderRadius.circular(32),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.94),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: color.withOpacity(0.25),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  emoji,
+                  style: const TextStyle(fontSize: 55),
+                ),
+              ),
+            );
+          },
+        ),
+
+        const SizedBox(width: 18),
+
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                mood,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.playfairDisplay(
+                  fontSize: 44,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.textDark,
+                  height: 1.05,
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
+              Text(
+                hasMood
+                    ? "Your latest check-in is shaping today’s space."
+                    : "Tap the plus button to save your first feeling.",
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  height: 1.45,
+                  color: AppColors.textSoft,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _WeeklyOverviewSection extends StatelessWidget {
+  final List<_WeeklyMoodData> weeklyData;
+
+  const _WeeklyOverviewSection({
+    required this.weeklyData,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              "Weekly At-A-Glance",
+              style: GoogleFonts.poppins(
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+                color: AppColors.textDark,
+              ),
+            ),
+
+            const Spacer(),
+
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 6,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.50),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                "7 days",
+                style: GoogleFonts.poppins(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.deepBlue,
+                ),
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 16),
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: weeklyData.map((item) {
+            return _WeeklyMoodBubble(
+              data: item,
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
+}
+
+class _WeeklyMoodBubble extends StatelessWidget {
+  final _WeeklyMoodData data;
+
+  const _WeeklyMoodBubble({
+    required this.data,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 280),
+          height: data.isToday ? 48 : 42,
+          width: data.isToday ? 48 : 42,
+          decoration: BoxDecoration(
+            color: data.color.withOpacity(data.hasMood ? 0.86 : 0.58),
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: data.isToday
+                  ? AppColors.deepBlue
+                  : Colors.white.withOpacity(0.92),
+              width: data.isToday ? 1.5 : 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: data.color.withOpacity(0.24),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            data.emoji,
+            style: TextStyle(
+              fontSize: data.hasMood ? 22 : 18,
+              fontWeight: FontWeight.w800,
+              color: AppColors.deepBlue,
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 8),
+
+        Text(
+          data.day,
+          style: GoogleFonts.poppins(
+            fontSize: 10,
+            fontWeight: data.isToday ? FontWeight.w800 : FontWeight.w500,
+            color: data.isToday ? AppColors.deepBlue : AppColors.textSoft,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _SoftStatCard extends StatelessWidget {
+  final String emoji;
+  final String title;
+  final String subtitle;
   final Color color;
 
-  const _StickerBubble({
+  const _SoftStatCard({
     required this.emoji,
+    required this.title,
+    required this.subtitle,
     required this.color,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 48,
-      width: 48,
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.76),
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: Colors.white.withOpacity(0.96),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.26),
-            blurRadius: 14,
-            offset: const Offset(0, 7),
+    return TweenAnimationBuilder<double>(
+      tween: Tween(
+        begin: 0.96,
+        end: 1,
+      ),
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.easeOutBack,
+      builder: (context, value, child) {
+        return Transform.scale(
+          scale: value,
+          child: Container(
+            height: 132,
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  color.withOpacity(0.86),
+                  Colors.white.withOpacity(0.66),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(32),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.94),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: color.withOpacity(0.28),
+                  blurRadius: 22,
+                  offset: const Offset(0, 12),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  emoji,
+                  style: const TextStyle(fontSize: 30),
+                ),
+
+                const Spacer(),
+
+                Text(
+                  title,
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textDark,
+                  ),
+                ),
+
+                Text(
+                  subtitle,
+                  style: GoogleFonts.poppins(
+                    fontSize: 11,
+                    color: AppColors.textSoft,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ],
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        emoji,
-        style: const TextStyle(fontSize: 22),
-      ),
+        );
+      },
     );
   }
 }
 
-class _CuteInsightCard extends StatelessWidget {
+class _InsightCard extends StatelessWidget {
   final String insight;
+  final String weeklyTone;
 
-  const _CuteInsightCard({
+  const _InsightCard({
     required this.insight,
+    required this.weeklyTone,
   });
 
   @override
@@ -606,7 +964,7 @@ class _CuteInsightCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(34),
         border: Border.all(
-          color: Colors.white.withOpacity(0.92),
+          color: Colors.white.withOpacity(0.94),
         ),
         boxShadow: [
           BoxShadow(
@@ -619,19 +977,46 @@ class _CuteInsightCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "🧸",
-            style: TextStyle(fontSize: 30),
+          Container(
+            height: 54,
+            width: 54,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.54),
+              shape: BoxShape.circle,
+            ),
+            alignment: Alignment.center,
+            child: const Text(
+              "🧸",
+              style: TextStyle(fontSize: 28),
+            ),
           ),
+
           const SizedBox(width: 14),
+
           Expanded(
-            child: Text(
-              insight,
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                height: 1.65,
-                color: AppColors.textDark,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  weeklyTone,
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textDark,
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                Text(
+                  insight,
+                  style: GoogleFonts.poppins(
+                    fontSize: 13,
+                    height: 1.6,
+                    color: AppColors.textDark,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -640,69 +1025,8 @@ class _CuteInsightCard extends StatelessWidget {
   }
 }
 
-class _CuteMiniCard extends StatelessWidget {
-  final String emoji;
-  final String title;
-  final String subtitle;
-  final Color color;
-
-  const _CuteMiniCard({
-    required this.emoji,
-    required this.title,
-    required this.subtitle,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 134,
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.74),
-        borderRadius: BorderRadius.circular(32),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.92),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.25),
-            blurRadius: 18,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            emoji,
-            style: const TextStyle(fontSize: 28),
-          ),
-          const Spacer(),
-          Text(
-            title,
-            style: GoogleFonts.poppins(
-              fontSize: 18,
-              fontWeight: FontWeight.w800,
-              color: AppColors.textDark,
-            ),
-          ),
-          Text(
-            subtitle,
-            style: GoogleFonts.poppins(
-              fontSize: 11,
-              color: AppColors.textSoft,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CuteWellnessShortcut extends StatelessWidget {
-  const _CuteWellnessShortcut();
+class _TinyResetCard extends StatelessWidget {
+  const _TinyResetCard();
 
   @override
   Widget build(BuildContext context) {
@@ -710,37 +1034,105 @@ class _CuteWellnessShortcut extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
-            AppColors.lavender,
-            AppColors.paleBlue,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: Colors.white.withOpacity(0.60),
         borderRadius: BorderRadius.circular(34),
         border: Border.all(
-          color: Colors.white.withOpacity(0.92),
+          color: Colors.white.withOpacity(0.94),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.softPurple.withOpacity(0.12),
+            blurRadius: 22,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
       child: Row(
         children: [
-          const Text(
-            "🧘",
-            style: TextStyle(fontSize: 36),
+          Container(
+            height: 56,
+            width: 56,
+            decoration: const BoxDecoration(
+              color: AppColors.lavender,
+              shape: BoxShape.circle,
+            ),
+            alignment: Alignment.center,
+            child: const Text(
+              "🫧",
+              style: TextStyle(fontSize: 29),
+            ),
           ),
-          const SizedBox(width: 14),
+
+          const SizedBox(width: 16),
+
           Expanded(
-            child: Text(
-              "Need a tiny reset? Visit Wellness for music, movement, and comfort.",
-              style: GoogleFonts.poppins(
-                fontSize: 13,
-                height: 1.5,
-                color: AppColors.textDark,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Tiny Reset",
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textDark,
+                  ),
+                ),
+
+                const SizedBox(height: 5),
+
+                Text(
+                  "Need a softer moment? Visit Wellness for breathing, music, and comfort.",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    height: 1.5,
+                    color: AppColors.textSoft,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _StickerBubble extends StatelessWidget {
+  final String emoji;
+  final Color color;
+
+  const _StickerBubble({
+    required this.emoji,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 43,
+      width: 43,
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.72),
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Colors.white.withOpacity(0.96),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.25),
+            blurRadius: 14,
+            offset: const Offset(0, 7),
+          ),
+        ],
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        emoji,
+        style: GoogleFonts.poppins(
+          fontSize: 19,
+          fontWeight: FontWeight.w900,
+          color: AppColors.deepBlue,
+        ),
       ),
     );
   }
@@ -770,6 +1162,22 @@ class _SoftBlob extends StatelessWidget {
   }
 }
 
+class _WeeklyMoodData {
+  final String day;
+  final String emoji;
+  final String label;
+  final Color color;
+  final bool isToday;
+  final bool hasMood;
 
+  _WeeklyMoodData({
+    required this.day,
+    required this.emoji,
+    required this.label,
+    required this.color,
+    required this.isToday,
+    required this.hasMood,
+  });
+}
 
 

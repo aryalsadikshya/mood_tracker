@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'breathing_screen.dart';
 import '../../core/theme/app_colours.dart';
+import 'drink_water_screen.dart';
 
 class WellnessScreen extends StatefulWidget {
   const WellnessScreen({super.key});
@@ -1004,11 +1005,19 @@ class _CuteResetTools extends StatelessWidget {
           color: AppColors.paleBlue,
           onTap: onBreathTap,
         ),
-        const _CuteResetTile(
+        _CuteResetTile(
           emoji: "💧",
           title: "Drink Water",
           subtitle: "A tiny body reset can help your mind feel lighter.",
           color: AppColors.mint,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const DrinkWaterScreen(),
+              ),
+            );
+          },
         ),
         const _CuteResetTile(
           emoji: "🖐️",

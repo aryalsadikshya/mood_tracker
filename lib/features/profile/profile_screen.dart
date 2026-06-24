@@ -68,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
             final profileData = profileSnapshot.data?.data() ?? {};
 
             final username =
-            (profileData["username"] ?? "").toString().trim();
+            (profileData["username"] ?? profileData["name"] ?? "").toString().trim();
 
             final avatarId =
             (profileData["avatarId"] ?? "flower").toString().trim();

@@ -19,15 +19,23 @@ class ProfileService {
       "updatedAt": FieldValue.serverTimestamp(),
     };
 
+    // Save both username and name so every screen stays synchronized
     if (username != null && username.trim().isNotEmpty) {
       data["username"] = username.trim();
+      data["name"] = username.trim();
+
+      // Update Firebase Auth display name as well
+      await user.updateDisplayName(username.trim());
     }
 
     if (avatarId != null && avatarId.trim().isNotEmpty) {
       data["avatarId"] = avatarId.trim();
     }
 
-    await _firestore.collection("users").doc(user.uid).set(
+    await _firestore
+        .collection("users")
+        .doc(user.uid)
+        .set(
       data,
       SetOptions(merge: true),
     );
@@ -40,7 +48,10 @@ class ProfileService {
       return const Stream.empty();
     }
 
-    return _firestore.collection("users").doc(user.uid).snapshots();
+    return _firestore
+        .collection("users")
+        .doc(user.uid)
+        .snapshots();
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getProfileOnce() async {
@@ -50,6 +61,9 @@ class ProfileService {
       throw Exception("No logged-in user found.");
     }
 
-    return _firestore.collection("users").doc(user.uid).get();
+    return _firestore
+        .collection("users")
+        .doc(user.uid)
+        .get();
   }
 }

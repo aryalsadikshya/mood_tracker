@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../../core/theme/app_colours.dart';
 import 'avator_catalog.dart';
 import 'profile_service.dart';
@@ -32,12 +33,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (data == null) return;
 
       setState(() {
-        usernameController.text = (data["username"] ?? "").toString();
+        usernameController.text =
+            (data["username"] ?? data["name"] ?? "").toString();
+
         selectedAvatarId = (data["avatarId"] ?? "flower").toString();
       });
-    } catch (_) {
-      // Do nothing. New users may not have profile data yet.
-    }
+    } catch (_) {}
   }
 
   @override
@@ -47,13 +48,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> saveProfile() async {
+    final username = usernameController.text.trim();
+
+    if (username.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text("Please enter your name."),
+        ),
+      );
+      return;
+    }
+
     setState(() {
       isLoading = true;
     });
 
     try {
       await profileService.updateProfile(
-        username: usernameController.text.trim(),
+        username: username,
         avatarId: selectedAvatarId,
       );
 
@@ -94,10 +107,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: avatar.color.withOpacity(0.75),
-        border: Border.all(
-          color: Colors.white,
-          width: 3,
-        ),
+        border: Border.all(color: Colors.white, width: 3),
         boxShadow: [
           BoxShadow(
             color: avatar.color.withOpacity(0.35),
@@ -244,9 +254,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Column(
           children: [
             buildAvatarPreview(),
-
             const SizedBox(height: 16),
-
             Text(
               "Choose your MindBloom avatar",
               style: GoogleFonts.poppins(
@@ -254,17 +262,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 color: AppColors.textSoft,
               ),
             ),
-
             const SizedBox(height: 28),
-
             buildAvatarPicker(),
-
             const SizedBox(height: 34),
-
             buildNameField(),
-
             const SizedBox(height: 34),
-
             buildSaveButton(),
           ],
         ),

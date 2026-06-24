@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'Ground_Yourself_Screen.dart';
 import 'breathing_screen.dart';
 import '../../core/theme/app_colours.dart';
 import 'drink_water_screen.dart';
@@ -1019,11 +1020,19 @@ class _CuteResetTools extends StatelessWidget {
             );
           },
         ),
-        const _CuteResetTile(
+        _CuteResetTile(
           emoji: "🖐️",
           title: "Ground Yourself",
           subtitle: "Name 5 things you can see around you.",
           color: AppColors.blush,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const GroundYourselfScreen(),
+              ),
+            );
+          },
         ),
       ],
     );

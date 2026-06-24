@@ -9,8 +9,7 @@ class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
 
   @override
-  State<AuthScreen> createState() =>
-      _AuthScreenState();
+  State<AuthScreen> createState() => _AuthScreenState();
 }
 
 class _AuthScreenState extends State<AuthScreen> {
@@ -22,6 +21,7 @@ class _AuthScreenState extends State<AuthScreen> {
   bool obscurePassword = true;
   bool isLoading = false;
   bool isGoogleLoading = false;
+  bool isResetLoading = false;
 
   @override
   void dispose() {
@@ -44,8 +44,7 @@ class _AuthScreenState extends State<AuthScreen> {
       suffixIcon: suffixIcon,
       filled: true,
       fillColor: const Color(0xFFFFFBF6),
-      contentPadding:
-      const EdgeInsets.symmetric(vertical: 20),
+      contentPadding: const EdgeInsets.symmetric(vertical: 20),
       hintStyle: GoogleFonts.poppins(
         color: const Color(0xFFA99B96),
         fontSize: 15,
@@ -61,6 +60,30 @@ class _AuthScreenState extends State<AuthScreen> {
         borderSide: const BorderSide(
           color: Color(0xFFDAB8C8),
           width: 1.4,
+        ),
+      ),
+    );
+  }
+
+  void showSoftSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: const Color(0xFFFFF8FA),
+        elevation: 0,
+        margin: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(22),
+          side: const BorderSide(
+            color: Color(0xFFF1DDE5),
+          ),
+        ),
+        content: Text(
+          message,
+          style: GoogleFonts.poppins(
+            color: const Color(0xFF746C6A),
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
@@ -101,17 +124,56 @@ class _AuthScreenState extends State<AuthScreen> {
       }
 
       if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: Text(message),
-        ),
-      );
+      showSoftSnackBar(message);
     } finally {
       if (mounted) {
         setState(() {
           isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> forgotPassword() async {
+    final email = emailController.text.trim();
+
+    if (email.isEmpty) {
+      showSoftSnackBar("Please enter your email address first.");
+      return;
+    }
+
+    setState(() {
+      isResetLoading = true;
+    });
+
+    try {
+      await authService.resetPassword(email: email);
+
+      if (!mounted) return;
+
+      showSoftSnackBar(
+        "Password reset link sent. Please check your email.",
+      );
+    } catch (e) {
+      if (!mounted) return;
+
+      String message = "Could not send reset email. Please try again.";
+
+      final error = e.toString().toLowerCase();
+
+      if (error.contains("invalid-email")) {
+        message = "Please enter a valid email address.";
+      } else if (error.contains("user-not-found")) {
+        message = "No account was found for this email.";
+      } else if (error.contains("network")) {
+        message = "Please check your internet connection.";
+      }
+
+      showSoftSnackBar(message);
+    } finally {
+      if (mounted) {
+        setState(() {
+          isResetLoading = false;
         });
       }
     }
@@ -139,14 +201,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            "Google sign in failed: $e",
-          ),
-        ),
-      );
+      showSoftSnackBar("Google sign in failed. Please try again.");
     } finally {
       if (mounted) {
         setState(() {
@@ -162,12 +217,10 @@ class _AuthScreenState extends State<AuthScreen> {
       backgroundColor: const Color(0xFFFDFCF0),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding:
-          const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight:
-              MediaQuery.of(context).size.height -
+              minHeight: MediaQuery.of(context).size.height -
                   MediaQuery.of(context).padding.top,
             ),
             child: Column(
@@ -188,9 +241,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 const SizedBox(height: 14),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
                   child: Text(
                     "Return to your calm space and continue your reflection journey.",
                     textAlign: TextAlign.center,
@@ -207,17 +258,14 @@ class _AuthScreenState extends State<AuthScreen> {
                 Container(
                   padding: const EdgeInsets.all(22),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFF8FA)
-                        .withOpacity(0.78),
-                    borderRadius:
-                    BorderRadius.circular(34),
+                    color: const Color(0xFFFFF8FA).withOpacity(0.78),
+                    borderRadius: BorderRadius.circular(34),
                     border: Border.all(
                       color: const Color(0xFFF1DDE5),
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFFDAB8C8)
-                            .withOpacity(0.22),
+                        color: const Color(0xFFDAB8C8).withOpacity(0.22),
                         blurRadius: 32,
                         offset: const Offset(0, 18),
                       ),
@@ -227,8 +275,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     children: [
                       TextField(
                         controller: emailController,
-                        keyboardType:
-                        TextInputType.emailAddress,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: inputDecoration(
                           hint: "Email address",
                           icon: Icons.mail_outline_rounded,
@@ -242,73 +289,75 @@ class _AuthScreenState extends State<AuthScreen> {
                         obscureText: obscurePassword,
                         decoration: inputDecoration(
                           hint: "Password",
-                          icon:
-                          Icons.lock_outline_rounded,
+                          icon: Icons.lock_outline_rounded,
                           suffixIcon: IconButton(
                             icon: Icon(
                               obscurePassword
-                                  ? Icons
-                                  .visibility_off_outlined
-                                  : Icons
-                                  .visibility_outlined,
-                              color:
-                              const Color(0xFF9A817C),
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                              color: const Color(0xFF9A817C),
                             ),
                             onPressed: () {
                               setState(() {
-                                obscurePassword =
-                                !obscurePassword;
+                                obscurePassword = !obscurePassword;
                               });
                             },
                           ),
                         ),
                       ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 10),
+
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: isResetLoading ? null : forgotPassword,
+                          child: Text(
+                            isResetLoading
+                                ? "Sending reset link..."
+                                : "Forgot your password?",
+                            style: GoogleFonts.poppins(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFFB58AC8),
+                              decoration: TextDecoration.underline,
+                              decorationColor: const Color(0xFFB58AC8),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 18),
 
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed:
-                          isLoading ? null : loginUser,
-                          style:
-                          ElevatedButton.styleFrom(
+                          onPressed: isLoading ? null : loginUser,
+                          style: ElevatedButton.styleFrom(
                             elevation: 0,
-                            backgroundColor:
-                            const Color(0xFFE8D7F1),
-                            foregroundColor:
-                            const Color(0xFF2A2430),
-                            padding:
-                            const EdgeInsets
-                                .symmetric(
+                            backgroundColor: const Color(0xFFE8D7F1),
+                            foregroundColor: const Color(0xFF2A2430),
+                            padding: const EdgeInsets.symmetric(
                               vertical: 18,
                             ),
-                            shape:
-                            RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(
-                                26,
-                              ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(26),
                             ),
                           ),
                           child: isLoading
                               ? const SizedBox(
                             height: 22,
                             width: 22,
-                            child:
-                            CircularProgressIndicator(
+                            child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color:
-                              Color(0xFF2A2430),
+                              color: Color(0xFF2A2430),
                             ),
                           )
                               : Text(
                             "Login",
-                            style:
-                            GoogleFonts.poppins(
+                            style: GoogleFonts.poppins(
                               fontSize: 16,
-                              fontWeight:
-                              FontWeight.w700,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
@@ -318,31 +367,27 @@ class _AuthScreenState extends State<AuthScreen> {
 
                       Row(
                         children: [
-                          Expanded(
+                          const Expanded(
                             child: Divider(
-                              color:
-                              const Color(0xFFEBDCE4),
+                              color: Color(0xFFEBDCE4),
                               thickness: 1,
                             ),
                           ),
                           Padding(
-                            padding:
-                            const EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               horizontal: 12,
                             ),
                             child: Text(
                               "or",
                               style: GoogleFonts.poppins(
-                                color:
-                                const Color(0xFF8A7E80),
+                                color: const Color(0xFF8A7E80),
                                 fontSize: 13,
                               ),
                             ),
                           ),
-                          Expanded(
+                          const Expanded(
                             child: Divider(
-                              color:
-                              const Color(0xFFEBDCE4),
+                              color: Color(0xFFEBDCE4),
                               thickness: 1,
                             ),
                           ),
@@ -354,45 +399,32 @@ class _AuthScreenState extends State<AuthScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: isGoogleLoading
-                              ? null
-                              : googleLogin,
-                          style:
-                          OutlinedButton.styleFrom(
-                            padding:
-                            const EdgeInsets
-                                .symmetric(
+                          onPressed: isGoogleLoading ? null : googleLogin,
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
                               vertical: 18,
                             ),
                             side: const BorderSide(
                               color: Color(0xFFDCC3E8),
                             ),
-                            foregroundColor:
-                            const Color(0xFF7B6586),
-                            shape:
-                            RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(
-                                26,
-                              ),
+                            foregroundColor: const Color(0xFF7B6586),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(26),
                             ),
                           ),
                           child: isGoogleLoading
                               ? const SizedBox(
                             height: 22,
                             width: 22,
-                            child:
-                            CircularProgressIndicator(
+                            child: CircularProgressIndicator(
                               strokeWidth: 2,
                             ),
                           )
                               : Text(
                             "Continue with Google",
-                            style:
-                            GoogleFonts.poppins(
+                            style: GoogleFonts.poppins(
                               fontSize: 15,
-                              fontWeight:
-                              FontWeight.w600,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
@@ -404,8 +436,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 const SizedBox(height: 28),
 
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "Don’t have an account? ",
@@ -419,8 +450,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) =>
-                            const SignupScreen(),
+                            builder: (_) => const SignupScreen(),
                           ),
                         );
                       },
@@ -429,8 +459,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
-                          color:
-                          const Color(0xFFB58AC8),
+                          color: const Color(0xFFB58AC8),
                         ),
                       ),
                     ),
@@ -446,3 +475,4 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 }
+

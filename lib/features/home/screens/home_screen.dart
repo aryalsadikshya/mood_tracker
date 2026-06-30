@@ -89,7 +89,48 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-  List<Color> moodBackground(MoodModel? mood) {
+  List<Color> moodBackground(MoodModel? mood, bool isDark) {
+    if (isDark) {
+      switch (mood?.moodLabel) {
+        case "Happy":
+          return [
+            AppColors.nightBlush,
+            AppColors.nightCardSoft,
+            AppColors.nightBackground,
+          ];
+        case "Calm":
+          return [
+            AppColors.nightMint,
+            AppColors.nightBlue,
+            AppColors.nightBackground,
+          ];
+        case "Okay":
+          return [
+            AppColors.nightLavender,
+            AppColors.nightCardSoft,
+            AppColors.nightBackground,
+          ];
+        case "Low":
+          return [
+            AppColors.nightBlue,
+            AppColors.nightCard,
+            AppColors.nightBackground,
+          ];
+        case "Stressed":
+          return [
+            AppColors.nightLavender,
+            AppColors.nightCardSoft,
+            AppColors.nightBackground,
+          ];
+        default:
+          return [
+            AppColors.nightLavender,
+            AppColors.nightBlue,
+            AppColors.nightBackground,
+          ];
+      }
+    }
+
     switch (mood?.moodLabel) {
       case "Happy":
         return [
@@ -130,7 +171,10 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-  List<_WeeklyMoodData> buildWeeklyOverview(List<MoodModel> moods) {
+  List<_WeeklyMoodData> buildWeeklyOverview(
+      List<MoodModel> moods,
+      bool isDark,
+      ) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
 
@@ -173,7 +217,9 @@ class _HomeScreenState extends State<HomeScreen>
         emoji: moodForDay?.moodEmoji ?? "♡",
         label: moodForDay?.moodLabel ?? "No check-in",
         color: moodForDay == null
-            ? Colors.white.withOpacity(0.60)
+            ? isDark
+            ? AppColors.nightCardSoft
+            : Colors.white.withOpacity(0.60)
             : moodColor(moodForDay.moodLabel),
         isToday: date.year == today.year &&
             date.month == today.month &&
@@ -231,7 +277,10 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: StreamBuilder<List<MoodModel>>(
         stream: moodService.getMoods(),
         builder: (context, snapshot) {
@@ -245,10 +294,12 @@ class _HomeScreenState extends State<HomeScreen>
           final latestMood = moods.isEmpty ? null : moods.first;
 
           final color = latestMood == null
-              ? AppColors.lavender
+              ? isDark
+              ? AppColors.nightLavender
+              : AppColors.lavender
               : moodColor(latestMood.moodLabel);
 
-          final weeklyData = buildWeeklyOverview(moods);
+          final weeklyData = buildWeeklyOverview(moods, isDark);
           final streak = StreakService.calculateStreak(moods);
           final entriesThisWeek = weeklyEntries(moods);
           final moodAverage = averageMood(moods);
@@ -256,10 +307,9 @@ class _HomeScreenState extends State<HomeScreen>
           return Stack(
             children: [
               _AnimatedPastelBackground(
-                colors: moodBackground(latestMood),
+                colors: moodBackground(latestMood, isDark),
                 animation: controller,
               ),
-
               SafeArea(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.fromLTRB(22, 20, 22, 125),
@@ -270,9 +320,7 @@ class _HomeScreenState extends State<HomeScreen>
                         greeting: greeting(),
                         message: greetingMessage(),
                       ),
-
                       const SizedBox(height: 24),
-
                       AnimatedBuilder(
                         animation: floatAnimation,
                         builder: (context, child) {
@@ -286,9 +334,7 @@ class _HomeScreenState extends State<HomeScreen>
                           );
                         },
                       ),
-
                       const SizedBox(height: 22),
-
                       Row(
                         children: [
                           Expanded(
@@ -296,7 +342,9 @@ class _HomeScreenState extends State<HomeScreen>
                               emoji: "🌷",
                               title: "$streak Day",
                               subtitle: "Reflection streak",
-                              color: AppColors.blush,
+                              color: isDark
+                                  ? AppColors.nightBlush
+                                  : AppColors.blush,
                             ),
                           ),
                           const SizedBox(width: 14),
@@ -305,21 +353,19 @@ class _HomeScreenState extends State<HomeScreen>
                               emoji: "🫧",
                               title: "$entriesThisWeek Logs",
                               subtitle: "This week",
-                              color: AppColors.paleBlue,
+                              color: isDark
+                                  ? AppColors.nightBlue
+                                  : AppColors.paleBlue,
                             ),
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 18),
-
                       _InsightCard(
                         insight: MoodAnalyzer.getInsight(moods),
                         weeklyTone: averageMoodText(moodAverage),
                       ),
-
                       const SizedBox(height: 18),
-
                       const _TinyResetCard(),
                     ],
                   ),
@@ -344,6 +390,8 @@ class _AnimatedPastelBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return AnimatedBuilder(
       animation: animation,
       builder: (context, child) {
@@ -353,45 +401,44 @@ class _AnimatedPastelBackground extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    colors[0].withOpacity(0.72),
-                    colors[1].withOpacity(0.60),
-                    colors[2].withOpacity(0.84),
+                    colors[0].withOpacity(isDark ? 0.26 : 0.72),
+                    colors[1].withOpacity(isDark ? 0.22 : 0.60),
+                    colors[2].withOpacity(isDark ? 1 : 0.84),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
               ),
             ),
-
             Positioned.fill(
               child: CustomPaint(
-                painter: _CuteFloatingPainter(animation.value),
+                painter: _CuteFloatingPainter(
+                  animation.value,
+                  isDark: isDark,
+                ),
               ),
             ),
-
             Positioned(
               top: -80 + animation.value * 24,
               right: -70,
               child: _SoftBlob(
-                color: colors[0].withOpacity(0.46),
+                color: colors[0].withOpacity(isDark ? 0.18 : 0.46),
                 size: 260,
               ),
             ),
-
             Positioned(
               bottom: 110 - animation.value * 24,
               left: -90,
               child: _SoftBlob(
-                color: colors[1].withOpacity(0.44),
+                color: colors[1].withOpacity(isDark ? 0.16 : 0.44),
                 size: 270,
               ),
             ),
-
             Positioned(
               top: 310 + animation.value * 16,
               right: -90,
               child: _SoftBlob(
-                color: colors[2].withOpacity(0.40),
+                color: colors[2].withOpacity(isDark ? 0.18 : 0.40),
                 size: 230,
               ),
             ),
@@ -404,8 +451,12 @@ class _AnimatedPastelBackground extends StatelessWidget {
 
 class _CuteFloatingPainter extends CustomPainter {
   final double value;
+  final bool isDark;
 
-  _CuteFloatingPainter(this.value);
+  _CuteFloatingPainter(
+      this.value, {
+        required this.isDark,
+      });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -419,7 +470,15 @@ class _CuteFloatingPainter extends CustomPainter {
       "•",
     ];
 
-    final colors = [
+    final colors = isDark
+        ? [
+      Colors.white.withOpacity(0.18),
+      AppColors.nightLavender.withOpacity(0.20),
+      AppColors.nightBlue.withOpacity(0.18),
+      AppColors.nightBlush.withOpacity(0.16),
+      AppColors.nightMint.withOpacity(0.14),
+    ]
+        : [
       Colors.white.withOpacity(0.50),
       AppColors.blush.withOpacity(0.34),
       AppColors.lavender.withOpacity(0.34),
@@ -455,10 +514,9 @@ class _CuteFloatingPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _CuteFloatingPainter oldDelegate) {
-    return oldDelegate.value != value;
+    return oldDelegate.value != value || oldDelegate.isDark != isDark;
   }
 }
-
 class _GreetingHeader extends StatelessWidget {
   final String greeting;
   final String message;
@@ -470,20 +528,34 @@ class _GreetingHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final textColor =
+        Theme.of(context).textTheme.headlineMedium?.color ?? AppColors.textDark;
+
+    final softTextColor =
+        Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSoft;
+
     return Row(
       children: [
         Container(
           height: 62,
           width: 62,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.58),
+            color: isDark
+                ? AppColors.nightCardSoft.withOpacity(0.92)
+                : Colors.white.withOpacity(0.58),
             shape: BoxShape.circle,
             border: Border.all(
-              color: Colors.white.withOpacity(0.94),
+              color: isDark
+                  ? AppColors.nightBorder
+                  : Colors.white.withOpacity(0.94),
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.softPurple.withOpacity(0.16),
+                color: isDark
+                    ? Colors.black.withOpacity(0.22)
+                    : AppColors.softPurple.withOpacity(0.16),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
               ),
@@ -495,9 +567,7 @@ class _GreetingHeader extends StatelessWidget {
             style: TextStyle(fontSize: 34),
           ),
         ),
-
         const SizedBox(width: 14),
-
         Expanded(
           child: Container(
             padding: const EdgeInsets.symmetric(
@@ -505,14 +575,20 @@ class _GreetingHeader extends StatelessWidget {
               vertical: 13,
             ),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.52),
+              color: isDark
+                  ? AppColors.nightCard.withOpacity(0.92)
+                  : Colors.white.withOpacity(0.52),
               borderRadius: BorderRadius.circular(28),
               border: Border.all(
-                color: Colors.white.withOpacity(0.88),
+                color: isDark
+                    ? AppColors.nightBorder
+                    : Colors.white.withOpacity(0.88),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.softPurple.withOpacity(0.10),
+                  color: isDark
+                      ? Colors.black.withOpacity(0.18)
+                      : AppColors.softPurple.withOpacity(0.10),
                   blurRadius: 18,
                   offset: const Offset(0, 8),
                 ),
@@ -526,19 +602,17 @@ class _GreetingHeader extends StatelessWidget {
                   style: GoogleFonts.playfairDisplay(
                     fontSize: 31,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.textDark,
+                    color: textColor,
                     height: 1.05,
                   ),
                 ),
-
                 const SizedBox(height: 5),
-
                 Text(
                   message,
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.textSoft,
+                    color: softTextColor,
                   ),
                 ),
               ],
@@ -563,6 +637,8 @@ class _MoodAndWeeklyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     final displayEmoji = mood?.moodEmoji ?? "🌱";
     final displayMood = mood?.moodLabel ?? "Blooming";
 
@@ -571,7 +647,13 @@ class _MoodAndWeeklyCard extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(22, 22, 22, 22),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
+          colors: isDark
+              ? [
+            AppColors.nightCardSoft.withOpacity(0.96),
+            AppColors.nightCard.withOpacity(0.98),
+            AppColors.nightBackground.withOpacity(0.96),
+          ]
+              : [
             color.withOpacity(0.76),
             Colors.white.withOpacity(0.66),
             AppColors.cream.withOpacity(0.80),
@@ -581,12 +663,14 @@ class _MoodAndWeeklyCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(42),
         border: Border.all(
-          color: Colors.white.withOpacity(0.94),
+          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.94),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.34),
+            color: isDark
+                ? Colors.black.withOpacity(0.28)
+                : color.withOpacity(0.34),
             blurRadius: 34,
             offset: const Offset(0, 18),
           ),
@@ -594,24 +678,22 @@ class _MoodAndWeeklyCard extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          const Positioned(
+          Positioned(
             top: 4,
             right: 6,
             child: _StickerBubble(
               emoji: "✦",
-              color: AppColors.warmYellow,
+              color: isDark ? AppColors.nightLavender : AppColors.warmYellow,
             ),
           ),
-
-          const Positioned(
+          Positioned(
             top: 72,
             right: 36,
             child: _StickerBubble(
               emoji: "♡",
-              color: AppColors.paleBlue,
+              color: isDark ? AppColors.nightBlue : AppColors.paleBlue,
             ),
           ),
-
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -621,17 +703,15 @@ class _MoodAndWeeklyCard extends StatelessWidget {
                 color: color,
                 hasMood: mood != null,
               ),
-
               const SizedBox(height: 22),
-
               Container(
                 height: 1,
                 width: double.infinity,
-                color: Colors.white.withOpacity(0.62),
+                color: isDark
+                    ? AppColors.nightBorder
+                    : Colors.white.withOpacity(0.62),
               ),
-
               const SizedBox(height: 20),
-
               _WeeklyOverviewSection(
                 weeklyData: weeklyData,
               ),
@@ -658,6 +738,14 @@ class _TodayMoodSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final textColor =
+        Theme.of(context).textTheme.headlineMedium?.color ?? AppColors.textDark;
+
+    final softTextColor =
+        Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSoft;
+
     return Row(
       children: [
         TweenAnimationBuilder<double>(
@@ -674,14 +762,20 @@ class _TodayMoodSection extends StatelessWidget {
                 height: 98,
                 width: 98,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.60),
+                  color: isDark
+                      ? AppColors.nightCardSoft.withOpacity(0.88)
+                      : Colors.white.withOpacity(0.60),
                   borderRadius: BorderRadius.circular(32),
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.94),
+                    color: isDark
+                        ? AppColors.nightBorder
+                        : Colors.white.withOpacity(0.94),
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: color.withOpacity(0.25),
+                      color: isDark
+                          ? Colors.black.withOpacity(0.20)
+                          : color.withOpacity(0.25),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -696,9 +790,7 @@ class _TodayMoodSection extends StatelessWidget {
             );
           },
         ),
-
         const SizedBox(width: 18),
-
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -710,13 +802,11 @@ class _TodayMoodSection extends StatelessWidget {
                 style: GoogleFonts.playfairDisplay(
                   fontSize: 44,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.textDark,
+                  color: textColor,
                   height: 1.05,
                 ),
               ),
-
               const SizedBox(height: 8),
-
               Text(
                 hasMood
                     ? "Your latest check-in is shaping today’s space."
@@ -724,7 +814,7 @@ class _TodayMoodSection extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   height: 1.45,
-                  color: AppColors.textSoft,
+                  color: softTextColor,
                 ),
               ),
             ],
@@ -744,6 +834,11 @@ class _WeeklyOverviewSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final textColor =
+        Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textDark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -754,19 +849,19 @@ class _WeeklyOverviewSection extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 13,
                 fontWeight: FontWeight.w800,
-                color: AppColors.textDark,
+                color: textColor,
               ),
             ),
-
             const Spacer(),
-
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 10,
                 vertical: 6,
               ),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.50),
+                color: isDark
+                    ? AppColors.nightCardSoft
+                    : Colors.white.withOpacity(0.50),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
@@ -774,15 +869,13 @@ class _WeeklyOverviewSection extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.deepBlue,
+                  color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
                 ),
               ),
             ),
           ],
         ),
-
         const SizedBox(height: 16),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: weeklyData.map((item) {
@@ -805,6 +898,8 @@ class _WeeklyMoodBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       children: [
         AnimatedContainer(
@@ -816,13 +911,17 @@ class _WeeklyMoodBubble extends StatelessWidget {
             shape: BoxShape.circle,
             border: Border.all(
               color: data.isToday
-                  ? AppColors.deepBlue
+                  ? isDark
+                  ? AppColors.nightBlue
+                  : AppColors.deepBlue
+                  : isDark
+                  ? AppColors.nightBorder
                   : Colors.white.withOpacity(0.92),
               width: data.isToday ? 1.5 : 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: data.color.withOpacity(0.24),
+                color: data.color.withOpacity(isDark ? 0.10 : 0.24),
                 blurRadius: 12,
                 offset: const Offset(0, 6),
               ),
@@ -834,19 +933,22 @@ class _WeeklyMoodBubble extends StatelessWidget {
             style: TextStyle(
               fontSize: data.hasMood ? 22 : 18,
               fontWeight: FontWeight.w800,
-              color: AppColors.deepBlue,
+              color: isDark ? AppColors.nightText : AppColors.deepBlue,
             ),
           ),
         ),
-
         const SizedBox(height: 8),
-
         Text(
           data.day,
           style: GoogleFonts.poppins(
             fontSize: 10,
             fontWeight: data.isToday ? FontWeight.w800 : FontWeight.w500,
-            color: data.isToday ? AppColors.deepBlue : AppColors.textSoft,
+            color: data.isToday
+                ? isDark
+                ? AppColors.nightBlue
+                : AppColors.deepBlue
+                : Theme.of(context).textTheme.bodyMedium?.color ??
+                AppColors.textSoft,
           ),
         ),
       ],
@@ -869,6 +971,14 @@ class _SoftStatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final textColor =
+        Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textDark;
+
+    final softTextColor =
+        Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSoft;
+
     return TweenAnimationBuilder<double>(
       tween: Tween(
         begin: 0.96,
@@ -884,7 +994,12 @@ class _SoftStatCard extends StatelessWidget {
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
+                colors: isDark
+                    ? [
+                  AppColors.nightCardSoft,
+                  AppColors.nightCard,
+                ]
+                    : [
                   color.withOpacity(0.86),
                   Colors.white.withOpacity(0.66),
                 ],
@@ -893,11 +1008,15 @@ class _SoftStatCard extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(32),
               border: Border.all(
-                color: Colors.white.withOpacity(0.94),
+                color: isDark
+                    ? AppColors.nightBorder
+                    : Colors.white.withOpacity(0.94),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: color.withOpacity(0.28),
+                  color: isDark
+                      ? Colors.black.withOpacity(0.24)
+                      : color.withOpacity(0.28),
                   blurRadius: 22,
                   offset: const Offset(0, 12),
                 ),
@@ -910,23 +1029,20 @@ class _SoftStatCard extends StatelessWidget {
                   emoji,
                   style: const TextStyle(fontSize: 30),
                 ),
-
                 const Spacer(),
-
                 Text(
                   title,
                   style: GoogleFonts.poppins(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.textDark,
+                    color: textColor,
                   ),
                 ),
-
                 Text(
                   subtitle,
                   style: GoogleFonts.poppins(
                     fontSize: 11,
-                    color: AppColors.textSoft,
+                    color: softTextColor,
                   ),
                 ),
               ],
@@ -949,12 +1065,23 @@ class _InsightCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final textColor =
+        Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textDark;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
+        gradient: LinearGradient(
+          colors: isDark
+              ? [
+            AppColors.nightCard,
+            AppColors.nightCardSoft,
+            AppColors.nightBackground,
+          ]
+              : const [
             AppColors.mint,
             AppColors.paleBlue,
             AppColors.blush,
@@ -964,11 +1091,13 @@ class _InsightCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(34),
         border: Border.all(
-          color: Colors.white.withOpacity(0.94),
+          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.94),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.lakeBlue.withOpacity(0.16),
+            color: isDark
+                ? Colors.black.withOpacity(0.24)
+                : AppColors.lakeBlue.withOpacity(0.16),
             blurRadius: 24,
             offset: const Offset(0, 12),
           ),
@@ -981,7 +1110,9 @@ class _InsightCard extends StatelessWidget {
             height: 54,
             width: 54,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.54),
+              color: isDark
+                  ? AppColors.nightCardSoft
+                  : Colors.white.withOpacity(0.54),
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
@@ -990,9 +1121,7 @@ class _InsightCard extends StatelessWidget {
               style: TextStyle(fontSize: 28),
             ),
           ),
-
           const SizedBox(width: 14),
-
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1002,18 +1131,16 @@ class _InsightCard extends StatelessWidget {
                   style: GoogleFonts.playfairDisplay(
                     fontSize: 24,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.textDark,
+                    color: textColor,
                   ),
                 ),
-
                 const SizedBox(height: 8),
-
                 Text(
                   insight,
                   style: GoogleFonts.poppins(
                     fontSize: 13,
                     height: 1.6,
-                    color: AppColors.textDark,
+                    color: textColor,
                   ),
                 ),
               ],
@@ -1030,18 +1157,28 @@ class _TinyResetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final textColor =
+        Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textDark;
+
+    final softTextColor =
+        Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSoft;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.60),
+        color: isDark ? AppColors.nightCard : Colors.white.withOpacity(0.60),
         borderRadius: BorderRadius.circular(34),
         border: Border.all(
-          color: Colors.white.withOpacity(0.94),
+          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.94),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withOpacity(0.12),
+            color: isDark
+                ? Colors.black.withOpacity(0.22)
+                : AppColors.softPurple.withOpacity(0.12),
             blurRadius: 22,
             offset: const Offset(0, 10),
           ),
@@ -1052,8 +1189,8 @@ class _TinyResetCard extends StatelessWidget {
           Container(
             height: 56,
             width: 56,
-            decoration: const BoxDecoration(
-              color: AppColors.lavender,
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.nightCardSoft : AppColors.lavender,
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
@@ -1062,9 +1199,7 @@ class _TinyResetCard extends StatelessWidget {
               style: TextStyle(fontSize: 29),
             ),
           ),
-
           const SizedBox(width: 16),
-
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1074,18 +1209,16 @@ class _TinyResetCard extends StatelessWidget {
                   style: GoogleFonts.playfairDisplay(
                     fontSize: 25,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.textDark,
+                    color: textColor,
                   ),
                 ),
-
                 const SizedBox(height: 5),
-
                 Text(
                   "Need a softer moment? Visit Wellness for breathing, music, and comfort.",
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     height: 1.5,
-                    color: AppColors.textSoft,
+                    color: softTextColor,
                   ),
                 ),
               ],
@@ -1108,18 +1241,22 @@ class _StickerBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       height: 43,
       width: 43,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.72),
+        color: color.withOpacity(isDark ? 0.28 : 0.72),
         shape: BoxShape.circle,
         border: Border.all(
-          color: Colors.white.withOpacity(0.96),
+          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.96),
         ),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.25),
+            color: isDark
+                ? Colors.black.withOpacity(0.16)
+                : color.withOpacity(0.25),
             blurRadius: 14,
             offset: const Offset(0, 7),
           ),
@@ -1131,7 +1268,7 @@ class _StickerBubble extends StatelessWidget {
         style: GoogleFonts.poppins(
           fontSize: 19,
           fontWeight: FontWeight.w900,
-          color: AppColors.deepBlue,
+          color: isDark ? AppColors.nightText : AppColors.deepBlue,
         ),
       ),
     );

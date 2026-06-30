@@ -133,7 +133,7 @@ class _WellnessScreenState extends State<WellnessScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
           const _CuteBackground(),
@@ -294,12 +294,18 @@ class _CuteBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(color: AppColors.cream),
+        Container(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? AppColors.nightBackground
+              : AppColors.cream,
+        ),
         Positioned(
           top: -70,
           right: -60,
           child: _SoftBlob(
-            color: AppColors.lavender.withOpacity(0.55),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.nightLavender.withOpacity(0.20)
+                : AppColors.lavender.withOpacity(0.55),
             size: 220,
           ),
         ),
@@ -307,7 +313,9 @@ class _CuteBackground extends StatelessWidget {
           top: 230,
           left: -80,
           child: _SoftBlob(
-            color: AppColors.blush.withOpacity(0.50),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.nightBlush.withOpacity(0.18)
+                : AppColors.blush.withOpacity(0.50),
             size: 210,
           ),
         ),
@@ -315,7 +323,9 @@ class _CuteBackground extends StatelessWidget {
           bottom: 110,
           right: -70,
           child: _SoftBlob(
-            color: AppColors.paleBlue.withOpacity(0.55),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.nightBlue.withOpacity(0.18)
+                : AppColors.paleBlue.withOpacity(0.55),
             size: 250,
           ),
         ),
@@ -353,12 +363,21 @@ class _CuteWellnessHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
+        gradient: LinearGradient(
+          colors: isDark
+          ? [
+          AppColors.nightCardSoft,
+          AppColors.nightCard,
+          AppColors.nightBackground,
+
+          ]
+          : const[
             AppColors.blush,
             AppColors.lavender,
             AppColors.paleBlue,
@@ -404,7 +423,11 @@ class _CuteWellnessHero extends StatelessWidget {
                   style: GoogleFonts.playfairDisplay(
                     fontSize: 40,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.textDark,
+                    color: Theme.of(context)
+                        .textTheme
+                        .headlineMedium
+                        ?.color ??
+                        AppColors.textDark,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -413,7 +436,11 @@ class _CuteWellnessHero extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 13,
                     height: 1.5,
-                    color: AppColors.textSoft,
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.color ??
+                        AppColors.textSoft,
                   ),
                 ),
               ],
@@ -432,6 +459,7 @@ class _CuteCompanionCard extends StatelessWidget {
   final VoidCallback onGenerate;
   final void Function(String text) onChipTap;
 
+
   const _CuteCompanionCard({
     required this.controller,
     required this.reply,
@@ -442,14 +470,17 @@ class _CuteCompanionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.72),
+        color: isDark ? AppColors.nightCard : Colors.white.withOpacity(0.72),
         borderRadius: BorderRadius.circular(36),
         border: Border.all(
-          color: Colors.white.withOpacity(0.92),
+          color: isDark
+              ? AppColors.nightCard
+              : Colors.white.withOpacity(0.72),
         ),
         boxShadow: [
           BoxShadow(
@@ -484,7 +515,9 @@ class _CuteCompanionCard extends StatelessWidget {
                   style: GoogleFonts.playfairDisplay(
                     fontSize: 30,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.textDark,
+                    color: isDark
+                        ? AppColors.nightText
+                        : AppColors.textDark,
                   ),
                 ),
               ),
@@ -498,7 +531,9 @@ class _CuteCompanionCard extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 13,
               height: 1.5,
-              color: AppColors.textSoft,
+              color: isDark
+                  ? AppColors.nightTextSoft
+                  : AppColors.textSoft,
             ),
           ),
 
@@ -541,7 +576,7 @@ class _CuteCompanionCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.cream.withOpacity(0.80),
+              color: isDark ? AppColors.nightCardSoft : AppColors.cream.withOpacity(0.80),
               borderRadius: BorderRadius.circular(28),
               border: Border.all(
                 color: AppColors.border,
@@ -554,13 +589,17 @@ class _CuteCompanionCard extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 14,
                 height: 1.6,
-                color: AppColors.textDark,
+                color: isDark
+                    ? AppColors.nightText
+                    : AppColors.textDark,
               ),
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: "Today my mind feels...",
                 hintStyle: GoogleFonts.poppins(
-                  color: AppColors.textSoft.withOpacity(0.70),
+                    color: isDark
+                        ? AppColors.nightTextSoft.withOpacity(0.7)
+                        : AppColors.textSoft.withOpacity(0.7)
                 ),
               ),
             ),
@@ -659,8 +698,14 @@ class _CompanionReplyBubble extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
+        gradient: LinearGradient(
+          colors:Theme.of(context).brightness == Brightness.dark
+              ? [
+            AppColors.nightCardSoft,
+            AppColors.nightCard,
+            AppColors.nightBackground,
+          ]
+              : const  [
             AppColors.mint,
             AppColors.paleBlue,
             AppColors.blush,
@@ -687,7 +732,9 @@ class _CompanionReplyBubble extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 14,
                 height: 1.65,
-                color: AppColors.textDark,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.nightText
+                    : AppColors.textDark,
               ),
             ),
           ),
@@ -726,7 +773,7 @@ class _CuteSectionHeader extends StatelessWidget {
                 style: GoogleFonts.playfairDisplay(
                   fontSize: 30,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.textDark,
+                  color: Theme.of(context).textTheme.headlineMedium?.color,
                 ),
               ),
               const SizedBox(height: 4),
@@ -735,7 +782,7 @@ class _CuteSectionHeader extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 13,
                   height: 1.45,
-                  color: AppColors.textSoft,
+                  color:Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
             ],
@@ -991,12 +1038,15 @@ class _CuteMovementItem extends StatelessWidget {
 class _CuteResetTools extends StatelessWidget {
   final VoidCallback onBreathTap;
 
+
   const _CuteResetTools({
     required this.onBreathTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
         _CuteResetTile(

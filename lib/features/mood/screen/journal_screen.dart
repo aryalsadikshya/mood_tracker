@@ -15,8 +15,6 @@ void showMindBloomSnackBar(
       IconData icon = Icons.check_rounded,
       bool isError = false,
     }) {
-  final isDark = Theme.of(context).brightness == Brightness.dark;
-
   ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
   ScaffoldMessenger.of(context).showSnackBar(
@@ -31,20 +29,9 @@ void showMindBloomSnackBar(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: isError
-                ? isDark
                 ? [
-              const Color(0xFF3A1F2B),
-              AppColors.nightCard,
-            ]
-                : [
               const Color(0xFFFFE1E1),
               const Color(0xFFFFF5F5),
-            ]
-                : isDark
-                ? [
-              AppColors.nightCardSoft,
-              AppColors.nightCard,
-              AppColors.nightBackground,
             ]
                 : [
               AppColors.lavender.withOpacity(0.95),
@@ -56,16 +43,12 @@ void showMindBloomSnackBar(
           ),
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: isDark
-                ? AppColors.nightBorder
-                : Colors.white.withOpacity(0.85),
+            color: Colors.white.withOpacity(0.85),
             width: 1.2,
           ),
           boxShadow: [
             BoxShadow(
-              color: isDark
-                  ? Colors.black.withOpacity(0.28)
-                  : AppColors.softPurple.withOpacity(0.18),
+              color: AppColors.softPurple.withOpacity(0.18),
               blurRadius: 24,
               offset: const Offset(0, 12),
             ),
@@ -77,18 +60,12 @@ void showMindBloomSnackBar(
               height: 42,
               width: 42,
               decoration: BoxDecoration(
-                color: isDark
-                    ? AppColors.nightCardSoft
-                    : Colors.white.withOpacity(0.65),
+                color: Colors.white.withOpacity(0.65),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 icon,
-                color: isError
-                    ? Colors.redAccent
-                    : isDark
-                    ? AppColors.nightBlue
-                    : AppColors.deepBlue,
+                color: isError ? Colors.redAccent : AppColors.deepBlue,
                 size: 24,
               ),
             ),
@@ -103,8 +80,7 @@ void showMindBloomSnackBar(
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
-                      color:
-                      isDark ? AppColors.nightText : AppColors.textDark,
+                      color: AppColors.textDark,
                     ),
                   ),
                   const SizedBox(height: 3),
@@ -114,9 +90,7 @@ void showMindBloomSnackBar(
                       fontSize: 12.5,
                       height: 1.4,
                       fontWeight: FontWeight.w500,
-                      color: isDark
-                          ? AppColors.nightTextSoft
-                          : AppColors.textSoft,
+                      color: AppColors.textSoft,
                     ),
                   ),
                 ],
@@ -267,7 +241,7 @@ class _JournalScreenState extends State<JournalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: AppColors.cream,
       body: Stack(
         children: [
           const _PastelNotebookBackground(),
@@ -321,25 +295,19 @@ class _PastelNotebookBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Stack(
       children: [
-        Container(
-          color: isDark ? AppColors.nightBackground : AppColors.cream,
-        ),
+        Container(color: AppColors.cream),
         Positioned.fill(
           child: CustomPaint(
-            painter: _PastelGridPainter(isDark: isDark),
+            painter: _PastelGridPainter(),
           ),
         ),
         Positioned(
           top: -80,
           right: -70,
           child: _GlowCircle(
-            color: isDark
-                ? AppColors.nightLavender.withOpacity(0.18)
-                : AppColors.lavender.withOpacity(0.55),
+            color: AppColors.lavender.withOpacity(0.55),
             size: 220,
           ),
         ),
@@ -347,9 +315,7 @@ class _PastelNotebookBackground extends StatelessWidget {
           bottom: 120,
           left: -80,
           child: _GlowCircle(
-            color: isDark
-                ? AppColors.nightBlue.withOpacity(0.16)
-                : AppColors.paleBlue.withOpacity(0.55),
+            color: AppColors.paleBlue.withOpacity(0.55),
             size: 240,
           ),
         ),
@@ -359,36 +325,22 @@ class _PastelNotebookBackground extends StatelessWidget {
 }
 
 class _PastelGridPainter extends CustomPainter {
-  final bool isDark;
-
-  _PastelGridPainter({
-    required this.isDark,
-  });
-
   @override
   void paint(Canvas canvas, Size size) {
     final whitePaint = Paint()
-      ..color = isDark
-          ? Colors.white.withOpacity(0.035)
-          : Colors.white.withOpacity(0.35)
+      ..color = Colors.white.withOpacity(0.35)
       ..strokeWidth = 22;
 
     final lavenderPaint = Paint()
-      ..color = isDark
-          ? AppColors.nightLavender.withOpacity(0.06)
-          : AppColors.lavender.withOpacity(0.26)
+      ..color = AppColors.lavender.withOpacity(0.26)
       ..strokeWidth = 14;
 
     final bluePaint = Paint()
-      ..color = isDark
-          ? AppColors.nightBlue.withOpacity(0.055)
-          : AppColors.paleBlue.withOpacity(0.30)
+      ..color = AppColors.paleBlue.withOpacity(0.30)
       ..strokeWidth = 10;
 
     final blushPaint = Paint()
-      ..color = isDark
-          ? AppColors.nightBlush.withOpacity(0.045)
-          : AppColors.blush.withOpacity(0.24)
+      ..color = AppColors.blush.withOpacity(0.24)
       ..strokeWidth = 12;
 
     for (double x = 30; x < size.width; x += 95) {
@@ -425,10 +377,11 @@ class _PastelGridPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _PastelGridPainter oldDelegate) {
-    return oldDelegate.isDark != isDark;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }
+
 class _GlowCircle extends StatelessWidget {
   final Color color;
   final double size;
@@ -440,12 +393,14 @@ class _GlowCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: size,
-      width: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
+    return IgnorePointer(
+      child: Container(
+        height: size,
+        width: size,
+        decoration: BoxDecoration(
+          color: color,
+          shape: BoxShape.circle,
+        ),
       ),
     );
   }
@@ -456,33 +411,55 @@ class _DiaryTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleColor =
-        Theme.of(context).textTheme.headlineMedium?.color ??
-            AppColors.textDark;
+    final letters = ["D", "i", "a", "r", "y"];
+    final colors = [
+      AppColors.warmYellow,
+      AppColors.blush,
+      AppColors.lavender,
+      AppColors.paleBlue,
+      AppColors.mint,
+    ];
 
-    final subtitleColor =
-        Theme.of(context).textTheme.bodyMedium?.color ??
-            AppColors.textSoft;
-
-    return Column(
-      children: [
-        Text(
-          "My Journal",
-          style: GoogleFonts.playfairDisplay(
-            fontSize: 36,
-            fontWeight: FontWeight.w800,
-            color: titleColor,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          "A soft space for your thoughts",
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            color: subtitleColor,
-          ),
-        ),
-      ],
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        letters.length,
+            (index) {
+          return Transform.rotate(
+            angle: index.isEven ? -0.045 : 0.045,
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 3),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 8,
+              ),
+              decoration: BoxDecoration(
+                color: colors[index],
+                border: Border.all(
+                  color: AppColors.textDark,
+                  width: 1.4,
+                ),
+                borderRadius: BorderRadius.circular(5),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.softPurple.withOpacity(0.12),
+                    blurRadius: 8,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
+              ),
+              child: Text(
+                letters[index],
+                style: GoogleFonts.playfairDisplay(
+                  fontSize: 42,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.textDark,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -496,61 +473,32 @@ class _PromptCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness == Brightness.dark;
-
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: isDark
-              ? [
-            AppColors.nightCardSoft,
-            AppColors.nightCard,
-          ]
-              : [
-            AppColors.lavender.withOpacity(0.9),
-            AppColors.blush.withOpacity(0.9),
-          ],
-        ),
+        color: Colors.white.withOpacity(0.70),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
-          color: isDark
-              ? AppColors.nightBorder
-              : Colors.white.withOpacity(0.8),
+          color: Colors.white.withOpacity(0.85),
         ),
         boxShadow: [
           BoxShadow(
-            color: isDark
-                ? Colors.black.withOpacity(0.25)
-                : AppColors.softPurple.withOpacity(0.15),
+            color: AppColors.lakeBlue.withOpacity(0.12),
             blurRadius: 22,
-            offset: const Offset(0, 10),
+            offset: const Offset(0, 12),
           ),
         ],
       ),
-      child: Row(
-        children: [
-          const Text(
-            "💭",
-            style: TextStyle(fontSize: 34),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Text(
-              prompt,
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                height: 1.6,
-                fontWeight: FontWeight.w500,
-                color: isDark
-                    ? AppColors.nightText
-                    : AppColors.textDark,
-              ),
-            ),
-          ),
-        ],
+      child: Text(
+        prompt,
+        textAlign: TextAlign.center,
+        style: GoogleFonts.playfairDisplay(
+          fontSize: 25,
+          fontWeight: FontWeight.w700,
+          height: 1.35,
+          color: AppColors.deepBlue,
+        ),
       ),
     );
   }
@@ -569,153 +517,325 @@ class _BigDiaryPaper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness == Brightness.dark;
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: isDark
-            ? AppColors.nightCard
-            : Colors.white.withOpacity(0.72),
-        borderRadius: BorderRadius.circular(34),
-        border: Border.all(
-          color: isDark
-              ? AppColors.nightBorder
-              : Colors.white.withOpacity(0.85),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: isDark
-                ? Colors.black.withOpacity(0.28)
-                : AppColors.softPurple.withOpacity(0.14),
-            blurRadius: 24,
-            offset: const Offset(0, 14),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          TextField(
-            controller: controller,
-            maxLines: 12,
-            style: GoogleFonts.poppins(
-              color: isDark
-                  ? AppColors.nightText
-                  : AppColors.textDark,
-              height: 1.8,
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(20, 28, 20, 22),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFFEFA),
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(
+              color: AppColors.deepBlue,
+              width: 1.8,
             ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText:
-              "Write about your day, your feelings, or anything on your mind...",
-              hintStyle: GoogleFonts.poppins(
-                color: isDark
-                    ? AppColors.nightTextSoft
-                    : AppColors.textSoft,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.lakeBlue.withOpacity(0.20),
+                blurRadius: 30,
+                offset: const Offset(0, 16),
               ),
-            ),
+            ],
           ),
-
-          const SizedBox(height: 20),
-
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: isSaving ? null : onSave,
-              child: isSaving
-                  ? const SizedBox(
-                height: 22,
-                width: 22,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.white,
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  const _PaperLines(),
+                  TextField(
+                    controller: controller,
+                    maxLines: 14,
+                    minLines: 12,
+                    keyboardType: TextInputType.multiline,
+                    cursorColor: AppColors.deepBlue,
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      height: 1.85,
+                      color: AppColors.textDark,
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText:
+                      "Dear diary...\n\nToday I felt...\n\nSomething I want to remember is...\n\nMaybe tomorrow I need...",
+                      hintStyle: GoogleFonts.poppins(
+                        fontSize: 14,
+                        height: 1.85,
+                        color: AppColors.textSoft.withOpacity(0.62),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: isSaving ? null : onSave,
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: AppColors.deepBlue,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 17),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(26),
+                    ),
+                  ),
+                  child: isSaving
+                      ? const SizedBox(
+                    height: 22,
+                    width: 22,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  )
+                      : Text(
+                    "Save Diary Note",
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
-              )
-                  : const Text("Save Reflection"),
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
+        const Positioned(
+          top: -18,
+          right: 24,
+          child: _Star(size: 26),
+        ),
+        const Positioned(
+          left: 18,
+          bottom: 82,
+          child: _Star(size: 20),
+        ),
+      ],
+    );
+  }
+}
+
+class _PaperLines extends StatelessWidget {
+  const _PaperLines();
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: CustomPaint(
+        painter: _PaperLinePainter(),
       ),
+    );
+  }
+}
+
+class _PaperLinePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final linePaint = Paint()
+      ..color = AppColors.lavender.withOpacity(0.48)
+      ..strokeWidth = 1.3;
+
+    for (double y = 35; y < size.height; y += 32) {
+      canvas.drawLine(
+        Offset(4, y),
+        Offset(size.width - 4, y),
+        linePaint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+}
+
+class _Star extends StatelessWidget {
+  final double size;
+
+  const _Star({
+    required this.size,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "⭐",
+      style: TextStyle(fontSize: size),
     );
   }
 }
 
 class _JournalHistory extends StatelessWidget {
   final Stream<QuerySnapshot<Map<String, dynamic>>> stream;
-  final String Function(DateTime) formatDate;
+  final String Function(DateTime date) formatDate;
 
   const _JournalHistory({
     required this.stream,
     required this.formatDate,
   });
 
+  Future<void> deleteJournal(
+      BuildContext context,
+      String docId,
+      ) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("journals")
+          .doc(docId)
+          .delete();
+
+      if (!context.mounted) return;
+
+      showMindBloomSnackBar(
+        context,
+        title: "Diary note deleted",
+        message: "That reflection has been removed from your memories.",
+        icon: Icons.delete_outline_rounded,
+      );
+    } catch (e) {
+      if (!context.mounted) return;
+
+      showMindBloomSnackBar(
+        context,
+        title: "Could not delete note",
+        message: "Something went wrong. Please try again.",
+        icon: Icons.error_outline_rounded,
+        isError: true,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       stream: stream,
       builder: (context, snapshot) {
-        if (snapshot.connectionState ==
-            ConnectionState.waiting) {
-          return const Padding(
-            padding: EdgeInsets.all(30),
-            child: CircularProgressIndicator(),
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const AppLoading(
+            message: "Loading diary notes...",
           );
         }
 
         final docs = snapshot.data?.docs ?? [];
 
         if (docs.isEmpty) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: Text(
-              "No reflections yet.",
-              style: GoogleFonts.poppins(
-                color: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.color ??
-                    AppColors.textSoft,
+          return Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(34),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.blush.withOpacity(0.95),
+                  AppColors.lavender.withOpacity(0.90),
+                  AppColors.paleBlue.withOpacity(0.92),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
+              borderRadius: BorderRadius.circular(34),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.9),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.softPurple.withOpacity(0.18),
+                  blurRadius: 28,
+                  offset: const Offset(0, 14),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Container(
+                  height: 82,
+                  width: 82,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.55),
+                    shape: BoxShape.circle,
+                  ),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    "📔",
+                    style: TextStyle(fontSize: 40),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  "Your diary is still empty",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textDark,
+                  ),
+                ),
+                const SizedBox(height: 14),
+                Text(
+                  "The thoughts you write here become quiet emotional memories you can revisit later.",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    height: 1.7,
+                    color: AppColors.textSoft,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.55),
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  child: Text(
+                    "Write your first reflection tonight",
+                    style: GoogleFonts.poppins(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.deepBlue,
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         }
 
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Previous Reflections",
-                style: GoogleFonts.playfairDisplay(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context)
-                      .textTheme
-                      .headlineMedium
-                      ?.color ??
-                      AppColors.textDark,
-                ),
+            Text(
+              "Diary Memories",
+              style: GoogleFonts.playfairDisplay(
+                fontSize: 32,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textDark,
               ),
             ),
-
             const SizedBox(height: 16),
-
             ...docs.map((doc) {
               final data = doc.data();
 
-              final text =
-              (data["text"] ?? "").toString();
+              final text = (data["text"] ?? "").toString();
 
-              final createdAt =
-                  (data["createdAt"] as Timestamp?)
-                      ?.toDate() ??
-                      DateTime.now();
+              final createdAt = data["createdAt"] is Timestamp
+                  ? (data["createdAt"] as Timestamp).toDate()
+                  : DateTime.now();
 
-              return _JournalCard(
+              return _SavedDiaryCard(
                 text: text,
                 date: formatDate(createdAt),
+                index: docs.indexOf(doc),
+                onDelete: () {
+                  deleteJournal(context, doc.id);
+                },
               );
             }),
           ],
@@ -725,68 +845,102 @@ class _JournalHistory extends StatelessWidget {
   }
 }
 
-class _JournalCard extends StatelessWidget {
+class _SavedDiaryCard extends StatelessWidget {
   final String text;
   final String date;
+  final int index;
+  final VoidCallback onDelete;
 
-  const _JournalCard({
+  const _SavedDiaryCard({
     required this.text,
     required this.date,
+    required this.index,
+    required this.onDelete,
   });
+
+  Color getCardColor() {
+    final colors = [
+      AppColors.blush,
+      AppColors.lavender,
+      AppColors.paleBlue,
+      AppColors.mint,
+      AppColors.warmYellow,
+      AppColors.peach,
+    ];
+
+    return colors[index % colors.length];
+  }
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness == Brightness.dark;
+    final cardColor = getCardColor();
 
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 18),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDark
-            ? AppColors.nightCard
-            : Colors.white.withOpacity(0.65),
+        gradient: LinearGradient(
+          colors: [
+            cardColor.withOpacity(0.88),
+            Colors.white.withOpacity(0.65),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
-          color: isDark
-              ? AppColors.nightBorder
-              : Colors.white.withOpacity(0.85),
+          color: Colors.white.withOpacity(0.9),
+          width: 1.3,
         ),
         boxShadow: [
           BoxShadow(
-            color: isDark
-                ? Colors.black.withOpacity(0.22)
-                : AppColors.softPurple.withOpacity(0.10),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
+            color: cardColor.withOpacity(0.30),
+            blurRadius: 22,
+            offset: const Offset(0, 12),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            date,
-            style: GoogleFonts.poppins(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: isDark
-                  ? AppColors.nightBlue
-                  : AppColors.deepBlue,
-            ),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.60),
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: Text(
+                  date,
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.deepBlue,
+                  ),
+                ),
+              ),
+              const Spacer(),
+              IconButton(
+                onPressed: onDelete,
+                icon: const Icon(
+                  Icons.delete_outline_rounded,
+                  color: AppColors.deepBlue,
+                ),
+              ),
+            ],
           ),
-
-          const SizedBox(height: 10),
-
+          const SizedBox(height: 12),
           Text(
             text,
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: 15,
               height: 1.7,
-              color: isDark
-                  ? AppColors.nightText
-                  : AppColors.textDark,
+              color: AppColors.textDark,
             ),
           ),
         ],

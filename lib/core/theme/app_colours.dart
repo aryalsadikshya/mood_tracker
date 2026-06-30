@@ -24,4 +24,18 @@ class AppColors {
   static const border = Color(0xFFEADFE4);
 
   static const whiteGlass = Color(0xCCFFFFFF);
+
+  // Night Bloom Mode
+  static const nightBackground = Color(0xFF121827);
+  static const nightCard = Color(0xFF1B2435);
+  static const nightCardSoft = Color(0xFF243049);
+
+  static const nightLavender = Color(0xFF8F87D8);
+  static const nightBlue = Color(0xFF7CA7D9);
+  static const nightBlush = Color(0xFFD7A7B8);
+  static const nightMint = Color(0xFF8CC7B3);
+
+  static const nightText = Color(0xFFF6F0FF);
+  static const nightTextSoft = Color(0xFFC7BEDD);
+  static const nightBorder = Color(0xFF33405F);
 }

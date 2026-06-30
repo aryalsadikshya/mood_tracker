@@ -45,11 +45,13 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MoodService moodService = MoodService();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor:
+        isDark ? AppColors.nightBackground : AppColors.cream,
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -57,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
           style: GoogleFonts.playfairDisplay(
             fontSize: 30,
             fontWeight: FontWeight.w700,
-            color: AppColors.textDark,
+            color: isDark ? AppColors.nightText : AppColors.textDark,
           ),
         ),
       ),
@@ -68,7 +70,9 @@ class ProfileScreen extends StatelessWidget {
             final profileData = profileSnapshot.data?.data() ?? {};
 
             final username =
-            (profileData["username"] ?? profileData["name"] ?? "").toString().trim();
+            (profileData["username"] ?? profileData["name"] ?? "")
+                .toString()
+                .trim();
 
             final avatarId =
             (profileData["avatarId"] ?? "flower").toString().trim();
@@ -87,13 +91,9 @@ class ProfileScreen extends StatelessWidget {
                         username: username,
                         avatarId: avatarId,
                       ),
-
                       const SizedBox(height: 26),
-
                       const _SectionTitle(title: "Reflection Summary"),
-
                       const SizedBox(height: 14),
-
                       Row(
                         children: [
                           Expanded(
@@ -115,25 +115,16 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 30),
-
                       const SizedBox(height: 30),
-
                       const _SectionTitle(title: "Your Emotional Energy"),
-
                       const SizedBox(height: 14),
-
                       _EmotionMeter(
                         moods: moods,
                       ),
-
                       const SizedBox(height: 30),
-
                       const _SectionTitle(title: "Account"),
-
                       const SizedBox(height: 14),
-
                       _ActionTile(
                         title: "Edit Profile",
                         subtitle: "Update your name and avatar",
@@ -145,7 +136,6 @@ class ProfileScreen extends StatelessWidget {
                           );
                         },
                       ),
-
                       _ActionTile(
                         title: "Settings",
                         subtitle: "Manage reminders and app preferences",
@@ -157,7 +147,6 @@ class ProfileScreen extends StatelessWidget {
                           );
                         },
                       ),
-
                       _ActionTile(
                         title: "Logout",
                         subtitle: "End current session",
@@ -177,8 +166,6 @@ class ProfileScreen extends StatelessWidget {
                           );
                         },
                       ),
-
-
                     ],
                   ),
                 );
@@ -204,13 +191,20 @@ class _ProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool hasUsername = username.trim().isNotEmpty;
     final avatar = getAvatarById(avatarId);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(26),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
+        gradient: LinearGradient(
+          colors: isDark
+              ? [
+            AppColors.nightCardSoft,
+            AppColors.nightCard,
+            AppColors.nightBackground,
+          ]
+              : const [
             AppColors.blush,
             AppColors.lavender,
             AppColors.paleBlue,
@@ -220,11 +214,14 @@ class _ProfileHeader extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(36),
         border: Border.all(
-          color: Colors.white.withOpacity(0.9),
+          color:
+          isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.9),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withOpacity(0.22),
+            color: isDark
+                ? Colors.black.withOpacity(0.24)
+                : AppColors.softPurple.withOpacity(0.22),
             blurRadius: 30,
             offset: const Offset(0, 16),
           ),
@@ -236,15 +233,15 @@ class _ProfileHeader extends StatelessWidget {
             height: 92,
             width: 92,
             decoration: BoxDecoration(
-              color: avatar.color.withOpacity(0.75),
+              color: avatar.color.withOpacity(isDark ? 0.55 : 0.75),
               shape: BoxShape.circle,
               border: Border.all(
-                color: Colors.white,
+                color: isDark ? AppColors.nightBorder : Colors.white,
                 width: 2,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: avatar.color.withOpacity(0.32),
+                  color: avatar.color.withOpacity(isDark ? 0.20 : 0.32),
                   blurRadius: 22,
                   offset: const Offset(0, 10),
                 ),
@@ -253,46 +250,44 @@ class _ProfileHeader extends StatelessWidget {
             child: Icon(
               avatar.icon,
               size: 46,
-              color: AppColors.deepBlue,
+              color: isDark ? AppColors.nightText : AppColors.deepBlue,
             ),
           ),
-
           const SizedBox(height: 18),
-
           Text(
             hasUsername ? username : "Personal Profile",
             textAlign: TextAlign.center,
             style: GoogleFonts.playfairDisplay(
               fontSize: 28,
               fontWeight: FontWeight.w700,
-              color: AppColors.textDark,
+              color: isDark ? AppColors.nightText : AppColors.textDark,
             ),
           ),
-
           const SizedBox(height: 8),
-
           Text(
             "Manage your account, preferences, and reflection space.",
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
               fontSize: 13,
               height: 1.5,
-              color: AppColors.textSoft,
+              color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
             ),
           ),
-
           const SizedBox(height: 18),
-
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 14,
               vertical: 8,
             ),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.55),
+              color: isDark
+                  ? AppColors.nightCardSoft.withOpacity(0.72)
+                  : Colors.white.withOpacity(0.55),
               borderRadius: BorderRadius.circular(22),
               border: Border.all(
-                color: Colors.white.withOpacity(0.85),
+                color: isDark
+                    ? AppColors.nightBorder
+                    : Colors.white.withOpacity(0.85),
               ),
             ),
             child: Text(
@@ -300,7 +295,7 @@ class _ProfileHeader extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: AppColors.deepBlue,
+                color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
               ),
             ),
           ),
@@ -319,12 +314,14 @@ class _SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Text(
       title,
       style: GoogleFonts.playfairDisplay(
         fontSize: 26,
         fontWeight: FontWeight.w700,
-        color: AppColors.textDark,
+        color: isDark ? AppColors.nightText : AppColors.textDark,
       ),
     );
   }
@@ -343,18 +340,23 @@ class _StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       height: 118,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.72),
+        color: isDark ? AppColors.nightCard : color.withOpacity(0.72),
         borderRadius: BorderRadius.circular(30),
         border: Border.all(
-          color: Colors.white.withOpacity(0.85),
+          color:
+          isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.85),
         ),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.30),
+            color: isDark
+                ? Colors.black.withOpacity(0.22)
+                : color.withOpacity(0.30),
             blurRadius: 22,
             offset: const Offset(0, 11),
           ),
@@ -369,18 +371,16 @@ class _StatCard extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 24,
               fontWeight: FontWeight.w800,
-              color: AppColors.textDark,
+              color: isDark ? AppColors.nightText : AppColors.textDark,
             ),
           ),
-
           const SizedBox(height: 6),
-
           Text(
             title,
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
               fontSize: 12,
-              color: AppColors.textSoft,
+              color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
             ),
           ),
         ],
@@ -406,11 +406,19 @@ class _ActionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconColor =
-    isDanger ? const Color(0xFFD98282) : AppColors.deepBlue;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final iconBackground =
-    isDanger ? const Color(0xFFFFE7E7) : AppColors.paleBlue;
+    final iconColor = isDanger
+        ? const Color(0xFFD98282)
+        : isDark
+        ? AppColors.nightBlue
+        : AppColors.deepBlue;
+
+    final iconBackground = isDanger
+        ? const Color(0xFFFFE7E7)
+        : isDark
+        ? AppColors.nightCardSoft
+        : AppColors.paleBlue;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
@@ -420,14 +428,18 @@ class _ActionTile extends StatelessWidget {
         pressedScale: 0.97,
         child: Container(
           decoration: BoxDecoration(
-            color: AppColors.whiteGlass,
+            color: isDark ? AppColors.nightCard : AppColors.whiteGlass,
             borderRadius: BorderRadius.circular(28),
             border: Border.all(
-              color: Colors.white.withOpacity(0.9),
+              color: isDark
+                  ? AppColors.nightBorder
+                  : Colors.white.withOpacity(0.9),
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.softPurple.withOpacity(0.10),
+                color: isDark
+                    ? Colors.black.withOpacity(0.20)
+                    : AppColors.softPurple.withOpacity(0.10),
                 blurRadius: 18,
                 offset: const Offset(0, 9),
               ),
@@ -457,6 +469,8 @@ class _ActionTile extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 color: isDanger
                     ? const Color(0xFFD98282)
+                    : isDark
+                    ? AppColors.nightText
                     : AppColors.textDark,
               ),
             ),
@@ -464,7 +478,7 @@ class _ActionTile extends StatelessWidget {
               subtitle,
               style: GoogleFonts.poppins(
                 fontSize: 12,
-                color: AppColors.textSoft,
+                color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
               ),
             ),
             trailing: Icon(
@@ -472,6 +486,8 @@ class _ActionTile extends StatelessWidget {
               size: 15,
               color: isDanger
                   ? const Color(0xFFD98282)
+                  : isDark
+                  ? AppColors.nightBlue
                   : AppColors.deepBlue,
             ),
           ),
@@ -480,6 +496,7 @@ class _ActionTile extends StatelessWidget {
     );
   }
 }
+
 class _EmotionMeter extends StatelessWidget {
   final List<MoodModel> moods;
 
@@ -501,13 +518,20 @@ class _EmotionMeter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final energy = calculateEnergy();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
+        gradient: LinearGradient(
+          colors: isDark
+              ? [
+            AppColors.nightCard,
+            AppColors.nightCardSoft,
+            AppColors.nightBackground,
+          ]
+              : const [
             AppColors.blush,
             AppColors.lavender,
             AppColors.paleBlue,
@@ -517,11 +541,14 @@ class _EmotionMeter extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(32),
         border: Border.all(
-          color: Colors.white.withOpacity(0.9),
+          color:
+          isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.9),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withOpacity(0.18),
+            color: isDark
+                ? Colors.black.withOpacity(0.24)
+                : AppColors.softPurple.withOpacity(0.18),
             blurRadius: 24,
             offset: const Offset(0, 12),
           ),
@@ -534,12 +561,10 @@ class _EmotionMeter extends StatelessWidget {
             "Your emotional energy has been",
             style: GoogleFonts.poppins(
               fontSize: 13,
-              color: AppColors.textSoft,
+              color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
             ),
           ),
-
           const SizedBox(height: 8),
-
           Text(
             energy >= 0.75
                 ? "Bright & Positive"
@@ -549,18 +574,18 @@ class _EmotionMeter extends StatelessWidget {
             style: GoogleFonts.playfairDisplay(
               fontSize: 28,
               fontWeight: FontWeight.w700,
-              color: AppColors.textDark,
+              color: isDark ? AppColors.nightText : AppColors.textDark,
             ),
           ),
-
           const SizedBox(height: 20),
-
           ClipRRect(
             borderRadius: BorderRadius.circular(18),
             child: LinearProgressIndicator(
               value: energy,
               minHeight: 16,
-              backgroundColor: Colors.white.withOpacity(0.55),
+              backgroundColor: isDark
+                  ? AppColors.nightCardSoft
+                  : Colors.white.withOpacity(0.55),
               valueColor: AlwaysStoppedAnimation<Color>(
                 energy >= 0.75
                     ? AppColors.softPink
@@ -570,15 +595,13 @@ class _EmotionMeter extends StatelessWidget {
               ),
             ),
           ),
-
           const SizedBox(height: 14),
-
           Text(
             "This gently reflects your recent emotional patterns.",
             style: GoogleFonts.poppins(
               fontSize: 12,
               height: 1.5,
-              color: AppColors.textSoft,
+              color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
             ),
           ),
         ],

@@ -23,19 +23,14 @@ class _MoodCalendarScreenState extends State<MoodCalendarScreen> {
     switch (moodLabel) {
       case "Happy":
         return AppColors.softPink;
-
       case "Calm":
         return AppColors.mint;
-
       case "Okay":
         return AppColors.warmYellow;
-
       case "Low":
         return AppColors.paleBlue;
-
       case "Stressed":
         return AppColors.softPurple;
-
       default:
         return AppColors.border;
     }
@@ -43,11 +38,12 @@ class _MoodCalendarScreenState extends State<MoodCalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.cream,
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: isDark ? AppColors.nightBackground : AppColors.cream,
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -55,11 +51,10 @@ class _MoodCalendarScreenState extends State<MoodCalendarScreen> {
           style: GoogleFonts.playfairDisplay(
             fontSize: 28,
             fontWeight: FontWeight.w700,
-            color: AppColors.textDark,
+            color: isDark ? AppColors.nightText : AppColors.textDark,
           ),
         ),
       ),
-
       body: StreamBuilder<List<MoodModel>>(
         stream: moodService.getMoods(),
         builder: (context, snapshot) {
@@ -70,14 +65,20 @@ class _MoodCalendarScreenState extends State<MoodCalendarScreen> {
             child: Container(
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.55),
+                color: isDark
+                    ? AppColors.nightCard
+                    : Colors.white.withOpacity(0.55),
                 borderRadius: BorderRadius.circular(34),
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.8),
+                  color: isDark
+                      ? AppColors.nightBorder
+                      : Colors.white.withOpacity(0.8),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.softPurple.withOpacity(0.12),
+                    color: isDark
+                        ? Colors.black.withOpacity(0.24)
+                        : AppColors.softPurple.withOpacity(0.12),
                     blurRadius: 24,
                     offset: const Offset(0, 14),
                   ),
@@ -87,68 +88,85 @@ class _MoodCalendarScreenState extends State<MoodCalendarScreen> {
                 focusedDay: focusedDay,
                 firstDay: DateTime.utc(2024),
                 lastDay: DateTime.utc(2030),
-
                 selectedDayPredicate: (day) {
                   return isSameDay(selectedDay, day);
                 },
-
                 onDaySelected: (selected, focused) {
                   setState(() {
                     selectedDay = selected;
                     focusedDay = focused;
                   });
                 },
-
                 calendarStyle: CalendarStyle(
                   outsideDaysVisible: false,
-
                   todayDecoration: BoxDecoration(
-                    color: AppColors.lakeBlue.withOpacity(0.25),
+                    color: isDark
+                        ? AppColors.nightBlue.withOpacity(0.34)
+                        : AppColors.lakeBlue.withOpacity(0.25),
                     shape: BoxShape.circle,
                   ),
-
-                  selectedDecoration: const BoxDecoration(
-                    color: AppColors.lakeBlue,
+                  selectedDecoration: BoxDecoration(
+                    color: isDark ? AppColors.nightBlue : AppColors.lakeBlue,
                     shape: BoxShape.circle,
                   ),
-
                   selectedTextStyle: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
-
+                  todayTextStyle: GoogleFonts.poppins(
+                    color: isDark ? AppColors.nightText : AppColors.textDark,
+                    fontWeight: FontWeight.w700,
+                  ),
                   defaultTextStyle: GoogleFonts.poppins(
-                    color: AppColors.textDark,
+                    color: isDark ? AppColors.nightText : AppColors.textDark,
                     fontSize: 13,
                   ),
-
                   weekendTextStyle: GoogleFonts.poppins(
-                    color: AppColors.textDark,
+                    color: isDark ? AppColors.nightText : AppColors.textDark,
                     fontSize: 13,
+                  ),
+                  disabledTextStyle: GoogleFonts.poppins(
+                    color: isDark
+                        ? AppColors.nightTextSoft.withOpacity(0.35)
+                        : AppColors.textSoft.withOpacity(0.45),
+                  ),
+                  outsideTextStyle: GoogleFonts.poppins(
+                    color: isDark
+                        ? AppColors.nightTextSoft.withOpacity(0.30)
+                        : AppColors.textSoft.withOpacity(0.40),
                   ),
                 ),
-
+                daysOfWeekStyle: DaysOfWeekStyle(
+                  weekdayStyle: GoogleFonts.poppins(
+                    color: isDark
+                        ? AppColors.nightTextSoft
+                        : AppColors.textSoft,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  weekendStyle: GoogleFonts.poppins(
+                    color: isDark
+                        ? AppColors.nightTextSoft
+                        : AppColors.textSoft,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 headerStyle: HeaderStyle(
                   titleCentered: true,
                   formatButtonVisible: false,
-
                   titleTextStyle: GoogleFonts.playfairDisplay(
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.textDark,
+                    color: isDark ? AppColors.nightText : AppColors.textDark,
                   ),
-
-                  leftChevronIcon: const Icon(
+                  leftChevronIcon: Icon(
                     Icons.chevron_left_rounded,
-                    color: AppColors.deepBlue,
+                    color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
                   ),
-
-                  rightChevronIcon: const Icon(
+                  rightChevronIcon: Icon(
                     Icons.chevron_right_rounded,
-                    color: AppColors.deepBlue,
+                    color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
                   ),
                 ),
-
                 calendarBuilders: CalendarBuilders(
                   defaultBuilder: (context, day, focusedDay) {
                     MoodModel? moodForDay;
@@ -165,7 +183,9 @@ class _MoodCalendarScreenState extends State<MoodCalendarScreen> {
                         child: Text(
                           "${day.day}",
                           style: GoogleFonts.poppins(
-                            color: AppColors.textSoft,
+                            color: isDark
+                                ? AppColors.nightTextSoft
+                                : AppColors.textSoft,
                           ),
                         ),
                       );
@@ -174,15 +194,26 @@ class _MoodCalendarScreenState extends State<MoodCalendarScreen> {
                     return Container(
                       margin: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: getMoodColor(moodForDay.moodLabel),
+                        color: getMoodColor(moodForDay.moodLabel)
+                            .withOpacity(isDark ? 0.82 : 1),
                         shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: getMoodColor(moodForDay.moodLabel)
+                                .withOpacity(isDark ? 0.18 : 0.16),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         "${day.day}",
                         style: GoogleFonts.poppins(
                           fontWeight: FontWeight.w600,
-                          color: AppColors.textDark,
+                          color: isDark
+                              ? AppColors.nightBackground
+                              : AppColors.textDark,
                         ),
                       ),
                     );

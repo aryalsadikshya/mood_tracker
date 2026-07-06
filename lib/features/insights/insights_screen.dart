@@ -57,7 +57,7 @@ class InsightsScreen extends StatelessWidget {
     final MoodService moodService = MoodService();
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: StreamBuilder<List<MoodModel>>(
           stream: moodService.getMoods(),
@@ -76,7 +76,11 @@ class InsightsScreen extends StatelessWidget {
                     style: GoogleFonts.playfairDisplay(
                       fontSize: 40,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.textDark,
+                      color: Theme.of(context)
+                          .textTheme
+                          .headlineLarge
+                          ?.color ??
+                          AppColors.textDark,
                       height: 1.05,
                     ),
                   ),
@@ -88,7 +92,11 @@ class InsightsScreen extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       height: 1.5,
-                      color: AppColors.textSoft,
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.color ??
+                          AppColors.textSoft,
                     ),
                   ),
 
@@ -136,7 +144,11 @@ class InsightsScreen extends StatelessWidget {
                     style: GoogleFonts.playfairDisplay(
                       fontSize: 28,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.textDark,
+                      color: Theme.of(context)
+                          .textTheme
+                          .headlineMedium
+                          ?.color ??
+                          AppColors.textDark,
                     ),
                   ),
 
@@ -214,12 +226,20 @@ class _InsightHeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
+        gradient:  LinearGradient(
+          colors: isDark ?
+          [
+            AppColors.nightCardSoft,
+            AppColors.nightCard,
+            AppColors.nightBackground,
+          ]
+              : [
             AppColors.blush,
             AppColors.lavender,
             AppColors.paleBlue,
@@ -229,11 +249,15 @@ class _InsightHeroCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(36),
         border: Border.all(
-          color: Colors.white.withOpacity(0.9),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withOpacity(0.9),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withOpacity(0.22),
+            color: isDark
+                ? Colors.black.withOpacity(0.22)
+                : AppColors.softPurple.withOpacity(0.22),
             blurRadius: 28,
             offset: const Offset(0, 16),
           ),
@@ -242,10 +266,12 @@ class _InsightHeroCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(
+          Icon(
             Icons.auto_awesome_rounded,
             size: 30,
-            color: AppColors.deepBlue,
+            color: isDark
+                ? AppColors.nightBlue
+                : AppColors.deepBlue,
           ),
 
           const SizedBox(height: 18),
@@ -256,7 +282,7 @@ class _InsightHeroCard extends StatelessWidget {
               fontSize: 30,
               fontWeight: FontWeight.w700,
               height: 1.15,
-              color: AppColors.textDark,
+              color: isDark ? AppColors.nightText : AppColors.textDark,
             ),
           ),
 
@@ -267,7 +293,7 @@ class _InsightHeroCard extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 13,
               height: 1.5,
-              color: AppColors.textSoft,
+              color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
             ),
           ),
         ],
@@ -289,18 +315,26 @@ class _MiniStatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
     return Container(
       height: 108,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.72),
+        color: isDark
+            ? AppColors.nightCard
+            : color.withOpacity(0.72),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
-          color: Colors.white.withOpacity(0.85),
+          color: isDark
+              ? AppColors.nightCard
+              : color.withOpacity(0.72),
         ),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.22),
+            color: isDark
+                ? Colors.black.withOpacity(0.22)
+                : color.withOpacity(0.22),
             blurRadius: 18,
             offset: const Offset(0, 10),
           ),
@@ -315,7 +349,9 @@ class _MiniStatCard extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 22,
               fontWeight: FontWeight.w800,
-              color: AppColors.textDark,
+              color: isDark
+                  ? AppColors.nightText
+                  : AppColors.textDark
             ),
           ),
 
@@ -326,7 +362,9 @@ class _MiniStatCard extends StatelessWidget {
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
               fontSize: 11,
-              color: AppColors.textSoft,
+              color: isDark
+                  ? AppColors.nightTextSoft
+                  : AppColors.textSoft
             ),
           ),
         ],
@@ -352,6 +390,8 @@ class _InsightFeatureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: GestureDetector(
@@ -360,10 +400,14 @@ class _InsightFeatureCard extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppColors.whiteGlass,
+            color: isDark
+                ? AppColors.nightCard
+                : AppColors.whiteGlass,
             borderRadius: BorderRadius.circular(32),
             border: Border.all(
-              color: Colors.white.withOpacity(0.9),
+              color: isDark
+                  ? AppColors.nightBorder
+                  : Colors.white.withOpacity(0.9),
             ),
             boxShadow: [
               BoxShadow(
@@ -379,12 +423,16 @@ class _InsightFeatureCard extends StatelessWidget {
                 height: 58,
                 width: 58,
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.78),
+                  color: isDark
+                      ? AppColors.nightCardSoft
+                      : color.withOpacity(0.78),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
-                  color: AppColors.deepBlue,
+                  color: isDark
+                      ? AppColors.nightBlue
+                      : AppColors.deepBlue,
                   size: 27,
                 ),
               ),
@@ -400,7 +448,9 @@ class _InsightFeatureCard extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textDark,
+                        color: isDark
+                            ? AppColors.nightText
+                            : AppColors.textDark,
                       ),
                     ),
 
@@ -411,17 +461,21 @@ class _InsightFeatureCard extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         height: 1.45,
-                        color: AppColors.textSoft,
+                        color: isDark
+                            ? AppColors.nightTextSoft
+                            : AppColors.textSoft,
                       ),
                     ),
                   ],
                 ),
               ),
 
-              const Icon(
+               Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 16,
-                color: AppColors.deepBlue,
+                color: isDark
+                    ? AppColors.nightBlue
+                    : AppColors.deepBlue,
               ),
             ],
           ),

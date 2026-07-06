@@ -11,11 +11,12 @@ class EmotionalConstellationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MoodService moodService = MoodService();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: isDark ? AppColors.nightBackground : AppColors.cream,
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -23,7 +24,7 @@ class EmotionalConstellationScreen extends StatelessWidget {
           style: GoogleFonts.playfairDisplay(
             fontSize: 28,
             fontWeight: FontWeight.w700,
-            color: AppColors.textDark,
+            color: isDark ? AppColors.nightText : AppColors.textDark,
           ),
         ),
       ),
@@ -43,7 +44,7 @@ class EmotionalConstellationScreen extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     height: 1.6,
-                    color: AppColors.textSoft,
+                    color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
                   ),
                 ),
 
@@ -53,14 +54,18 @@ class EmotionalConstellationScreen extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(22),
                   decoration: BoxDecoration(
-                    color: AppColors.whiteGlass,
+                    color: isDark ? AppColors.nightCard : AppColors.whiteGlass,
                     borderRadius: BorderRadius.circular(36),
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.9),
+                      color: isDark
+                          ? AppColors.nightBorder
+                          : Colors.white.withOpacity(0.9),
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.softPurple.withOpacity(0.22),
+                        color: isDark
+                            ? Colors.black.withOpacity(0.25)
+                            : AppColors.softPurple.withOpacity(0.22),
                         blurRadius: 30,
                         offset: const Offset(0, 16),
                       ),
@@ -74,7 +79,7 @@ class EmotionalConstellationScreen extends StatelessWidget {
                         style: GoogleFonts.playfairDisplay(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.textDark,
+                          color: isDark ? AppColors.nightText : AppColors.textDark,
                         ),
                       ),
 
@@ -85,7 +90,7 @@ class EmotionalConstellationScreen extends StatelessWidget {
                         style: GoogleFonts.poppins(
                           fontSize: 13,
                           height: 1.5,
-                          color: AppColors.textSoft,
+                          color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
                         ),
                       ),
 
@@ -95,8 +100,14 @@ class EmotionalConstellationScreen extends StatelessWidget {
                         aspectRatio: 1.08,
                         child: Container(
                           decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [
+                            gradient: LinearGradient(
+                              colors: isDark
+                                  ? const [
+                                AppColors.nightBackground,
+                                AppColors.nightCard,
+                                AppColors.nightCardSoft,
+                              ]
+                                  : const [
                                 Color(0xFFF8EEF8),
                                 Color(0xFFEAF6FA),
                                 Color(0xFFFDFCF0),
@@ -106,7 +117,9 @@ class EmotionalConstellationScreen extends StatelessWidget {
                             ),
                             borderRadius: BorderRadius.circular(32),
                             border: Border.all(
-                              color: Colors.white.withOpacity(0.9),
+                              color: isDark
+                                  ? AppColors.nightBorder
+                                  : Colors.white.withOpacity(0.9),
                             ),
                           ),
                           child: latestMoods.isEmpty
@@ -193,6 +206,7 @@ class _ConstellationSky extends StatelessWidget {
 
   void showMoodDetails(BuildContext context, MoodModel mood) {
     final color = moodColor(mood.moodLabel);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     showModalBottomSheet(
       context: context,
@@ -202,14 +216,18 @@ class _ConstellationSky extends StatelessWidget {
           margin: const EdgeInsets.all(14),
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: AppColors.cream,
+            color: isDark ? AppColors.nightCard : AppColors.cream,
             borderRadius: BorderRadius.circular(34),
             border: Border.all(
-              color: Colors.white.withOpacity(0.9),
+              color: isDark
+                  ? AppColors.nightBorder
+                  : Colors.white.withOpacity(0.9),
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.softPurple.withOpacity(0.24),
+                color: isDark
+                    ? Colors.black.withOpacity(0.28)
+                    : AppColors.softPurple.withOpacity(0.24),
                 blurRadius: 30,
                 offset: const Offset(0, 14),
               ),
@@ -223,7 +241,7 @@ class _ConstellationSky extends StatelessWidget {
                   height: 5,
                   width: 46,
                   decoration: BoxDecoration(
-                    color: AppColors.border,
+                    color: isDark ? AppColors.nightBorder : AppColors.border,
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
@@ -238,7 +256,7 @@ class _ConstellationSky extends StatelessWidget {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: color.withOpacity(0.35),
+                        color: color.withOpacity(isDark ? 0.25 : 0.35),
                         blurRadius: 22,
                         offset: const Offset(0, 10),
                       ),
@@ -258,7 +276,7 @@ class _ConstellationSky extends StatelessWidget {
                   style: GoogleFonts.playfairDisplay(
                     fontSize: 28,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.textDark,
+                    color: isDark ? AppColors.nightText : AppColors.textDark,
                   ),
                 ),
 
@@ -268,7 +286,7 @@ class _ConstellationSky extends StatelessWidget {
                   formatDate(mood.createdAt),
                   style: GoogleFonts.poppins(
                     fontSize: 13,
-                    color: AppColors.textSoft,
+                    color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
                   ),
                 ),
 
@@ -280,7 +298,7 @@ class _ConstellationSky extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       height: 1.5,
-                      color: AppColors.textSoft,
+                      color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
                     ),
                   ),
                 ],
@@ -294,6 +312,8 @@ class _ConstellationSky extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return Stack(
@@ -303,6 +323,7 @@ class _ConstellationSky extends StatelessWidget {
               painter: _ConstellationLinePainter(
                 count: moods.length,
                 positions: positions,
+                isDark: isDark,
               ),
             ),
 
@@ -372,10 +393,12 @@ class _ConstellationSky extends StatelessWidget {
 class _ConstellationLinePainter extends CustomPainter {
   final int count;
   final List<Offset> positions;
+  final bool isDark;
 
   _ConstellationLinePainter({
     required this.count,
     required this.positions,
+    required this.isDark,
   });
 
   @override
@@ -383,7 +406,9 @@ class _ConstellationLinePainter extends CustomPainter {
     if (count < 2) return;
 
     final paint = Paint()
-      ..color = AppColors.deepBlue.withOpacity(0.15)
+      ..color = isDark
+          ? AppColors.nightBlue.withOpacity(0.22)
+          : AppColors.deepBlue.withOpacity(0.15)
       ..strokeWidth = 1.1
       ..style = PaintingStyle.stroke;
 
@@ -401,7 +426,7 @@ class _ConstellationLinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _ConstellationLinePainter oldDelegate) {
-    return oldDelegate.count != count;
+    return oldDelegate.count != count || oldDelegate.isDark != isDark;
   }
 }
 
@@ -410,16 +435,18 @@ class _EmptyConstellation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(26),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
+            Icon(
               Icons.auto_awesome_rounded,
               size: 48,
-              color: AppColors.deepBlue,
+              color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
             ),
 
             const SizedBox(height: 14),
@@ -429,7 +456,7 @@ class _EmptyConstellation extends StatelessWidget {
               style: GoogleFonts.playfairDisplay(
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
-                color: AppColors.textDark,
+                color: isDark ? AppColors.nightText : AppColors.textDark,
               ),
             ),
 
@@ -441,7 +468,7 @@ class _EmptyConstellation extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 13,
                 height: 1.5,
-                color: AppColors.textSoft,
+                color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
               ),
             ),
           ],
@@ -456,6 +483,8 @@ class _ConstellationLegend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     final legends = [
       {"label": "Happy", "color": AppColors.softPink},
       {"label": "Calm", "color": AppColors.mint},
@@ -476,10 +505,14 @@ class _ConstellationLegend extends StatelessWidget {
             vertical: 7,
           ),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.45),
+            color: isDark
+                ? AppColors.nightCardSoft
+                : color.withOpacity(0.45),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: Colors.white.withOpacity(0.9),
+              color: isDark
+                  ? AppColors.nightBorder
+                  : Colors.white.withOpacity(0.9),
             ),
           ),
           child: Text(
@@ -487,7 +520,7 @@ class _ConstellationLegend extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 11,
               fontWeight: FontWeight.w600,
-              color: AppColors.textDark,
+              color: isDark ? AppColors.nightText : AppColors.textDark,
             ),
           ),
         );

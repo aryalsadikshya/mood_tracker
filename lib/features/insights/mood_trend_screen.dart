@@ -49,12 +49,12 @@ class MoodTrendScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MoodService moodService = MoodService();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
-
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: isDark ? AppColors.nightBackground : AppColors.cream,
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -62,11 +62,10 @@ class MoodTrendScreen extends StatelessWidget {
           style: GoogleFonts.playfairDisplay(
             fontSize: 28,
             fontWeight: FontWeight.w700,
-            color: AppColors.textDark,
+            color: isDark ? AppColors.nightText : AppColors.textDark,
           ),
         ),
       ),
-
       body: StreamBuilder<List<MoodModel>>(
         stream: moodService.getMoods(),
         builder: (context, snapshot) {
@@ -78,35 +77,44 @@ class MoodTrendScreen extends StatelessWidget {
                 "No mood data yet 🌸",
                 style: GoogleFonts.poppins(
                   fontSize: 16,
-                  color: AppColors.textSoft,
+                  color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
                 ),
               ),
             );
           }
 
           final averageMood = getAverageMood(moods);
+          final chartColor =
+          isDark ? AppColors.nightBlue : AppColors.lakeBlue;
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-
-                /// SUMMARY CARD
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [
+                      colors: isDark
+                          ? [
+                        AppColors.nightCardSoft,
+                        AppColors.nightCard,
+                        AppColors.nightBackground,
+                      ]
+                          : [
                         getMoodColor(averageMood).withOpacity(0.9),
                         AppColors.blush,
                       ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
                     borderRadius: BorderRadius.circular(34),
                     boxShadow: [
                       BoxShadow(
-                        color: getMoodColor(averageMood)
-                            .withOpacity(0.25),
+                        color: isDark
+                            ? Colors.black.withOpacity(0.24)
+                            : getMoodColor(averageMood).withOpacity(0.25),
                         blurRadius: 24,
                         offset: const Offset(0, 14),
                       ),
@@ -118,30 +126,30 @@ class MoodTrendScreen extends StatelessWidget {
                         "Your Emotional State",
                         style: GoogleFonts.poppins(
                           fontSize: 14,
-                          color: AppColors.textSoft,
+                          color: isDark
+                              ? AppColors.nightTextSoft
+                              : AppColors.textSoft,
                         ),
                       ),
-
                       const SizedBox(height: 10),
-
                       Text(
                         getMoodState(averageMood),
                         textAlign: TextAlign.center,
                         style: GoogleFonts.playfairDisplay(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.textDark,
+                          color:
+                          isDark ? AppColors.nightText : AppColors.textDark,
                         ),
                       ),
-
                       const SizedBox(height: 10),
-
                       Text(
                         averageMood.toStringAsFixed(1),
                         style: GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.deepBlue,
+                          color:
+                          isDark ? AppColors.nightBlue : AppColors.deepBlue,
                         ),
                       ),
                     ],
@@ -150,20 +158,25 @@ class MoodTrendScreen extends StatelessWidget {
 
                 const SizedBox(height: 30),
 
-                /// GRAPH CARD
                 Container(
                   height: 320,
                   width: double.infinity,
                   padding: const EdgeInsets.all(22),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.65),
+                    color: isDark
+                        ? AppColors.nightCard
+                        : Colors.white.withOpacity(0.65),
                     borderRadius: BorderRadius.circular(34),
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.8),
+                      color: isDark
+                          ? AppColors.nightBorder
+                          : Colors.white.withOpacity(0.8),
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.softPurple.withOpacity(0.14),
+                        color: isDark
+                            ? Colors.black.withOpacity(0.22)
+                            : AppColors.softPurple.withOpacity(0.14),
                         blurRadius: 24,
                         offset: const Offset(0, 14),
                       ),
@@ -177,42 +190,40 @@ class MoodTrendScreen extends StatelessWidget {
                         style: GoogleFonts.playfairDisplay(
                           fontSize: 24,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.textDark,
+                          color:
+                          isDark ? AppColors.nightText : AppColors.textDark,
                         ),
                       ),
-
                       const SizedBox(height: 8),
-
                       Text(
                         "Your emotional trend over time",
                         style: GoogleFonts.poppins(
                           fontSize: 13,
-                          color: AppColors.textSoft,
+                          color: isDark
+                              ? AppColors.nightTextSoft
+                              : AppColors.textSoft,
                         ),
                       ),
-
                       const SizedBox(height: 24),
-
                       Expanded(
                         child: LineChart(
                           LineChartData(
                             minY: 1,
                             maxY: 5,
-
                             gridData: FlGridData(
                               show: true,
                               drawVerticalLine: false,
                               horizontalInterval: 1,
                               getDrawingHorizontalLine: (_) {
                                 return FlLine(
-                                  color: AppColors.border,
+                                  color: isDark
+                                      ? AppColors.nightBorder
+                                      : AppColors.border,
                                   strokeWidth: 1,
                                 );
                               },
                             ),
-
                             borderData: FlBorderData(show: false),
-
                             titlesData: FlTitlesData(
                               leftTitles: AxisTitles(
                                 sideTitles: SideTitles(
@@ -224,13 +235,14 @@ class MoodTrendScreen extends StatelessWidget {
                                       value.toInt().toString(),
                                       style: GoogleFonts.poppins(
                                         fontSize: 11,
-                                        color: AppColors.textSoft,
+                                        color: isDark
+                                            ? AppColors.nightTextSoft
+                                            : AppColors.textSoft,
                                       ),
                                     );
                                   },
                                 ),
                               ),
-
                               bottomTitles: AxisTitles(
                                 sideTitles: SideTitles(
                                   showTitles: true,
@@ -241,41 +253,34 @@ class MoodTrendScreen extends StatelessWidget {
                                         "${value.toInt() + 1}",
                                         style: GoogleFonts.poppins(
                                           fontSize: 11,
-                                          color: AppColors.textSoft,
+                                          color: isDark
+                                              ? AppColors.nightTextSoft
+                                              : AppColors.textSoft,
                                         ),
                                       ),
                                     );
                                   },
                                 ),
                               ),
-
                               topTitles: const AxisTitles(
                                 sideTitles: SideTitles(showTitles: false),
                               ),
-
                               rightTitles: const AxisTitles(
                                 sideTitles: SideTitles(showTitles: false),
                               ),
                             ),
-
                             lineBarsData: [
                               LineChartBarData(
                                 spots: buildSpots(moods),
-
                                 isCurved: true,
-
-                                color: AppColors.lakeBlue,
-
+                                color: chartColor,
                                 barWidth: 4,
-
-                                dotData: FlDotData(
+                                dotData: const FlDotData(
                                   show: true,
                                 ),
-
                                 belowBarData: BarAreaData(
                                   show: true,
-                                  color: AppColors.lakeBlue
-                                      .withOpacity(0.12),
+                                  color: chartColor.withOpacity(0.15),
                                 ),
                               ),
                             ],

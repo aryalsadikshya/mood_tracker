@@ -30,7 +30,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       final profileDoc = await profileService.getProfileOnce();
       final data = profileDoc.data();
 
-      if (data == null) return;
+      if (data == null || !mounted) return;
 
       setState(() {
         usernameController.text =
@@ -38,7 +38,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
         selectedAvatarId = (data["avatarId"] ?? "flower").toString();
       });
-    } catch (_) {}
+    } catch (_) {
+      // New users may not have profile data yet.
+    }
   }
 
   @override
@@ -99,6 +101,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget buildAvatarPreview() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final avatar = getAvatarById(selectedAvatarId);
 
     return Container(
@@ -106,11 +109,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       width: 140,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: avatar.color.withOpacity(0.75),
-        border: Border.all(color: Colors.white, width: 3),
+        color: avatar.color.withOpacity(isDark ? 0.55 : 0.75),
+        border: Border.all(
+          color: isDark ? AppColors.nightBorder : Colors.white,
+          width: 3,
+        ),
         boxShadow: [
           BoxShadow(
-            color: avatar.color.withOpacity(0.35),
+            color: isDark
+                ? Colors.black.withOpacity(0.24)
+                : avatar.color.withOpacity(0.35),
             blurRadius: 28,
             offset: const Offset(0, 14),
           ),
@@ -119,12 +127,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: Icon(
         avatar.icon,
         size: 64,
-        color: AppColors.deepBlue,
+        color: isDark ? AppColors.nightText : AppColors.deepBlue,
       ),
     );
   }
 
   Widget buildAvatarPicker() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Wrap(
       spacing: 14,
       runSpacing: 14,
@@ -144,14 +154,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             width: 64,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: avatar.color.withOpacity(isSelected ? 0.95 : 0.55),
+              color: isDark
+                  ? AppColors.nightCardSoft
+                  : avatar.color.withOpacity(isSelected ? 0.95 : 0.55),
               border: Border.all(
-                color: isSelected ? AppColors.deepBlue : Colors.white,
+                color: isSelected
+                    ? isDark
+                    ? AppColors.nightBlue
+                    : AppColors.deepBlue
+                    : isDark
+                    ? AppColors.nightBorder
+                    : Colors.white,
                 width: isSelected ? 2.4 : 1.5,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: avatar.color.withOpacity(isSelected ? 0.35 : 0.12),
+                  color: isDark
+                      ? Colors.black.withOpacity(isSelected ? 0.24 : 0.12)
+                      : avatar.color.withOpacity(
+                    isSelected ? 0.35 : 0.12,
+                  ),
                   blurRadius: isSelected ? 18 : 10,
                   offset: const Offset(0, 8),
                 ),
@@ -159,7 +181,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             child: Icon(
               avatar.icon,
-              color: AppColors.deepBlue,
+              color: isDark ? AppColors.nightText : AppColors.deepBlue,
               size: 30,
             ),
           ),
@@ -169,29 +191,50 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget buildNameField() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 6,
+      ),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.65),
+        color: isDark
+            ? AppColors.nightCard
+            : Colors.white.withOpacity(0.65),
         borderRadius: BorderRadius.circular(30),
         border: Border.all(
-          color: Colors.white.withOpacity(0.85),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withOpacity(0.85),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: isDark
+                ? Colors.black.withOpacity(0.16)
+                : AppColors.softPurple.withOpacity(0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: TextField(
         controller: usernameController,
+        cursorColor: isDark ? AppColors.nightBlue : AppColors.deepBlue,
         style: GoogleFonts.poppins(
-          color: AppColors.textDark,
+          color: isDark ? AppColors.nightText : AppColors.textDark,
         ),
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: "Enter your name",
           hintStyle: GoogleFonts.poppins(
-            color: AppColors.textSoft,
+            color: isDark
+                ? AppColors.nightTextSoft
+                : AppColors.textSoft,
           ),
-          icon: const Icon(
+          icon: Icon(
             Icons.person_outline_rounded,
-            color: AppColors.deepBlue,
+            color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
           ),
         ),
       ),
@@ -199,14 +242,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget buildSaveButton() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: isLoading ? null : saveProfile,
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          backgroundColor: AppColors.lakeBlue,
+          backgroundColor:
+          isDark ? AppColors.nightBlue : AppColors.lakeBlue,
           foregroundColor: Colors.white,
+          disabledBackgroundColor: isDark
+              ? AppColors.nightCardSoft
+              : AppColors.lakeBlue.withOpacity(0.45),
           padding: const EdgeInsets.symmetric(vertical: 18),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(28),
@@ -234,10 +283,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor:
+        isDark ? AppColors.nightBackground : AppColors.cream,
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -245,7 +297,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           style: GoogleFonts.playfairDisplay(
             fontSize: 30,
             fontWeight: FontWeight.w700,
-            color: AppColors.textDark,
+            color: isDark ? AppColors.nightText : AppColors.textDark,
           ),
         ),
       ),
@@ -254,19 +306,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Column(
           children: [
             buildAvatarPreview(),
+
             const SizedBox(height: 16),
+
             Text(
               "Choose your MindBloom avatar",
               style: GoogleFonts.poppins(
                 fontSize: 13,
-                color: AppColors.textSoft,
+                color: isDark
+                    ? AppColors.nightTextSoft
+                    : AppColors.textSoft,
               ),
             ),
+
             const SizedBox(height: 28),
+
             buildAvatarPicker(),
+
             const SizedBox(height: 34),
+
             buildNameField(),
+
             const SizedBox(height: 34),
+
             buildSaveButton(),
           ],
         ),

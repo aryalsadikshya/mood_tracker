@@ -12,12 +12,13 @@ class AchievementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MoodService moodService = MoodService();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
-
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor:
+        isDark ? AppColors.nightBackground : AppColors.cream,
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -25,11 +26,10 @@ class AchievementScreen extends StatelessWidget {
           style: GoogleFonts.playfairDisplay(
             fontSize: 28,
             fontWeight: FontWeight.w700,
-            color: AppColors.textDark,
+            color: isDark ? AppColors.nightText : AppColors.textDark,
           ),
         ),
       ),
-
       body: StreamBuilder<List<MoodModel>>(
         stream: moodService.getMoods(),
         builder: (context, snapshot) {
@@ -44,33 +44,70 @@ class AchievementScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final achievement = achievements[index];
 
+              final cardColor = achievement.unlocked
+                  ? isDark
+                  ? AppColors.nightCard
+                  : Colors.white.withOpacity(0.75)
+                  : isDark
+                  ? AppColors.nightCardSoft
+                  : Colors.white.withOpacity(0.35);
+
+              final borderColor = achievement.unlocked
+                  ? isDark
+                  ? AppColors.nightBorder
+                  : AppColors.softPurple.withOpacity(0.3)
+                  : isDark
+                  ? AppColors.nightBorder.withOpacity(0.5)
+                  : Colors.white.withOpacity(0.2);
+
+              final badgeColor = achievement.unlocked
+                  ? isDark
+                  ? AppColors.nightCardSoft
+                  : AppColors.blush
+                  : isDark
+                  ? AppColors.nightBorder
+                  : AppColors.border.withOpacity(0.4);
+
+              final titleColor = achievement.unlocked
+                  ? isDark
+                  ? AppColors.nightText
+                  : AppColors.textDark
+                  : isDark
+                  ? AppColors.nightTextSoft
+                  : AppColors.textSoft;
+
+              final descriptionColor =
+              isDark ? AppColors.nightTextSoft : AppColors.textSoft;
+
+              final lockColor = achievement.unlocked
+                  ? isDark
+                  ? AppColors.nightMint
+                  : Colors.green
+                  : isDark
+                  ? AppColors.nightTextSoft
+                  : Colors.grey;
+
               return Container(
                 margin: const EdgeInsets.only(bottom: 18),
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: achievement.unlocked
-                      ? Colors.white.withOpacity(0.75)
-                      : Colors.white.withOpacity(0.35),
-
+                  color: cardColor,
                   borderRadius: BorderRadius.circular(30),
-
                   border: Border.all(
-                    color: achievement.unlocked
-                        ? AppColors.softPurple.withOpacity(0.3)
-                        : Colors.white.withOpacity(0.2),
+                    color: borderColor,
                   ),
-
                   boxShadow: achievement.unlocked
                       ? [
                     BoxShadow(
-                      color: AppColors.softPurple.withOpacity(0.18),
+                      color: isDark
+                          ? Colors.black.withOpacity(0.22)
+                          : AppColors.softPurple.withOpacity(0.18),
                       blurRadius: 20,
                       offset: const Offset(0, 12),
                     ),
                   ]
                       : [],
                 ),
-
                 child: Row(
                   children: [
                     Container(
@@ -78,9 +115,7 @@ class AchievementScreen extends StatelessWidget {
                       width: 72,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: achievement.unlocked
-                            ? AppColors.blush
-                            : AppColors.border.withOpacity(0.4),
+                        color: badgeColor,
                       ),
                       alignment: Alignment.center,
                       child: Text(
@@ -88,46 +123,36 @@ class AchievementScreen extends StatelessWidget {
                         style: const TextStyle(fontSize: 34),
                       ),
                     ),
-
                     const SizedBox(width: 18),
-
                     Expanded(
                       child: Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             achievement.title,
                             style: GoogleFonts.playfairDisplay(
                               fontSize: 22,
                               fontWeight: FontWeight.w700,
-                              color: achievement.unlocked
-                                  ? AppColors.textDark
-                                  : AppColors.textSoft,
+                              color: titleColor,
                             ),
                           ),
-
                           const SizedBox(height: 6),
-
                           Text(
                             achievement.description,
                             style: GoogleFonts.poppins(
                               fontSize: 13,
                               height: 1.5,
-                              color: AppColors.textSoft,
+                              color: descriptionColor,
                             ),
                           ),
                         ],
                       ),
                     ),
-
                     Icon(
                       achievement.unlocked
                           ? Icons.lock_open_rounded
                           : Icons.lock_rounded,
-                      color: achievement.unlocked
-                          ? Colors.green
-                          : Colors.grey,
+                      color: lockColor,
                     ),
                   ],
                 ),

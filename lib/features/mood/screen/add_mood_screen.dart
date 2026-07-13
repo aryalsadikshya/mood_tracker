@@ -15,8 +15,7 @@ class AddMoodScreen extends StatefulWidget {
 class _AddMoodScreenState extends State<AddMoodScreen> {
   final MoodService moodService = MoodService();
 
-  final TextEditingController noteController =
-  TextEditingController();
+  final TextEditingController noteController = TextEditingController();
 
   String selectedMoodEmoji = "";
   String selectedMoodLabel = "";
@@ -114,13 +113,17 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
     return selectedMood["color"] as Color;
   }
 
+  @override
+  void dispose() {
+    noteController.dispose();
+    super.dispose();
+  }
+
   Future<void> saveMood() async {
     if (selectedMoodEmoji.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            "Select a mood first",
-          ),
+          content: Text("Select a mood first"),
         ),
       );
 
@@ -157,134 +160,112 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.cream,
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    final headingColor =
+    isDark ? AppColors.nightText : AppColors.textDark;
+
+    final softTextColor =
+    isDark ? AppColors.nightTextSoft : AppColors.textSoft;
+
+    final defaultCardColor = isDark
+        ? AppColors.nightCard
+        : Colors.white.withOpacity(0.55);
+
+    final defaultBorderColor = isDark
+        ? AppColors.nightBorder
+        : Colors.white.withOpacity(0.7);
+
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: AppColors.cream,
+        backgroundColor:
+        isDark ? AppColors.nightBackground : AppColors.cream,
+        iconTheme: IconThemeData(
+          color: isDark ? AppColors.nightText : AppColors.deepBlue,
+        ),
         title: Text(
           "Daily Check-in",
           style: GoogleFonts.playfairDisplay(
             fontWeight: FontWeight.w700,
+            color: headingColor,
           ),
         ),
       ),
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(22),
-
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "How are you feeling?",
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineMedium,
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                color: headingColor,
+              ),
             ),
 
             const SizedBox(height: 10),
 
             Text(
               "Take a moment to reflect on your emotional state.",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: softTextColor,
+              ),
             ),
 
             const SizedBox(height: 28),
 
             SizedBox(
               height: 125,
-
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-
                 itemCount: moods.length,
-
-                separatorBuilder: (_, __) =>
-                const SizedBox(width: 14),
-
+                separatorBuilder: (_, __) => const SizedBox(width: 14),
                 itemBuilder: (context, index) {
                   final mood = moods[index];
 
-                  final isSelected =
-                      selectedMoodEmoji ==
-                          mood["emoji"];
+                  final isSelected = selectedMoodEmoji == mood["emoji"];
 
-                  final moodColor =
-                  mood["color"] as Color;
+                  final moodColor = mood["color"] as Color;
 
                   return GestureDetector(
                     onTap: () {
                       setState(() {
-                        selectedMoodEmoji =
-                        mood["emoji"] as String;
-
-                        selectedMoodLabel =
-                        mood["label"] as String;
-
-                        selectedMoodValue =
-                        mood["value"] as int;
+                        selectedMoodEmoji = mood["emoji"] as String;
+                        selectedMoodLabel = mood["label"] as String;
+                        selectedMoodValue = mood["value"] as int;
                       });
                     },
-
                     child: AnimatedContainer(
-                      duration: const Duration(
-                        milliseconds: 240,
-                      ),
-
+                      duration: const Duration(milliseconds: 240),
                       width: 104,
-
-                      padding:
-                      const EdgeInsets.all(14),
-
+                      padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? moodColor.withOpacity(0.22)
-                            : Colors.white.withOpacity(
-                          0.55,
-                        ),
-
-                        borderRadius:
-                        BorderRadius.circular(
-                          28,
-                        ),
-
+                            ? moodColor.withOpacity(isDark ? 0.30 : 0.22)
+                            : defaultCardColor,
+                        borderRadius: BorderRadius.circular(28),
                         border: Border.all(
                           color: isSelected
                               ? moodColor
-                              : Colors.white
-                              .withOpacity(0.7),
-
+                              : defaultBorderColor,
                           width: isSelected ? 2 : 1,
                         ),
-
                         boxShadow: isSelected
                             ? [
                           BoxShadow(
-                            color: moodColor
-                                .withOpacity(
-                              0.35,
+                            color: moodColor.withOpacity(
+                              isDark ? 0.22 : 0.35,
                             ),
-
                             blurRadius: 18,
-
-                            offset:
-                            const Offset(
-                              0,
-                              8,
-                            ),
+                            offset: const Offset(0, 8),
                           ),
                         ]
                             : [],
                       ),
-
                       child: Column(
-                        mainAxisAlignment:
-                        MainAxisAlignment.center,
-
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             mood["emoji"] as String,
@@ -292,19 +273,13 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
                               fontSize: 32,
                             ),
                           ),
-
                           const SizedBox(height: 10),
-
                           Text(
                             mood["label"] as String,
-
                             style: GoogleFonts.poppins(
                               fontSize: 13,
-                              fontWeight:
-                              FontWeight.w600,
-
-                              color:
-                              AppColors.textDark,
+                              fontWeight: FontWeight.w600,
+                              color: headingColor,
                             ),
                           ),
                         ],
@@ -319,9 +294,10 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
 
             Text(
               "What influenced it?",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: headingColor,
+                fontWeight: FontWeight.w600,
+              ),
             ),
 
             const SizedBox(height: 14),
@@ -329,12 +305,12 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
             Wrap(
               spacing: 10,
               runSpacing: 10,
-
               children: activities.map((activity) {
-                final selected =
-                selectedActivities.contains(
+                final selected = selectedActivities.contains(
                   activity["name"],
                 );
+
+                final activityColor = activity["color"] as Color;
 
                 return GestureDetector(
                   onTap: () {
@@ -344,47 +320,43 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
                         activity["name"],
                       )
                           : selectedActivities.add(
-                        activity["name"]
-                        as String,
+                        activity["name"] as String,
                       );
                     });
                   },
-
                   child: AnimatedContainer(
-                    duration: const Duration(
-                      milliseconds: 220,
-                    ),
-
-                    padding:
-                    const EdgeInsets.symmetric(
+                    duration: const Duration(milliseconds: 220),
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 10,
                     ),
-
                     decoration: BoxDecoration(
                       color: selected
-                          ? activity["color"]
-                      as Color
+                          ? activityColor.withOpacity(isDark ? 0.78 : 1)
+                          : isDark
+                          ? AppColors.nightCard
                           : AppColors.whiteGlass,
-
-                      borderRadius:
-                      BorderRadius.circular(24),
-
+                      borderRadius: BorderRadius.circular(24),
                       border: Border.all(
                         color: selected
-                            ? AppColors.deepBlue
+                            ? isDark
+                            ? AppColors.nightBlue
+                            : AppColors.deepBlue
+                            : isDark
+                            ? AppColors.nightBorder
                             : AppColors.border,
                       ),
                     ),
-
                     child: Text(
                       activity["name"] as String,
-
                       style: GoogleFonts.poppins(
                         fontSize: 13,
                         fontWeight: selected
                             ? FontWeight.w700
                             : FontWeight.w500,
+                        color: selected && isDark
+                            ? AppColors.nightBackground
+                            : headingColor,
                       ),
                     ),
                   ),
@@ -396,41 +368,40 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
 
             TextField(
               controller: noteController,
-
               maxLines: 5,
-
+              cursorColor:
+              isDark ? AppColors.nightBlue : selectedMoodColor,
+              style: GoogleFonts.poppins(
+                color: headingColor,
+                height: 1.6,
+              ),
               decoration: InputDecoration(
-                hintText:
-                "Write a gentle reflection...",
-
+                hintText: "Write a gentle reflection...",
+                hintStyle: GoogleFonts.poppins(
+                  color: softTextColor.withOpacity(0.72),
+                ),
                 filled: true,
-
-                fillColor:
-                Colors.white.withOpacity(0.6),
-
+                fillColor: isDark
+                    ? AppColors.nightCard
+                    : Colors.white.withOpacity(0.6),
                 border: OutlineInputBorder(
-                  borderRadius:
-                  BorderRadius.circular(28),
-
+                  borderRadius: BorderRadius.circular(28),
                   borderSide: BorderSide.none,
                 ),
-
                 enabledBorder: OutlineInputBorder(
-                  borderRadius:
-                  BorderRadius.circular(28),
-
+                  borderRadius: BorderRadius.circular(28),
                   borderSide: BorderSide(
-                    color:
-                    Colors.white.withOpacity(0.8),
+                    color: isDark
+                        ? AppColors.nightBorder
+                        : Colors.white.withOpacity(0.8),
                   ),
                 ),
-
                 focusedBorder: OutlineInputBorder(
-                  borderRadius:
-                  BorderRadius.circular(28),
-
+                  borderRadius: BorderRadius.circular(28),
                   borderSide: BorderSide(
-                    color: selectedMoodColor,
+                    color: isDark
+                        ? AppColors.nightBlue
+                        : selectedMoodColor,
                     width: 1.5,
                   ),
                 ),
@@ -441,45 +412,39 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
 
             SizedBox(
               width: double.infinity,
-
               child: ElevatedButton(
-                onPressed:
-                isSaving ? null : saveMood,
-
+                onPressed: isSaving ? null : saveMood,
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-
-                  backgroundColor:
-                  selectedMoodColor,
-
+                  backgroundColor: isDark
+                      ? AppColors.nightBlue
+                      : selectedMoodColor,
                   foregroundColor: Colors.white,
-
-                  padding:
-                  const EdgeInsets.symmetric(
+                  disabledBackgroundColor: isDark
+                      ? AppColors.nightCardSoft
+                      : selectedMoodColor.withOpacity(0.45),
+                  padding: const EdgeInsets.symmetric(
                     vertical: 18,
                   ),
-
-                  shape:
-                  RoundedRectangleBorder(
-                    borderRadius:
-                    BorderRadius.circular(
-                      28,
-                    ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(28),
                   ),
                 ),
-
                 child: isSaving
                     ? const SizedBox(
                   height: 22,
                   width: 22,
-                  child:
-                  CircularProgressIndicator(
+                  child: CircularProgressIndicator(
                     strokeWidth: 2,
                     color: Colors.white,
                   ),
                 )
-                    : const Text(
+                    : Text(
                   "Save Reflection",
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ),

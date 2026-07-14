@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import '../ai_comfort/services/gemini_services.dart';
 import 'Ground_Yourself_Screen.dart';
 import 'breathing_screen.dart';
 import '../../core/theme/app_colours.dart';
 import 'drink_water_screen.dart';
+
 
 class WellnessScreen extends StatefulWidget {
   const WellnessScreen({super.key});
@@ -18,6 +19,7 @@ class WellnessScreen extends StatefulWidget {
 
 class _WellnessScreenState extends State<WellnessScreen> {
   final TextEditingController calmController = TextEditingController();
+  final GeminiService geminiService = const GeminiService();
 
   String companionReply =
       "Hi, I’m your little calm companion. Tell me what is on your mind.";
@@ -40,13 +42,14 @@ class _WellnessScreenState extends State<WellnessScreen> {
   }
 
   Future<void> generateCompanionReply() async {
-    final text = calmController.text.toLowerCase().trim();
+    final text = calmController.text.trim();
 
     if (text.isEmpty) {
       setState(() {
         companionReply =
         "Write even one small sentence. I will sit with you through it.";
       });
+
       return;
     }
 
@@ -54,73 +57,32 @@ class _WellnessScreenState extends State<WellnessScreen> {
       isThinking = true;
     });
 
-    await Future.delayed(const Duration(milliseconds: 850));
+    try {
+      final reply = await geminiService.generateComfortReply(
+        userMessage: text,
+      );
 
-    String reply;
+      if (!mounted) return;
 
-    if (text.contains("exam") ||
-        text.contains("study") ||
-        text.contains("assignment") ||
-        text.contains("college")) {
-      reply =
-      "Your mind is carrying a lot right now. You do not need to finish everything at once. Choose one tiny task, give it ten calm minutes, and let that be enough for now.";
-    } else if (text.contains("sad") ||
-        text.contains("low") ||
-        text.contains("cry") ||
-        text.contains("hurt")) {
-      reply =
-      "Today feels heavy, and that is okay. You do not have to force yourself to feel better immediately. Start with one soft breath and be gentle with yourself.";
-    } else if (text.contains("angry") ||
-        text.contains("mad") ||
-        text.contains("frustrated")) {
-      reply =
-      "That feeling is strong, but it does not have to control the whole moment. Drop your shoulders, unclench your hands, and give yourself a small pause before reacting.";
-    } else if (text.contains("alone") ||
-        text.contains("lonely") ||
-        text.contains("ignored")) {
-      reply =
-      "Lonely moments can feel very loud. You still matter even when no one notices it immediately. Send one small message to someone safe, even if it is just a simple hello.";
-    } else if (text.contains("stress") ||
-        text.contains("anxious") ||
-        text.contains("panic") ||
-        text.contains("worried") ||
-        text.contains("scared")) {
-      reply =
-      "Place both feet on the ground. Breathe in slowly and breathe out a little longer. This moment feels big, but you can make it smaller one breath at a time.";
-    } else if (text.contains("tired") ||
-        text.contains("sleep") ||
-        text.contains("burnout") ||
-        text.contains("exhausted")) {
-      reply =
-      "Your body may be asking for kindness, not more pressure. Rest is not laziness. Drink some water, close your eyes for a minute, and let yourself slow down.";
-    } else if (text.contains("family") ||
-        text.contains("friend") ||
-        text.contains("breakup") ||
-        text.contains("relationship")) {
-      reply =
-      "Relationships can make the heart feel crowded. You do not have to solve every feeling tonight. Notice what hurt, name it gently, and give yourself space.";
-    } else if (text.contains("failure") ||
-        text.contains("fail") ||
-        text.contains("overthinking") ||
-        text.contains("not good enough")) {
-      reply =
-      "One difficult moment does not define your whole story. Your mind may be repeating the worst version, but you are still learning, still growing, and still allowed to try again.";
-    } else if (text.contains("happy") ||
-        text.contains("excited") ||
-        text.contains("good")) {
-      reply =
-      "That is beautiful. Let yourself enjoy this moment without rushing past it. Take a second to remember what made today feel lighter.";
-    } else {
-      reply =
-      "That sounds like something your heart has been holding quietly. You do not need a perfect answer right now. Ask yourself: what would make the next five minutes gentler?";
+      setState(() {
+        companionReply = reply;
+      });
+
+      calmController.clear();
+    } catch (error) {
+      if (!mounted) return;
+
+      setState(() {
+        companionReply =
+        "I could not respond right now. Take one slow breath and try again in a moment.";
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          isThinking = false;
+        });
+      }
     }
-
-    setState(() {
-      companionReply = reply;
-      isThinking = false;
-    });
-
-    calmController.clear();
   }
 
   void fillQuickPrompt(String text) {

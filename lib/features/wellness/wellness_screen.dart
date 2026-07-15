@@ -1,15 +1,14 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../core/theme/app_colours.dart';
 import '../ai_comfort/models/comfort_message.dart';
 import '../ai_comfort/services/gemini_services.dart';
+import '../ai_comfort/widgets/comfort_conversation.dart';
 import 'Ground_Yourself_Screen.dart';
 import 'breathing_screen.dart';
-import '../../core/theme/app_colours.dart';
 import 'drink_water_screen.dart';
-
 
 class WellnessScreen extends StatefulWidget {
   const WellnessScreen({super.key});
@@ -20,21 +19,34 @@ class WellnessScreen extends StatefulWidget {
 
 class _WellnessScreenState extends State<WellnessScreen> {
   final TextEditingController calmController = TextEditingController();
-  final GeminiService geminiService = const GeminiService();
-
-  String companionReply =
-      "Hi, I’m your little calm companion. Tell me what is on your mind.";
-
-  final List<ComfortMessage> conversation = [];
 
   final ScrollController conversationController = ScrollController();
+
+  final GeminiService geminiService = const GeminiService();
+
+  final List<ComfortMessage> conversation = [];
 
   bool isThinking = false;
 
   @override
   void dispose() {
     calmController.dispose();
+    conversationController.dispose();
     super.dispose();
+  }
+
+  void scrollConversationToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!conversationController.hasClients) {
+        return;
+      }
+
+      conversationController.animateTo(
+        conversationController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.easeOut,
+      );
+    });
   }
 
   Future<void> openLink(String url) async {
@@ -47,20 +59,29 @@ class _WellnessScreenState extends State<WellnessScreen> {
   }
 
   Future<void> generateCompanionReply() async {
-    final text = calmController.text.trim();
-
-    if (text.isEmpty) {
-      setState(() {
-        companionReply =
-        "Write even one small sentence. I will sit with you through it.";
-      });
-
+    if (isThinking) {
       return;
     }
 
+    final text = calmController.text.trim();
+
+    if (text.isEmpty) {
+      return;
+    }
+
+    final userMessage = ComfortMessage(
+      text: text,
+      role: ComfortMessageRole.user,
+      createdAt: DateTime.now(),
+    );
+
     setState(() {
+      conversation.add(userMessage);
       isThinking = true;
     });
+
+    calmController.clear();
+    scrollConversationToBottom();
 
     try {
       final reply = await geminiService.generateComfortReply(
@@ -69,31 +90,46 @@ class _WellnessScreenState extends State<WellnessScreen> {
 
       if (!mounted) return;
 
-      setState(() {
-        companionReply = reply;
-      });
+      final assistantMessage = ComfortMessage(
+        text: reply,
+        role: ComfortMessageRole.assistant,
+        createdAt: DateTime.now(),
+      );
 
-      calmController.clear();
-    } catch (error) {
+      setState(() {
+        conversation.add(assistantMessage);
+      });
+    } catch (_) {
       if (!mounted) return;
 
+      final errorMessage = ComfortMessage(
+        text:
+        "I could not respond right now. Take one slow breath and try again in a moment.",
+        role: ComfortMessageRole.assistant,
+        createdAt: DateTime.now(),
+      );
+
       setState(() {
-        companionReply =
-        "I could not respond right now. Take one slow breath and try again in a moment.";
+        conversation.add(errorMessage);
       });
     } finally {
       if (mounted) {
         setState(() {
           isThinking = false;
         });
+
+        scrollConversationToBottom();
       }
     }
   }
 
   void fillQuickPrompt(String text) {
     calmController.text = text;
+
     calmController.selection = TextSelection.fromPosition(
-      TextPosition(offset: calmController.text.length),
+      TextPosition(
+        offset: calmController.text.length,
+      ),
     );
   }
 
@@ -106,7 +142,12 @@ class _WellnessScreenState extends State<WellnessScreen> {
           const _CuteBackground(),
           SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(22, 18, 22, 120),
+              padding: const EdgeInsets.fromLTRB(
+                22,
+                18,
+                22,
+                120,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -116,7 +157,8 @@ class _WellnessScreenState extends State<WellnessScreen> {
 
                   _CuteCompanionCard(
                     controller: calmController,
-                    reply: companionReply,
+                    messages: conversation,
+                    conversationController: conversationController,
                     isThinking: isThinking,
                     onGenerate: generateCompanionReply,
                     onChipTap: fillQuickPrompt,
@@ -127,7 +169,8 @@ class _WellnessScreenState extends State<WellnessScreen> {
                   const _CuteSectionHeader(
                     sticker: "🎧",
                     title: "Mood Music",
-                    subtitle: "Pick a feeling. MindBloom opens Spotify for you.",
+                    subtitle:
+                    "Pick a feeling. MindBloom opens Spotify for you.",
                   ),
 
                   const SizedBox(height: 16),
@@ -178,7 +221,8 @@ class _WellnessScreenState extends State<WellnessScreen> {
                   const _CuteSectionHeader(
                     sticker: "🧘",
                     title: "Gentle Movement",
-                    subtitle: "Open simple YouTube routines for your body.",
+                    subtitle:
+                    "Open simple YouTube routines for your body.",
                   ),
 
                   const SizedBox(height: 16),
@@ -229,7 +273,8 @@ class _WellnessScreenState extends State<WellnessScreen> {
                   const _CuteSectionHeader(
                     sticker: "🫧",
                     title: "Tiny Reset Tools",
-                    subtitle: "Small actions when your mind feels crowded.",
+                    subtitle:
+                    "Small actions when your mind feels crowded.",
                   ),
 
                   const SizedBox(height: 16),
@@ -259,10 +304,13 @@ class _CuteBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
+
     return Stack(
       children: [
         Container(
-          color: Theme.of(context).brightness == Brightness.dark
+          color: isDark
               ? AppColors.nightBackground
               : AppColors.cream,
         ),
@@ -270,7 +318,7 @@ class _CuteBackground extends StatelessWidget {
           top: -70,
           right: -60,
           child: _SoftBlob(
-            color: Theme.of(context).brightness == Brightness.dark
+            color: isDark
                 ? AppColors.nightLavender.withOpacity(0.20)
                 : AppColors.lavender.withOpacity(0.55),
             size: 220,
@@ -280,7 +328,7 @@ class _CuteBackground extends StatelessWidget {
           top: 230,
           left: -80,
           child: _SoftBlob(
-            color: Theme.of(context).brightness == Brightness.dark
+            color: isDark
                 ? AppColors.nightBlush.withOpacity(0.18)
                 : AppColors.blush.withOpacity(0.50),
             size: 210,
@@ -290,7 +338,7 @@ class _CuteBackground extends StatelessWidget {
           bottom: 110,
           right: -70,
           child: _SoftBlob(
-            color: Theme.of(context).brightness == Brightness.dark
+            color: isDark
                 ? AppColors.nightBlue.withOpacity(0.18)
                 : AppColors.paleBlue.withOpacity(0.55),
             size: 250,
@@ -332,19 +380,19 @@ class _CuteWellnessHero extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark =
         Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: isDark
-          ? [
-          AppColors.nightCardSoft,
-          AppColors.nightCard,
-          AppColors.nightBackground,
-
+              ? [
+            AppColors.nightCardSoft,
+            AppColors.nightCard,
+            AppColors.nightBackground,
           ]
-          : const[
+              : const [
             AppColors.blush,
             AppColors.lavender,
             AppColors.paleBlue,
@@ -403,10 +451,8 @@ class _CuteWellnessHero extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 13,
                     height: 1.5,
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.color ??
+                    color:
+                    Theme.of(context).textTheme.bodyMedium?.color ??
                         AppColors.textSoft,
                   ),
                 ),
@@ -421,15 +467,16 @@ class _CuteWellnessHero extends StatelessWidget {
 
 class _CuteCompanionCard extends StatelessWidget {
   final TextEditingController controller;
-  final String reply;
+  final List<ComfortMessage> messages;
+  final ScrollController conversationController;
   final bool isThinking;
   final VoidCallback onGenerate;
   final void Function(String text) onChipTap;
 
-
   const _CuteCompanionCard({
     required this.controller,
-    required this.reply,
+    required this.messages,
+    required this.conversationController,
     required this.isThinking,
     required this.onGenerate,
     required this.onChipTap,
@@ -437,12 +484,16 @@ class _CuteCompanionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.nightCard : Colors.white.withOpacity(0.72),
+        color: isDark
+            ? AppColors.nightCard
+            : Colors.white.withOpacity(0.72),
         borderRadius: BorderRadius.circular(36),
         border: Border.all(
           color: isDark
@@ -513,27 +564,37 @@ class _CuteCompanionCard extends StatelessWidget {
               _ComfortChip(
                 label: "Sad",
                 emoji: "😔",
-                onTap: () => onChipTap("I feel sad today"),
+                onTap: () => onChipTap(
+                  "I feel sad today",
+                ),
               ),
               _ComfortChip(
                 label: "Stressed",
                 emoji: "😰",
-                onTap: () => onChipTap("I feel stressed and anxious"),
+                onTap: () => onChipTap(
+                  "I feel stressed and anxious",
+                ),
               ),
               _ComfortChip(
                 label: "Study",
                 emoji: "📚",
-                onTap: () => onChipTap("I have exam and assignment stress"),
+                onTap: () => onChipTap(
+                  "I have exam and assignment stress",
+                ),
               ),
               _ComfortChip(
                 label: "Tired",
                 emoji: "😴",
-                onTap: () => onChipTap("I feel tired and exhausted"),
+                onTap: () => onChipTap(
+                  "I feel tired and exhausted",
+                ),
               ),
               _ComfortChip(
                 label: "Lonely",
                 emoji: "🤍",
-                onTap: () => onChipTap("I feel lonely"),
+                onTap: () => onChipTap(
+                  "I feel lonely",
+                ),
               ),
             ],
           ),
@@ -543,7 +604,9 @@ class _CuteCompanionCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: isDark ? AppColors.nightCardSoft : AppColors.cream.withOpacity(0.80),
+              color: isDark
+                  ? AppColors.nightCardSoft
+                  : AppColors.cream.withOpacity(0.80),
               borderRadius: BorderRadius.circular(28),
               border: Border.all(
                 color: AppColors.border,
@@ -552,7 +615,15 @@ class _CuteCompanionCard extends StatelessWidget {
             child: TextField(
               controller: controller,
               maxLines: 4,
-              cursorColor: AppColors.deepBlue,
+              textInputAction: TextInputAction.send,
+              onSubmitted: (_) {
+                if (!isThinking) {
+                  onGenerate();
+                }
+              },
+              cursorColor: isDark
+                  ? AppColors.nightBlue
+                  : AppColors.deepBlue,
               style: GoogleFonts.poppins(
                 fontSize: 14,
                 height: 1.6,
@@ -564,9 +635,9 @@ class _CuteCompanionCard extends StatelessWidget {
                 border: InputBorder.none,
                 hintText: "Today my mind feels...",
                 hintStyle: GoogleFonts.poppins(
-                    color: isDark
-                        ? AppColors.nightTextSoft.withOpacity(0.7)
-                        : AppColors.textSoft.withOpacity(0.7)
+                  color: isDark
+                      ? AppColors.nightTextSoft.withOpacity(0.7)
+                      : AppColors.textSoft.withOpacity(0.7),
                 ),
               ),
             ),
@@ -582,20 +653,17 @@ class _CuteCompanionCard extends StatelessWidget {
                 backgroundColor: AppColors.deepBlue,
                 foregroundColor: Colors.white,
                 elevation: 0,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(26),
                 ),
               ),
-              child: isThinking
-                  ? Text(
-                "MindBloom is listening...",
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w700,
-                ),
-              )
-                  : Text(
-                "Comfort Me",
+              child: Text(
+                isThinking
+                    ? "MindBloom is listening..."
+                    : "Comfort Me",
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w700,
                 ),
@@ -607,11 +675,13 @@ class _CuteCompanionCard extends StatelessWidget {
 
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 400),
-            child: _CompanionReplyBubble(
-              key: ValueKey(reply + isThinking.toString()),
-              reply: isThinking
-                  ? "I’m listening softly. Give me a tiny moment..."
-                  : reply,
+            child: ComfortConversation(
+              key: ValueKey(
+                "${messages.length}-$isThinking",
+              ),
+              messages: messages,
+              isThinking: isThinking,
+              scrollController: conversationController,
             ),
           ),
         ],
@@ -651,66 +721,6 @@ class _ComfortChip extends StatelessWidget {
   }
 }
 
-class _CompanionReplyBubble extends StatelessWidget {
-  final String reply;
-
-  const _CompanionReplyBubble({
-    super.key,
-    required this.reply,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors:Theme.of(context).brightness == Brightness.dark
-              ? [
-            AppColors.nightCardSoft,
-            AppColors.nightCard,
-            AppColors.nightBackground,
-          ]
-              : const  [
-            AppColors.mint,
-            AppColors.paleBlue,
-            AppColors.blush,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.9),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "🧸",
-            style: TextStyle(fontSize: 28),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              reply,
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                height: 1.65,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.nightText
-                    : AppColors.textDark,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _CuteSectionHeader extends StatelessWidget {
   final String sticker;
   final String title;
@@ -740,7 +750,10 @@ class _CuteSectionHeader extends StatelessWidget {
                 style: GoogleFonts.playfairDisplay(
                   fontSize: 30,
                   fontWeight: FontWeight.w700,
-                  color: Theme.of(context).textTheme.headlineMedium?.color,
+                  color: Theme.of(context)
+                      .textTheme
+                      .headlineMedium
+                      ?.color,
                 ),
               ),
               const SizedBox(height: 4),
@@ -749,7 +762,8 @@ class _CuteSectionHeader extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 13,
                   height: 1.45,
-                  color:Theme.of(context).textTheme.bodyMedium?.color,
+                  color:
+                  Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
             ],
@@ -1005,28 +1019,27 @@ class _CuteMovementItem extends StatelessWidget {
 class _CuteResetTools extends StatelessWidget {
   final VoidCallback onBreathTap;
 
-
   const _CuteResetTools({
     required this.onBreathTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
         _CuteResetTile(
           emoji: "🌬️",
           title: "Soft Breath",
-          subtitle: "Inhale for 4 seconds. Exhale for 6 seconds.",
+          subtitle:
+          "Inhale for 4 seconds. Exhale for 6 seconds.",
           color: AppColors.paleBlue,
           onTap: onBreathTap,
         ),
         _CuteResetTile(
           emoji: "💧",
           title: "Drink Water",
-          subtitle: "A tiny body reset can help your mind feel lighter.",
+          subtitle:
+          "A tiny body reset can help your mind feel lighter.",
           color: AppColors.mint,
           onTap: () {
             Navigator.push(
@@ -1040,7 +1053,8 @@ class _CuteResetTools extends StatelessWidget {
         _CuteResetTile(
           emoji: "🖐️",
           title: "Ground Yourself",
-          subtitle: "Name 5 things you can see around you.",
+          subtitle:
+          "Name 5 things you can see around you.",
           color: AppColors.blush,
           onTap: () {
             Navigator.push(

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../ai_comfort/models/comfort_message.dart';
 import '../ai_comfort/services/gemini_services.dart';
 import 'Ground_Yourself_Screen.dart';
 import 'breathing_screen.dart';
@@ -23,6 +24,10 @@ class _WellnessScreenState extends State<WellnessScreen> {
 
   String companionReply =
       "Hi, I’m your little calm companion. Tell me what is on your mind.";
+
+  final List<ComfortMessage> conversation = [];
+
+  final ScrollController conversationController = ScrollController();
 
   bool isThinking = false;
 

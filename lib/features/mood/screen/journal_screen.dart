@@ -15,6 +15,8 @@ void showMindBloomSnackBar(
       IconData icon = Icons.check_rounded,
       bool isError = false,
     }) {
+  final isDark = Theme.of(context).brightness == Brightness.dark;
+
   ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
   ScaffoldMessenger.of(context).showSnackBar(
@@ -29,9 +31,20 @@ void showMindBloomSnackBar(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: isError
+                ? isDark
                 ? [
+              const Color(0xFF3A1F2B),
+              AppColors.nightCard,
+            ]
+                : [
               const Color(0xFFFFE1E1),
               const Color(0xFFFFF5F5),
+            ]
+                : isDark
+                ? [
+              AppColors.nightCardSoft,
+              AppColors.nightCard,
+              AppColors.nightBackground,
             ]
                 : [
               AppColors.lavender.withOpacity(0.95),
@@ -43,12 +56,16 @@ void showMindBloomSnackBar(
           ),
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: Colors.white.withOpacity(0.85),
+            color: isDark
+                ? AppColors.nightBorder
+                : Colors.white.withOpacity(0.85),
             width: 1.2,
           ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.softPurple.withOpacity(0.18),
+              color: isDark
+                  ? Colors.black.withOpacity(0.28)
+                  : AppColors.softPurple.withOpacity(0.18),
               blurRadius: 24,
               offset: const Offset(0, 12),
             ),
@@ -60,12 +77,18 @@ void showMindBloomSnackBar(
               height: 42,
               width: 42,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.65),
+                color: isDark
+                    ? AppColors.nightCardSoft
+                    : Colors.white.withOpacity(0.65),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 icon,
-                color: isError ? Colors.redAccent : AppColors.deepBlue,
+                color: isError
+                    ? Colors.redAccent
+                    : isDark
+                    ? AppColors.nightBlue
+                    : AppColors.deepBlue,
                 size: 24,
               ),
             ),
@@ -80,7 +103,9 @@ void showMindBloomSnackBar(
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.textDark,
+                      color: isDark
+                          ? AppColors.nightText
+                          : AppColors.textDark,
                     ),
                   ),
                   const SizedBox(height: 3),
@@ -90,7 +115,9 @@ void showMindBloomSnackBar(
                       fontSize: 12.5,
                       height: 1.4,
                       fontWeight: FontWeight.w500,
-                      color: AppColors.textSoft,
+                      color: isDark
+                          ? AppColors.nightTextSoft
+                          : AppColors.textSoft,
                     ),
                   ),
                 ],
@@ -240,8 +267,11 @@ class _JournalScreenState extends State<JournalScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor:
+      isDark ? AppColors.nightBackground : AppColors.cream,
       body: Stack(
         children: [
           const _PastelNotebookBackground(),
@@ -295,19 +325,29 @@ class _PastelNotebookBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Stack(
       children: [
-        Container(color: AppColors.cream),
+        Container(
+          color: isDark
+              ? AppColors.nightBackground
+              : AppColors.cream,
+        ),
         Positioned.fill(
           child: CustomPaint(
-            painter: _PastelGridPainter(),
+            painter: _PastelGridPainter(
+              isDark: isDark,
+            ),
           ),
         ),
         Positioned(
           top: -80,
           right: -70,
           child: _GlowCircle(
-            color: AppColors.lavender.withOpacity(0.55),
+            color: isDark
+                ? AppColors.nightLavender.withOpacity(0.16)
+                : AppColors.lavender.withOpacity(0.55),
             size: 220,
           ),
         ),
@@ -315,7 +355,9 @@ class _PastelNotebookBackground extends StatelessWidget {
           bottom: 120,
           left: -80,
           child: _GlowCircle(
-            color: AppColors.paleBlue.withOpacity(0.55),
+            color: isDark
+                ? AppColors.nightBlue.withOpacity(0.14)
+                : AppColors.paleBlue.withOpacity(0.55),
             size: 240,
           ),
         ),
@@ -325,22 +367,36 @@ class _PastelNotebookBackground extends StatelessWidget {
 }
 
 class _PastelGridPainter extends CustomPainter {
+  final bool isDark;
+
+  _PastelGridPainter({
+    required this.isDark,
+  });
+
   @override
   void paint(Canvas canvas, Size size) {
     final whitePaint = Paint()
-      ..color = Colors.white.withOpacity(0.35)
+      ..color = isDark
+          ? Colors.white.withOpacity(0.025)
+          : Colors.white.withOpacity(0.35)
       ..strokeWidth = 22;
 
     final lavenderPaint = Paint()
-      ..color = AppColors.lavender.withOpacity(0.26)
+      ..color = isDark
+          ? AppColors.nightLavender.withOpacity(0.055)
+          : AppColors.lavender.withOpacity(0.26)
       ..strokeWidth = 14;
 
     final bluePaint = Paint()
-      ..color = AppColors.paleBlue.withOpacity(0.30)
+      ..color = isDark
+          ? AppColors.nightBlue.withOpacity(0.05)
+          : AppColors.paleBlue.withOpacity(0.30)
       ..strokeWidth = 10;
 
     final blushPaint = Paint()
-      ..color = AppColors.blush.withOpacity(0.24)
+      ..color = isDark
+          ? AppColors.nightBlush.withOpacity(0.04)
+          : AppColors.blush.withOpacity(0.24)
       ..strokeWidth = 12;
 
     for (double x = 30; x < size.width; x += 95) {
@@ -377,8 +433,8 @@ class _PastelGridPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+  bool shouldRepaint(covariant _PastelGridPainter oldDelegate) {
+    return oldDelegate.isDark != isDark;
   }
 }
 
@@ -412,6 +468,7 @@ class _DiaryTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final letters = ["D", "i", "a", "r", "y"];
+
     final colors = [
       AppColors.warmYellow,
       AppColors.blush,
@@ -473,18 +530,26 @@ class _PromptCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.70),
+        color: isDark
+            ? AppColors.nightCard
+            : Colors.white.withOpacity(0.70),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
-          color: Colors.white.withOpacity(0.85),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withOpacity(0.85),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.lakeBlue.withOpacity(0.12),
+            color: isDark
+                ? Colors.black.withOpacity(0.22)
+                : AppColors.lakeBlue.withOpacity(0.12),
             blurRadius: 22,
             offset: const Offset(0, 12),
           ),
@@ -497,7 +562,9 @@ class _PromptCard extends StatelessWidget {
           fontSize: 25,
           fontWeight: FontWeight.w700,
           height: 1.35,
-          color: AppColors.deepBlue,
+          color: isDark
+              ? AppColors.nightText
+              : AppColors.deepBlue,
         ),
       ),
     );
@@ -517,6 +584,8 @@ class _BigDiaryPaper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -524,15 +593,21 @@ class _BigDiaryPaper extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.fromLTRB(20, 28, 20, 22),
           decoration: BoxDecoration(
-            color: const Color(0xFFFFFEFA),
+            color: isDark
+                ? AppColors.nightCard
+                : const Color(0xFFFFFEFA),
             borderRadius: BorderRadius.circular(26),
             border: Border.all(
-              color: AppColors.deepBlue,
+              color: isDark
+                  ? AppColors.nightBorder
+                  : AppColors.deepBlue,
               width: 1.8,
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.lakeBlue.withOpacity(0.20),
+                color: isDark
+                    ? Colors.black.withOpacity(0.28)
+                    : AppColors.lakeBlue.withOpacity(0.20),
                 blurRadius: 30,
                 offset: const Offset(0, 16),
               ),
@@ -548,11 +623,15 @@ class _BigDiaryPaper extends StatelessWidget {
                     maxLines: 14,
                     minLines: 12,
                     keyboardType: TextInputType.multiline,
-                    cursorColor: AppColors.deepBlue,
+                    cursorColor: isDark
+                        ? AppColors.nightBlue
+                        : AppColors.deepBlue,
                     style: GoogleFonts.poppins(
                       fontSize: 15,
                       height: 1.85,
-                      color: AppColors.textDark,
+                      color: isDark
+                          ? AppColors.nightText
+                          : AppColors.textDark,
                     ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -561,7 +640,9 @@ class _BigDiaryPaper extends StatelessWidget {
                       hintStyle: GoogleFonts.poppins(
                         fontSize: 14,
                         height: 1.85,
-                        color: AppColors.textSoft.withOpacity(0.62),
+                        color: isDark
+                            ? AppColors.nightTextSoft.withOpacity(0.56)
+                            : AppColors.textSoft.withOpacity(0.62),
                       ),
                     ),
                   ),
@@ -574,9 +655,13 @@ class _BigDiaryPaper extends StatelessWidget {
                   onPressed: isSaving ? null : onSave,
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor: AppColors.deepBlue,
+                    backgroundColor: isDark
+                        ? AppColors.nightBlue
+                        : AppColors.deepBlue,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 17),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 17,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(26),
                     ),
@@ -622,19 +707,31 @@ class _PaperLines extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Positioned.fill(
       child: CustomPaint(
-        painter: _PaperLinePainter(),
+        painter: _PaperLinePainter(
+          isDark: isDark,
+        ),
       ),
     );
   }
 }
 
 class _PaperLinePainter extends CustomPainter {
+  final bool isDark;
+
+  _PaperLinePainter({
+    required this.isDark,
+  });
+
   @override
   void paint(Canvas canvas, Size size) {
     final linePaint = Paint()
-      ..color = AppColors.lavender.withOpacity(0.48)
+      ..color = isDark
+          ? AppColors.nightBorder.withOpacity(0.55)
+          : AppColors.lavender.withOpacity(0.48)
       ..strokeWidth = 1.3;
 
     for (double y = 35; y < size.height; y += 32) {
@@ -647,8 +744,8 @@ class _PaperLinePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+  bool shouldRepaint(covariant _PaperLinePainter oldDelegate) {
+    return oldDelegate.isDark != isDark;
   }
 }
 
@@ -712,6 +809,8 @@ class _JournalHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       stream: stream,
       builder: (context, snapshot) {
@@ -729,7 +828,13 @@ class _JournalHistory extends StatelessWidget {
             padding: const EdgeInsets.all(34),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
+                colors: isDark
+                    ? [
+                  AppColors.nightCard,
+                  AppColors.nightCardSoft,
+                  AppColors.nightBackground,
+                ]
+                    : [
                   AppColors.blush.withOpacity(0.95),
                   AppColors.lavender.withOpacity(0.90),
                   AppColors.paleBlue.withOpacity(0.92),
@@ -739,11 +844,15 @@ class _JournalHistory extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(34),
               border: Border.all(
-                color: Colors.white.withOpacity(0.9),
+                color: isDark
+                    ? AppColors.nightBorder
+                    : Colors.white.withOpacity(0.9),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.softPurple.withOpacity(0.18),
+                  color: isDark
+                      ? Colors.black.withOpacity(0.25)
+                      : AppColors.softPurple.withOpacity(0.18),
                   blurRadius: 28,
                   offset: const Offset(0, 14),
                 ),
@@ -755,7 +864,9 @@ class _JournalHistory extends StatelessWidget {
                   height: 82,
                   width: 82,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.55),
+                    color: isDark
+                        ? AppColors.nightCardSoft
+                        : Colors.white.withOpacity(0.55),
                     shape: BoxShape.circle,
                   ),
                   alignment: Alignment.center,
@@ -771,7 +882,9 @@ class _JournalHistory extends StatelessWidget {
                   style: GoogleFonts.playfairDisplay(
                     fontSize: 30,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.textDark,
+                    color: isDark
+                        ? AppColors.nightText
+                        : AppColors.textDark,
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -781,7 +894,9 @@ class _JournalHistory extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     height: 1.7,
-                    color: AppColors.textSoft,
+                    color: isDark
+                        ? AppColors.nightTextSoft
+                        : AppColors.textSoft,
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -791,7 +906,9 @@ class _JournalHistory extends StatelessWidget {
                     vertical: 10,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.55),
+                    color: isDark
+                        ? AppColors.nightCardSoft
+                        : Colors.white.withOpacity(0.55),
                     borderRadius: BorderRadius.circular(22),
                   ),
                   child: Text(
@@ -799,7 +916,9 @@ class _JournalHistory extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.deepBlue,
+                      color: isDark
+                          ? AppColors.nightBlue
+                          : AppColors.deepBlue,
                     ),
                   ),
                 ),
@@ -816,7 +935,9 @@ class _JournalHistory extends StatelessWidget {
               style: GoogleFonts.playfairDisplay(
                 fontSize: 32,
                 fontWeight: FontWeight.w700,
-                color: AppColors.textDark,
+                color: isDark
+                    ? AppColors.nightText
+                    : AppColors.textDark,
               ),
             ),
             const SizedBox(height: 16),
@@ -873,6 +994,7 @@ class _SavedDiaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = getCardColor();
 
     return Container(
@@ -881,7 +1003,12 @@ class _SavedDiaryCard extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
+          colors: isDark
+              ? [
+            cardColor.withOpacity(0.38),
+            AppColors.nightCard.withOpacity(0.96),
+          ]
+              : [
             cardColor.withOpacity(0.88),
             Colors.white.withOpacity(0.65),
           ],
@@ -890,12 +1017,16 @@ class _SavedDiaryCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
-          color: Colors.white.withOpacity(0.9),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withOpacity(0.9),
           width: 1.3,
         ),
         boxShadow: [
           BoxShadow(
-            color: cardColor.withOpacity(0.30),
+            color: isDark
+                ? Colors.black.withOpacity(0.22)
+                : cardColor.withOpacity(0.30),
             blurRadius: 22,
             offset: const Offset(0, 12),
           ),
@@ -912,7 +1043,9 @@ class _SavedDiaryCard extends StatelessWidget {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.60),
+                  color: isDark
+                      ? AppColors.nightCardSoft
+                      : Colors.white.withOpacity(0.60),
                   borderRadius: BorderRadius.circular(18),
                 ),
                 child: Text(
@@ -920,16 +1053,20 @@ class _SavedDiaryCard extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.deepBlue,
+                    color: isDark
+                        ? AppColors.nightBlue
+                        : AppColors.deepBlue,
                   ),
                 ),
               ),
               const Spacer(),
               IconButton(
                 onPressed: onDelete,
-                icon: const Icon(
+                icon: Icon(
                   Icons.delete_outline_rounded,
-                  color: AppColors.deepBlue,
+                  color: isDark
+                      ? AppColors.nightBlue
+                      : AppColors.deepBlue,
                 ),
               ),
             ],
@@ -940,7 +1077,9 @@ class _SavedDiaryCard extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 15,
               height: 1.7,
-              color: AppColors.textDark,
+              color: isDark
+                  ? AppColors.nightText
+                  : AppColors.textDark,
             ),
           ),
         ],

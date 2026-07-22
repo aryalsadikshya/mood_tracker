@@ -184,41 +184,64 @@ class _TopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        _CircleButton(
-          icon: Icons.arrow_back_rounded,
-          onTap: onBack,
-        ),
-        const Spacer(),
-        Column(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isCompact = constraints.maxWidth < 380;
+
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              "Ground Yourself",
-              textAlign: TextAlign.center,
-              style: GoogleFonts.playfairDisplay(
-                fontSize: 36,
-                fontWeight: FontWeight.w800,
-                color: AppColors.textDark,
+            _CircleButton(
+              icon: Icons.arrow_back_rounded,
+              onTap: onBack,
+              size: isCompact ? 46 : 54,
+            ),
+
+            const SizedBox(width: 8),
+
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      "Ground Yourself",
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.playfairDisplay(
+                        fontSize: isCompact ? 29 : 34,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textDark,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    "Come back to this moment.",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.poppins(
+                      fontSize: isCompact ? 11.5 : 13,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textSoft,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 4),
-            Text(
-              "Come back to this moment.",
-              style: GoogleFonts.poppins(
-                fontSize: 13.5,
-                fontWeight: FontWeight.w500,
-                color: AppColors.textSoft,
-              ),
+
+            const SizedBox(width: 8),
+
+            _CircleButton(
+              icon: Icons.refresh_rounded,
+              onTap: onRestart,
+              size: isCompact ? 46 : 54,
             ),
           ],
-        ),
-        const Spacer(),
-        _CircleButton(
-          icon: Icons.refresh_rounded,
-          onTap: onRestart,
-        ),
-      ],
+        );
+      },
     );
   }
 }
@@ -226,10 +249,12 @@ class _TopBar extends StatelessWidget {
 class _CircleButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
+  final double size;
 
   const _CircleButton({
     required this.icon,
     required this.onTap,
+    this.size = 54,
   });
 
   @override
@@ -237,17 +262,17 @@ class _CircleButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 58,
-        width: 58,
+        height: size,
+        width: size,
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.86),
+          color: Colors.white.withValues(alpha: 0.86),
           shape: BoxShape.circle,
           border: Border.all(
-            color: Colors.white.withOpacity(0.92),
+            color: Colors.white.withValues(alpha: 0.92),
           ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.softPurple.withOpacity(0.13),
+              color: AppColors.softPurple.withValues(alpha: 0.13),
               blurRadius: 18,
               offset: const Offset(0, 9),
             ),
@@ -256,7 +281,7 @@ class _CircleButton extends StatelessWidget {
         child: Icon(
           icon,
           color: AppColors.deepBlue,
-          size: 25,
+          size: size < 50 ? 21 : 25,
         ),
       ),
     );

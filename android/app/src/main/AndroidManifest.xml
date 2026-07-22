@@ -6,8 +6,8 @@
 
 
     <application
-        android:label="mood_tracker"
-        android:name="${MindBloom}"
+        android:label="MindBloom"
+        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

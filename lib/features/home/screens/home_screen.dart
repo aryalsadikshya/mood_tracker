@@ -844,15 +844,19 @@ class _WeeklyOverviewSection extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(
-              "Weekly At-A-Glance",
-              style: GoogleFonts.poppins(
-                fontSize: 13,
-                fontWeight: FontWeight.w800,
-                color: textColor,
+            Expanded(
+              child: Text(
+                "Weekly At-A-Glance",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w800,
+                  color: textColor,
+                ),
               ),
             ),
-            const Spacer(),
+            const SizedBox(width: 8),
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 10,
@@ -861,26 +865,34 @@ class _WeeklyOverviewSection extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isDark
                     ? AppColors.nightCardSoft
-                    : Colors.white.withOpacity(0.50),
+                    : Colors.white.withValues(alpha: 0.50),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
                 "7 days",
+                maxLines: 1,
                 style: GoogleFonts.poppins(
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
-                  color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
+                  color: isDark
+                      ? AppColors.nightBlue
+                      : AppColors.deepBlue,
                 ),
               ),
             ),
           ],
         ),
+
         const SizedBox(height: 16),
+
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: weeklyData.map((item) {
-            return _WeeklyMoodBubble(
-              data: item,
+            return Expanded(
+              child: Center(
+                child: _WeeklyMoodBubble(
+                  data: item,
+                ),
+              ),
             );
           }).toList(),
         ),

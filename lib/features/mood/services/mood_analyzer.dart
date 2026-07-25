@@ -8,10 +8,9 @@ class MoodAnalyzer {
 
     final recentMoods = moods.take(7).toList();
 
-    final avgMood = recentMoods
-        .map((mood) => mood.moodValue)
-        .reduce((a, b) => a + b) /
-        recentMoods.length;
+    final avgMood =
+        recentMoods.map((mood) => mood.moodValue).reduce((a, b) => a + b) /
+            recentMoods.length;
 
     final stressedCount =
         recentMoods.where((mood) => mood.moodLabel == "Stressed").length;

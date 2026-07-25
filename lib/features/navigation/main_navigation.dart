@@ -26,7 +26,6 @@ class _MainNavigationState extends State<MainNavigation> {
     const InsightsScreen(),
     const WellnessScreen(),
     const ProfileScreen(),
-
   ];
 
   @override
@@ -52,16 +51,14 @@ class _MainNavigationState extends State<MainNavigation> {
       );
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
       body: screens[currentIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: currentIndex == 0
-          ? const _BreathingFab()
-          : null,
-
+      floatingActionButton: currentIndex == 0 ? const _BreathingFab() : null,
       bottomNavigationBar: Container(
         margin: const EdgeInsets.all(14),
         decoration: BoxDecoration(
@@ -85,17 +82,13 @@ class _MainNavigationState extends State<MainNavigation> {
                 currentIndex = index;
               });
             },
-
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.transparent,
             elevation: 0,
-
             selectedItemColor: AppColors.lakeBlue,
             unselectedItemColor: AppColors.textSoft,
-
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
             unselectedLabelStyle: const TextStyle(fontSize: 12),
-
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home_rounded),
@@ -124,7 +117,6 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 }
-
 
 class _BreathingFab extends StatefulWidget {
   const _BreathingFab();
@@ -189,7 +181,6 @@ class _BreathingFabState extends State<_BreathingFab>
                   ),
                 ),
               ),
-
               Transform.scale(
                 scale: _pulse.value * 1.08,
                 child: Container(
@@ -201,7 +192,6 @@ class _BreathingFabState extends State<_BreathingFab>
                   ),
                 ),
               ),
-
               FloatingActionButton(
                 elevation: 0,
                 backgroundColor: AppColors.lakeBlue,

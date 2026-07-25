@@ -17,8 +17,7 @@ class AchievementScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor:
-        isDark ? AppColors.nightBackground : AppColors.cream,
+        backgroundColor: isDark ? AppColors.nightBackground : AppColors.cream,
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -35,8 +34,7 @@ class AchievementScreen extends StatelessWidget {
         builder: (context, snapshot) {
           final moods = snapshot.data ?? [];
 
-          final achievements =
-          AchievementService.getAchievements(moods);
+          final achievements = AchievementService.getAchievements(moods);
 
           return ListView.builder(
             padding: const EdgeInsets.all(20),
@@ -46,46 +44,46 @@ class AchievementScreen extends StatelessWidget {
 
               final cardColor = achievement.unlocked
                   ? isDark
-                  ? AppColors.nightCard
-                  : Colors.white.withOpacity(0.75)
+                      ? AppColors.nightCard
+                      : Colors.white.withOpacity(0.75)
                   : isDark
-                  ? AppColors.nightCardSoft
-                  : Colors.white.withOpacity(0.35);
+                      ? AppColors.nightCardSoft
+                      : Colors.white.withOpacity(0.35);
 
               final borderColor = achievement.unlocked
                   ? isDark
-                  ? AppColors.nightBorder
-                  : AppColors.softPurple.withOpacity(0.3)
+                      ? AppColors.nightBorder
+                      : AppColors.softPurple.withOpacity(0.3)
                   : isDark
-                  ? AppColors.nightBorder.withOpacity(0.5)
-                  : Colors.white.withOpacity(0.2);
+                      ? AppColors.nightBorder.withOpacity(0.5)
+                      : Colors.white.withOpacity(0.2);
 
               final badgeColor = achievement.unlocked
                   ? isDark
-                  ? AppColors.nightCardSoft
-                  : AppColors.blush
+                      ? AppColors.nightCardSoft
+                      : AppColors.blush
                   : isDark
-                  ? AppColors.nightBorder
-                  : AppColors.border.withOpacity(0.4);
+                      ? AppColors.nightBorder
+                      : AppColors.border.withOpacity(0.4);
 
               final titleColor = achievement.unlocked
                   ? isDark
-                  ? AppColors.nightText
-                  : AppColors.textDark
+                      ? AppColors.nightText
+                      : AppColors.textDark
                   : isDark
-                  ? AppColors.nightTextSoft
-                  : AppColors.textSoft;
+                      ? AppColors.nightTextSoft
+                      : AppColors.textSoft;
 
               final descriptionColor =
-              isDark ? AppColors.nightTextSoft : AppColors.textSoft;
+                  isDark ? AppColors.nightTextSoft : AppColors.textSoft;
 
               final lockColor = achievement.unlocked
                   ? isDark
-                  ? AppColors.nightMint
-                  : Colors.green
+                      ? AppColors.nightMint
+                      : Colors.green
                   : isDark
-                  ? AppColors.nightTextSoft
-                  : Colors.grey;
+                      ? AppColors.nightTextSoft
+                      : Colors.grey;
 
               return Container(
                 margin: const EdgeInsets.only(bottom: 18),
@@ -98,14 +96,14 @@ class AchievementScreen extends StatelessWidget {
                   ),
                   boxShadow: achievement.unlocked
                       ? [
-                    BoxShadow(
-                      color: isDark
-                          ? Colors.black.withOpacity(0.22)
-                          : AppColors.softPurple.withOpacity(0.18),
-                      blurRadius: 20,
-                      offset: const Offset(0, 12),
-                    ),
-                  ]
+                          BoxShadow(
+                            color: isDark
+                                ? Colors.black.withOpacity(0.22)
+                                : AppColors.softPurple.withOpacity(0.18),
+                            blurRadius: 20,
+                            offset: const Offset(0, 12),
+                          ),
+                        ]
                       : [],
                 ),
                 child: Row(

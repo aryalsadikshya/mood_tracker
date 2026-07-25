@@ -172,9 +172,9 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   List<_WeeklyMoodData> buildWeeklyOverview(
-      List<MoodModel> moods,
-      bool isDark,
-      ) {
+    List<MoodModel> moods,
+    bool isDark,
+  ) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
 
@@ -218,8 +218,8 @@ class _HomeScreenState extends State<HomeScreen>
         label: moodForDay?.moodLabel ?? "No check-in",
         color: moodForDay == null
             ? isDark
-            ? AppColors.nightCardSoft
-            : Colors.white.withOpacity(0.60)
+                ? AppColors.nightCardSoft
+                : Colors.white.withOpacity(0.60)
             : moodColor(moodForDay.moodLabel),
         isToday: date.year == today.year &&
             date.month == today.month &&
@@ -261,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen>
 
     final total = recent.fold<int>(
       0,
-          (sum, mood) => sum + mood.moodValue,
+      (sum, mood) => sum + mood.moodValue,
     );
 
     return total / recent.length;
@@ -295,8 +295,8 @@ class _HomeScreenState extends State<HomeScreen>
 
           final color = latestMood == null
               ? isDark
-              ? AppColors.nightLavender
-              : AppColors.lavender
+                  ? AppColors.nightLavender
+                  : AppColors.lavender
               : moodColor(latestMood.moodLabel);
 
           final weeklyData = buildWeeklyOverview(moods, isDark);
@@ -454,9 +454,9 @@ class _CuteFloatingPainter extends CustomPainter {
   final bool isDark;
 
   _CuteFloatingPainter(
-      this.value, {
-        required this.isDark,
-      });
+    this.value, {
+    required this.isDark,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -472,19 +472,19 @@ class _CuteFloatingPainter extends CustomPainter {
 
     final colors = isDark
         ? [
-      Colors.white.withOpacity(0.18),
-      AppColors.nightLavender.withOpacity(0.20),
-      AppColors.nightBlue.withOpacity(0.18),
-      AppColors.nightBlush.withOpacity(0.16),
-      AppColors.nightMint.withOpacity(0.14),
-    ]
+            Colors.white.withOpacity(0.18),
+            AppColors.nightLavender.withOpacity(0.20),
+            AppColors.nightBlue.withOpacity(0.18),
+            AppColors.nightBlush.withOpacity(0.16),
+            AppColors.nightMint.withOpacity(0.14),
+          ]
         : [
-      Colors.white.withOpacity(0.50),
-      AppColors.blush.withOpacity(0.34),
-      AppColors.lavender.withOpacity(0.34),
-      AppColors.paleBlue.withOpacity(0.34),
-      AppColors.mint.withOpacity(0.30),
-    ];
+            Colors.white.withOpacity(0.50),
+            AppColors.blush.withOpacity(0.34),
+            AppColors.lavender.withOpacity(0.34),
+            AppColors.paleBlue.withOpacity(0.34),
+            AppColors.mint.withOpacity(0.30),
+          ];
 
     for (int i = 0; i < 42; i++) {
       final textPainter = TextPainter(
@@ -517,6 +517,7 @@ class _CuteFloatingPainter extends CustomPainter {
     return oldDelegate.value != value || oldDelegate.isDark != isDark;
   }
 }
+
 class _GreetingHeader extends StatelessWidget {
   final String greeting;
   final String message;
@@ -649,21 +650,22 @@ class _MoodAndWeeklyCard extends StatelessWidget {
         gradient: LinearGradient(
           colors: isDark
               ? [
-            AppColors.nightCardSoft.withOpacity(0.96),
-            AppColors.nightCard.withOpacity(0.98),
-            AppColors.nightBackground.withOpacity(0.96),
-          ]
+                  AppColors.nightCardSoft.withOpacity(0.96),
+                  AppColors.nightCard.withOpacity(0.98),
+                  AppColors.nightBackground.withOpacity(0.96),
+                ]
               : [
-            color.withOpacity(0.76),
-            Colors.white.withOpacity(0.66),
-            AppColors.cream.withOpacity(0.80),
-          ],
+                  color.withOpacity(0.76),
+                  Colors.white.withOpacity(0.66),
+                  AppColors.cream.withOpacity(0.80),
+                ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(42),
         border: Border.all(
-          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.94),
+          color:
+              isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.94),
           width: 1.5,
         ),
         boxShadow: [
@@ -874,17 +876,13 @@ class _WeeklyOverviewSection extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
-                  color: isDark
-                      ? AppColors.nightBlue
-                      : AppColors.deepBlue,
+                  color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
                 ),
               ),
             ),
           ],
         ),
-
         const SizedBox(height: 16),
-
         Row(
           children: weeklyData.map((item) {
             return Expanded(
@@ -924,11 +922,11 @@ class _WeeklyMoodBubble extends StatelessWidget {
             border: Border.all(
               color: data.isToday
                   ? isDark
-                  ? AppColors.nightBlue
-                  : AppColors.deepBlue
+                      ? AppColors.nightBlue
+                      : AppColors.deepBlue
                   : isDark
-                  ? AppColors.nightBorder
-                  : Colors.white.withOpacity(0.92),
+                      ? AppColors.nightBorder
+                      : Colors.white.withOpacity(0.92),
               width: data.isToday ? 1.5 : 1,
             ),
             boxShadow: [
@@ -957,10 +955,10 @@ class _WeeklyMoodBubble extends StatelessWidget {
             fontWeight: data.isToday ? FontWeight.w800 : FontWeight.w500,
             color: data.isToday
                 ? isDark
-                ? AppColors.nightBlue
-                : AppColors.deepBlue
+                    ? AppColors.nightBlue
+                    : AppColors.deepBlue
                 : Theme.of(context).textTheme.bodyMedium?.color ??
-                AppColors.textSoft,
+                    AppColors.textSoft,
           ),
         ),
       ],
@@ -1008,13 +1006,13 @@ class _SoftStatCard extends StatelessWidget {
               gradient: LinearGradient(
                 colors: isDark
                     ? [
-                  AppColors.nightCardSoft,
-                  AppColors.nightCard,
-                ]
+                        AppColors.nightCardSoft,
+                        AppColors.nightCard,
+                      ]
                     : [
-                  color.withOpacity(0.86),
-                  Colors.white.withOpacity(0.66),
-                ],
+                        color.withOpacity(0.86),
+                        Colors.white.withOpacity(0.66),
+                      ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -1089,21 +1087,22 @@ class _InsightCard extends StatelessWidget {
         gradient: LinearGradient(
           colors: isDark
               ? [
-            AppColors.nightCard,
-            AppColors.nightCardSoft,
-            AppColors.nightBackground,
-          ]
+                  AppColors.nightCard,
+                  AppColors.nightCardSoft,
+                  AppColors.nightBackground,
+                ]
               : const [
-            AppColors.mint,
-            AppColors.paleBlue,
-            AppColors.blush,
-          ],
+                  AppColors.mint,
+                  AppColors.paleBlue,
+                  AppColors.blush,
+                ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(34),
         border: Border.all(
-          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.94),
+          color:
+              isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.94),
         ),
         boxShadow: [
           BoxShadow(
@@ -1184,7 +1183,8 @@ class _TinyResetCard extends StatelessWidget {
         color: isDark ? AppColors.nightCard : Colors.white.withOpacity(0.60),
         borderRadius: BorderRadius.circular(34),
         border: Border.all(
-          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.94),
+          color:
+              isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.94),
         ),
         boxShadow: [
           BoxShadow(
@@ -1262,7 +1262,8 @@ class _StickerBubble extends StatelessWidget {
         color: color.withOpacity(isDark ? 0.28 : 0.72),
         shape: BoxShape.circle,
         border: Border.all(
-          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.96),
+          color:
+              isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.96),
         ),
         boxShadow: [
           BoxShadow(
@@ -1328,5 +1329,3 @@ class _WeeklyMoodData {
     required this.hasMood,
   });
 }
-
-

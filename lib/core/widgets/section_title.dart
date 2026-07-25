@@ -16,27 +16,20 @@ class SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment:
-      CrossAxisAlignment.start,
-
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
-
-          style:
-          GoogleFonts.playfairDisplay(
+          style: GoogleFonts.playfairDisplay(
             fontSize: 30,
             fontWeight: FontWeight.w700,
             color: AppColors.textDark,
           ),
         ),
-
         if (subtitle != null) ...[
           const SizedBox(height: 6),
-
           Text(
             subtitle!,
-
             style: GoogleFonts.poppins(
               fontSize: 13,
               height: 1.5,

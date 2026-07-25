@@ -160,11 +160,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               border: Border.all(
                 color: isSelected
                     ? isDark
-                    ? AppColors.nightBlue
-                    : AppColors.deepBlue
+                        ? AppColors.nightBlue
+                        : AppColors.deepBlue
                     : isDark
-                    ? AppColors.nightBorder
-                    : Colors.white,
+                        ? AppColors.nightBorder
+                        : Colors.white,
                 width: isSelected ? 2.4 : 1.5,
               ),
               boxShadow: [
@@ -172,8 +172,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   color: isDark
                       ? Colors.black.withOpacity(isSelected ? 0.24 : 0.12)
                       : avatar.color.withOpacity(
-                    isSelected ? 0.35 : 0.12,
-                  ),
+                          isSelected ? 0.35 : 0.12,
+                        ),
                   blurRadius: isSelected ? 18 : 10,
                   offset: const Offset(0, 8),
                 ),
@@ -199,14 +199,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         vertical: 6,
       ),
       decoration: BoxDecoration(
-        color: isDark
-            ? AppColors.nightCard
-            : Colors.white.withOpacity(0.65),
+        color: isDark ? AppColors.nightCard : Colors.white.withOpacity(0.65),
         borderRadius: BorderRadius.circular(30),
         border: Border.all(
-          color: isDark
-              ? AppColors.nightBorder
-              : Colors.white.withOpacity(0.85),
+          color:
+              isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.85),
         ),
         boxShadow: [
           BoxShadow(
@@ -228,9 +225,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           border: InputBorder.none,
           hintText: "Enter your name",
           hintStyle: GoogleFonts.poppins(
-            color: isDark
-                ? AppColors.nightTextSoft
-                : AppColors.textSoft,
+            color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
           ),
           icon: Icon(
             Icons.person_outline_rounded,
@@ -250,8 +245,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         onPressed: isLoading ? null : saveProfile,
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          backgroundColor:
-          isDark ? AppColors.nightBlue : AppColors.lakeBlue,
+          backgroundColor: isDark ? AppColors.nightBlue : AppColors.lakeBlue,
           foregroundColor: Colors.white,
           disabledBackgroundColor: isDark
               ? AppColors.nightCardSoft
@@ -263,20 +257,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
         child: isLoading
             ? const SizedBox(
-          height: 22,
-          width: 22,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            color: Colors.white,
-          ),
-        )
+                height: 22,
+                width: 22,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              )
             : Text(
-          "Save Profile",
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w700,
-            fontSize: 15,
-          ),
-        ),
+                "Save Profile",
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                ),
+              ),
       ),
     );
   }
@@ -288,8 +282,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor:
-        isDark ? AppColors.nightBackground : AppColors.cream,
+        backgroundColor: isDark ? AppColors.nightBackground : AppColors.cream,
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -306,29 +299,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Column(
           children: [
             buildAvatarPreview(),
-
             const SizedBox(height: 16),
-
             Text(
               "Choose your MindBloom avatar",
               style: GoogleFonts.poppins(
                 fontSize: 13,
-                color: isDark
-                    ? AppColors.nightTextSoft
-                    : AppColors.textSoft,
+                color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
               ),
             ),
-
             const SizedBox(height: 28),
-
             buildAvatarPicker(),
-
             const SizedBox(height: 34),
-
             buildNameField(),
-
             const SizedBox(height: 34),
-
             buildSaveButton(),
           ],
         ),

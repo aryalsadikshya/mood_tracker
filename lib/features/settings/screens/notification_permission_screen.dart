@@ -102,9 +102,7 @@ class _NotificationPermissionScreenState
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 24),
-
                   Text(
                     "Gentle reminders are on",
                     textAlign: TextAlign.center,
@@ -114,9 +112,7 @@ class _NotificationPermissionScreenState
                       color: AppColors.textDark,
                     ),
                   ),
-
                   const SizedBox(height: 14),
-
                   Text(
                     "MindBloom will remind you daily to pause, breathe, and check in with yourself.",
                     textAlign: TextAlign.center,
@@ -126,9 +122,7 @@ class _NotificationPermissionScreenState
                       color: AppColors.textSoft,
                     ),
                   ),
-
                   const SizedBox(height: 26),
-
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
@@ -146,9 +140,7 @@ class _NotificationPermissionScreenState
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 28),
-
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -230,9 +222,7 @@ class _NotificationPermissionScreenState
                   color: AppColors.deepBlue,
                 ),
               ),
-
               const SizedBox(height: 32),
-
               Text(
                 "Stay Connected to Your Mind",
                 textAlign: TextAlign.center,
@@ -242,9 +232,7 @@ class _NotificationPermissionScreenState
                   color: AppColors.textDark,
                 ),
               ),
-
               const SizedBox(height: 18),
-
               Text(
                 "MindBloom can gently remind you to reflect, slow down, and reconnect with yourself.",
                 textAlign: TextAlign.center,
@@ -254,28 +242,24 @@ class _NotificationPermissionScreenState
                   color: AppColors.textSoft,
                 ),
               ),
-
               const SizedBox(height: 42),
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: isLoading ? null : enableNotifications,
                   child: isLoading
                       ? const SizedBox(
-                    height: 22,
-                    width: 22,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
-                  )
+                          height: 22,
+                          width: 22,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
                       : const Text("Enable Notifications"),
                 ),
               ),
-
               const SizedBox(height: 14),
-
               TextButton(
                 onPressed: isLoading ? null : skipNotifications,
                 child: const Text("Maybe Later"),

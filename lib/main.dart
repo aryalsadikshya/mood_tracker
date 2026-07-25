@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter/foundation.dart';
 import 'firebase_options.dart';
 import 'features/splash/splash_screen.dart';
 import 'core/theme/app_theme.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
-
 
 final ValueNotifier<bool> isDarkMode = ValueNotifier(false);
 
@@ -16,10 +15,14 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.debug,
-    appleProvider: AppleProvider.debug,
-  );
+  if (!kIsWeb) {
+    await FirebaseAppCheck.instance.activate(
+      androidProvider:
+          kDebugMode ? AndroidProvider.debug : AndroidProvider.playIntegrity,
+      appleProvider:
+          kDebugMode ? AppleProvider.debug : AppleProvider.deviceCheck,
+    );
+  }
 
   final prefs = await SharedPreferences.getInstance();
   isDarkMode.value = prefs.getBool("darkMode") ?? false;

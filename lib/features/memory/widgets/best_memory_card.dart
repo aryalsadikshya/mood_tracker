@@ -45,8 +45,7 @@ class BestMemoryCard extends StatelessWidget {
         ],
       ),
       child: Column(
-        crossAxisAlignment:
-        CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -62,35 +61,25 @@ class BestMemoryCard extends StatelessWidget {
                   color: AppColors.deepBlue,
                 ),
               ),
-
               const SizedBox(width: 14),
-
               Expanded(
                 child: Column(
-                  crossAxisAlignment:
-                  CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Best Memory",
-                      style:
-                      GoogleFonts.playfairDisplay(
+                      style: GoogleFonts.playfairDisplay(
                         fontSize: 26,
-                        fontWeight:
-                        FontWeight.w700,
-                        color:
-                        AppColors.textDark,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textDark,
                       ),
                     ),
-
                     const SizedBox(height: 4),
-
                     Text(
                       "A moment worth remembering",
-                      style:
-                      GoogleFonts.poppins(
+                      style: GoogleFonts.poppins(
                         fontSize: 12,
-                        color:
-                        AppColors.textSoft,
+                        color: AppColors.textSoft,
                       ),
                     ),
                   ],
@@ -98,19 +87,15 @@ class BestMemoryCard extends StatelessWidget {
               ),
             ],
           ),
-
           const SizedBox(height: 26),
-
           Container(
-            padding:
-            const EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 14,
               vertical: 8,
             ),
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.45),
-              borderRadius:
-              BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(18),
             ),
             child: Text(
               memory.mood,
@@ -121,9 +106,7 @@ class BestMemoryCard extends StatelessWidget {
               ),
             ),
           ),
-
           const SizedBox(height: 20),
-
           Text(
             '"${memory.note}"',
             style: GoogleFonts.playfairDisplay(
@@ -133,9 +116,7 @@ class BestMemoryCard extends StatelessWidget {
               color: AppColors.textDark,
             ),
           ),
-
           const SizedBox(height: 24),
-
           Row(
             children: [
               const Icon(
@@ -143,9 +124,7 @@ class BestMemoryCard extends StatelessWidget {
                 color: AppColors.deepBlue,
                 size: 18,
               ),
-
               const SizedBox(width: 8),
-
               Text(
                 formattedDate(memory.date),
                 style: GoogleFonts.poppins(

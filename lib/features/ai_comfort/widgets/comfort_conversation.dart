@@ -65,23 +65,21 @@ class _EmptyConversation extends StatelessWidget {
         gradient: LinearGradient(
           colors: isDark
               ? [
-            AppColors.nightCardSoft,
-            AppColors.nightCard,
-            AppColors.nightBackground,
-          ]
+                  AppColors.nightCardSoft,
+                  AppColors.nightCard,
+                  AppColors.nightBackground,
+                ]
               : const [
-            AppColors.mint,
-            AppColors.paleBlue,
-            AppColors.blush,
-          ],
+                  AppColors.mint,
+                  AppColors.paleBlue,
+                  AppColors.blush,
+                ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
-          color: isDark
-              ? AppColors.nightBorder
-              : Colors.white.withOpacity(0.9),
+          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.9),
         ),
       ),
       child: Row(
@@ -98,9 +96,7 @@ class _EmptyConversation extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 14,
                 height: 1.65,
-                color: isDark
-                    ? AppColors.nightText
-                    : AppColors.textDark,
+                color: isDark ? AppColors.nightText : AppColors.textDark,
               ),
             ),
           ),
@@ -124,9 +120,7 @@ class _MessageBubble extends StatelessWidget {
     final isUser = message.role == ComfortMessageRole.user;
 
     return Align(
-      alignment: isUser
-          ? Alignment.centerRight
-          : Alignment.centerLeft,
+      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         constraints: const BoxConstraints(
           maxWidth: 290,
@@ -139,11 +133,11 @@ class _MessageBubble extends StatelessWidget {
         decoration: BoxDecoration(
           color: isUser
               ? isDark
-              ? AppColors.nightBlue
-              : AppColors.deepBlue
+                  ? AppColors.nightBlue
+                  : AppColors.deepBlue
               : isDark
-              ? AppColors.nightCardSoft
-              : AppColors.paleBlue,
+                  ? AppColors.nightCardSoft
+                  : AppColors.paleBlue,
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(22),
             topRight: const Radius.circular(22),
@@ -158,8 +152,8 @@ class _MessageBubble extends StatelessWidget {
             color: isUser
                 ? Colors.transparent
                 : isDark
-                ? AppColors.nightBorder
-                : Colors.white.withOpacity(0.85),
+                    ? AppColors.nightBorder
+                    : Colors.white.withOpacity(0.85),
           ),
         ),
         child: Column(
@@ -179,9 +173,7 @@ class _MessageBubble extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
-                      color: isDark
-                          ? AppColors.nightBlue
-                          : AppColors.deepBlue,
+                      color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
                     ),
                   ),
                 ],
@@ -196,8 +188,8 @@ class _MessageBubble extends StatelessWidget {
                 color: isUser
                     ? Colors.white
                     : isDark
-                    ? AppColors.nightText
-                    : AppColors.textDark,
+                        ? AppColors.nightText
+                        : AppColors.textDark,
               ),
             ),
             const SizedBox(height: 6),
@@ -209,8 +201,8 @@ class _MessageBubble extends StatelessWidget {
                 color: isUser
                     ? Colors.white.withOpacity(0.72)
                     : isDark
-                    ? AppColors.nightTextSoft.withOpacity(0.72)
-                    : AppColors.textSoft.withOpacity(0.72),
+                        ? AppColors.nightTextSoft.withOpacity(0.72)
+                        : AppColors.textSoft.withOpacity(0.72),
               ),
             ),
           ],
@@ -223,8 +215,8 @@ class _MessageBubble extends StatelessWidget {
     final hour = dateTime.hour > 12
         ? dateTime.hour - 12
         : dateTime.hour == 0
-        ? 12
-        : dateTime.hour;
+            ? 12
+            : dateTime.hour;
 
     final minute = dateTime.minute.toString().padLeft(2, "0");
     final period = dateTime.hour >= 12 ? "PM" : "AM";
@@ -275,9 +267,7 @@ class _ThinkingBubbleState extends State<_ThinkingBubble>
           vertical: 14,
         ),
         decoration: BoxDecoration(
-          color: isDark
-              ? AppColors.nightCardSoft
-              : AppColors.paleBlue,
+          color: isDark ? AppColors.nightCardSoft : AppColors.paleBlue,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(22),
             topRight: Radius.circular(22),
@@ -285,9 +275,8 @@ class _ThinkingBubbleState extends State<_ThinkingBubble>
             bottomRight: Radius.circular(22),
           ),
           border: Border.all(
-            color: isDark
-                ? AppColors.nightBorder
-                : Colors.white.withOpacity(0.85),
+            color:
+                isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.85),
           ),
         ),
         child: Row(
@@ -306,10 +295,9 @@ class _ThinkingBubbleState extends State<_ThinkingBubble>
                 return Row(
                   children: List.generate(
                     3,
-                        (index) {
+                    (index) {
                       final threshold = index / 3;
-                      final active =
-                          (value - threshold).abs() < 0.25;
+                      final active = (value - threshold).abs() < 0.25;
 
                       return AnimatedContainer(
                         duration: const Duration(
@@ -321,9 +309,8 @@ class _ThinkingBubbleState extends State<_ThinkingBubble>
                         height: active ? 8 : 5,
                         width: active ? 8 : 5,
                         decoration: BoxDecoration(
-                          color: isDark
-                              ? AppColors.nightBlue
-                              : AppColors.deepBlue,
+                          color:
+                              isDark ? AppColors.nightBlue : AppColors.deepBlue,
                           shape: BoxShape.circle,
                         ),
                       );

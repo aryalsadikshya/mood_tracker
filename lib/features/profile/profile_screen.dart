@@ -23,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
 
     final total = moods.fold<int>(
       0,
-          (sum, mood) => sum + mood.moodValue,
+      (sum, mood) => sum + mood.moodValue,
     );
 
     return total / moods.length;
@@ -50,8 +50,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor:
-        isDark ? AppColors.nightBackground : AppColors.cream,
+        backgroundColor: isDark ? AppColors.nightBackground : AppColors.cream,
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -70,12 +69,12 @@ class ProfileScreen extends StatelessWidget {
             final profileData = profileSnapshot.data?.data() ?? {};
 
             final username =
-            (profileData["username"] ?? profileData["name"] ?? "")
-                .toString()
-                .trim();
+                (profileData["username"] ?? profileData["name"] ?? "")
+                    .toString()
+                    .trim();
 
             final avatarId =
-            (profileData["avatarId"] ?? "flower").toString().trim();
+                (profileData["avatarId"] ?? "flower").toString().trim();
 
             return StreamBuilder<List<MoodModel>>(
               stream: moodService.getMoods(),
@@ -162,7 +161,7 @@ class ProfileScreen extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (_) => const AuthScreen(),
                             ),
-                                (route) => false,
+                            (route) => false,
                           );
                         },
                       ),
@@ -200,22 +199,21 @@ class _ProfileHeader extends StatelessWidget {
         gradient: LinearGradient(
           colors: isDark
               ? [
-            AppColors.nightCardSoft,
-            AppColors.nightCard,
-            AppColors.nightBackground,
-          ]
+                  AppColors.nightCardSoft,
+                  AppColors.nightCard,
+                  AppColors.nightBackground,
+                ]
               : const [
-            AppColors.blush,
-            AppColors.lavender,
-            AppColors.paleBlue,
-          ],
+                  AppColors.blush,
+                  AppColors.lavender,
+                  AppColors.paleBlue,
+                ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(36),
         border: Border.all(
-          color:
-          isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.9),
+          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.9),
         ),
         boxShadow: [
           BoxShadow(
@@ -350,7 +348,7 @@ class _StatCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
         border: Border.all(
           color:
-          isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.85),
+              isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.85),
         ),
         boxShadow: [
           BoxShadow(
@@ -411,14 +409,14 @@ class _ActionTile extends StatelessWidget {
     final iconColor = isDanger
         ? const Color(0xFFD98282)
         : isDark
-        ? AppColors.nightBlue
-        : AppColors.deepBlue;
+            ? AppColors.nightBlue
+            : AppColors.deepBlue;
 
     final iconBackground = isDanger
         ? const Color(0xFFFFE7E7)
         : isDark
-        ? AppColors.nightCardSoft
-        : AppColors.paleBlue;
+            ? AppColors.nightCardSoft
+            : AppColors.paleBlue;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
@@ -470,8 +468,8 @@ class _ActionTile extends StatelessWidget {
                 color: isDanger
                     ? const Color(0xFFD98282)
                     : isDark
-                    ? AppColors.nightText
-                    : AppColors.textDark,
+                        ? AppColors.nightText
+                        : AppColors.textDark,
               ),
             ),
             subtitle: Text(
@@ -487,8 +485,8 @@ class _ActionTile extends StatelessWidget {
               color: isDanger
                   ? const Color(0xFFD98282)
                   : isDark
-                  ? AppColors.nightBlue
-                  : AppColors.deepBlue,
+                      ? AppColors.nightBlue
+                      : AppColors.deepBlue,
             ),
           ),
         ),
@@ -509,7 +507,7 @@ class _EmotionMeter extends StatelessWidget {
 
     final total = moods.fold<double>(
       0,
-          (sum, mood) => sum + mood.moodValue,
+      (sum, mood) => sum + mood.moodValue,
     );
 
     return (total / moods.length) / 5;
@@ -527,22 +525,21 @@ class _EmotionMeter extends StatelessWidget {
         gradient: LinearGradient(
           colors: isDark
               ? [
-            AppColors.nightCard,
-            AppColors.nightCardSoft,
-            AppColors.nightBackground,
-          ]
+                  AppColors.nightCard,
+                  AppColors.nightCardSoft,
+                  AppColors.nightBackground,
+                ]
               : const [
-            AppColors.blush,
-            AppColors.lavender,
-            AppColors.paleBlue,
-          ],
+                  AppColors.blush,
+                  AppColors.lavender,
+                  AppColors.paleBlue,
+                ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(32),
         border: Border.all(
-          color:
-          isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.9),
+          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.9),
         ),
         boxShadow: [
           BoxShadow(
@@ -569,8 +566,8 @@ class _EmotionMeter extends StatelessWidget {
             energy >= 0.75
                 ? "Bright & Positive"
                 : energy >= 0.5
-                ? "Balanced & Calm"
-                : "Emotionally Heavy",
+                    ? "Balanced & Calm"
+                    : "Emotionally Heavy",
             style: GoogleFonts.playfairDisplay(
               fontSize: 28,
               fontWeight: FontWeight.w700,
@@ -590,8 +587,8 @@ class _EmotionMeter extends StatelessWidget {
                 energy >= 0.75
                     ? AppColors.softPink
                     : energy >= 0.5
-                    ? AppColors.mint
-                    : AppColors.softPurple,
+                        ? AppColors.mint
+                        : AppColors.softPurple,
               ),
             ),
           ),

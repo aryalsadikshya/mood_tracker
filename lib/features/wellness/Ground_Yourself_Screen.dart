@@ -129,18 +129,18 @@ class _GroundYourselfScreenState extends State<GroundYourselfScreen> {
                   const SizedBox(height: 20),
                   isComplete
                       ? _CompleteCard(
-                    onRestart: restart,
-                  )
+                          onRestart: restart,
+                        )
                       : _GroundingCard(
-                    step: steps[currentStep],
-                    stepIndex: currentStep,
-                    totalSteps: steps.length,
-                    controllers: controllers[currentStep],
-                    onNext: nextStep,
-                    onPrevious: previousStep,
-                    showBack: currentStep > 0,
-                    isLastStep: isLastStep,
-                  ),
+                          step: steps[currentStep],
+                          stepIndex: currentStep,
+                          totalSteps: steps.length,
+                          controllers: controllers[currentStep],
+                          onNext: nextStep,
+                          onPrevious: previousStep,
+                          showBack: currentStep > 0,
+                          isLastStep: isLastStep,
+                        ),
                   const SizedBox(height: 22),
                   _CalmGarden(
                     completedSteps: isComplete ? steps.length : currentStep,
@@ -195,9 +195,7 @@ class _TopBar extends StatelessWidget {
               onTap: onBack,
               size: isCompact ? 46 : 54,
             ),
-
             const SizedBox(width: 8),
-
             Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -230,9 +228,7 @@ class _TopBar extends StatelessWidget {
                 ],
               ),
             ),
-
             const SizedBox(width: 8),
-
             _CircleButton(
               icon: Icons.refresh_rounded,
               onTap: onRestart,
@@ -388,7 +384,7 @@ class _GroundingCard extends StatelessWidget {
           const SizedBox(height: 24),
           ...List.generate(
             controllers.length,
-                (index) => _CuteInputField(
+            (index) => _CuteInputField(
               controller: controllers[index],
               hint: "${step.hint} ${index + 1}",
               color: step.color,

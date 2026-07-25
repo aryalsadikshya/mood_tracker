@@ -44,12 +44,11 @@ class EmotionalConstellationScreen extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     height: 1.6,
-                    color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
+                    color:
+                        isDark ? AppColors.nightTextSoft : AppColors.textSoft,
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(22),
@@ -79,23 +78,22 @@ class EmotionalConstellationScreen extends StatelessWidget {
                         style: GoogleFonts.playfairDisplay(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
-                          color: isDark ? AppColors.nightText : AppColors.textDark,
+                          color:
+                              isDark ? AppColors.nightText : AppColors.textDark,
                         ),
                       ),
-
                       const SizedBox(height: 8),
-
                       Text(
                         "Tap a star to revisit the mood, note, and date behind it.",
                         style: GoogleFonts.poppins(
                           fontSize: 13,
                           height: 1.5,
-                          color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
+                          color: isDark
+                              ? AppColors.nightTextSoft
+                              : AppColors.textSoft,
                         ),
                       ),
-
                       const SizedBox(height: 22),
-
                       AspectRatio(
                         aspectRatio: 1.08,
                         child: Container(
@@ -103,15 +101,15 @@ class EmotionalConstellationScreen extends StatelessWidget {
                             gradient: LinearGradient(
                               colors: isDark
                                   ? const [
-                                AppColors.nightBackground,
-                                AppColors.nightCard,
-                                AppColors.nightCardSoft,
-                              ]
+                                      AppColors.nightBackground,
+                                      AppColors.nightCard,
+                                      AppColors.nightCardSoft,
+                                    ]
                                   : const [
-                                Color(0xFFF8EEF8),
-                                Color(0xFFEAF6FA),
-                                Color(0xFFFDFCF0),
-                              ],
+                                      Color(0xFFF8EEF8),
+                                      Color(0xFFEAF6FA),
+                                      Color(0xFFFDFCF0),
+                                    ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
@@ -127,9 +125,7 @@ class EmotionalConstellationScreen extends StatelessWidget {
                               : _ConstellationSky(moods: latestMoods),
                         ),
                       ),
-
                       const SizedBox(height: 20),
-
                       const _ConstellationLegend(),
                     ],
                   ),
@@ -245,9 +241,7 @@ class _ConstellationSky extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-
                 const SizedBox(height: 22),
-
                 Container(
                   height: 76,
                   width: 76,
@@ -268,9 +262,7 @@ class _ConstellationSky extends StatelessWidget {
                     style: const TextStyle(fontSize: 36),
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
                 Text(
                   mood.moodLabel,
                   style: GoogleFonts.playfairDisplay(
@@ -279,17 +271,15 @@ class _ConstellationSky extends StatelessWidget {
                     color: isDark ? AppColors.nightText : AppColors.textDark,
                   ),
                 ),
-
                 const SizedBox(height: 6),
-
                 Text(
                   formatDate(mood.createdAt),
                   style: GoogleFonts.poppins(
                     fontSize: 13,
-                    color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
+                    color:
+                        isDark ? AppColors.nightTextSoft : AppColors.textSoft,
                   ),
                 ),
-
                 if (mood.note.trim().isNotEmpty) ...[
                   const SizedBox(height: 18),
                   Text(
@@ -298,7 +288,8 @@ class _ConstellationSky extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       height: 1.5,
-                      color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
+                      color:
+                          isDark ? AppColors.nightTextSoft : AppColors.textSoft,
                     ),
                   ),
                 ],
@@ -326,7 +317,6 @@ class _ConstellationSky extends StatelessWidget {
                 isDark: isDark,
               ),
             ),
-
             ...List.generate(moods.length, (index) {
               final mood = moods[index];
               final position = positions[index % positions.length];
@@ -448,9 +438,7 @@ class _EmptyConstellation extends StatelessWidget {
               size: 48,
               color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
             ),
-
             const SizedBox(height: 14),
-
             Text(
               "Your sky is waiting",
               style: GoogleFonts.playfairDisplay(
@@ -459,9 +447,7 @@ class _EmptyConstellation extends StatelessWidget {
                 color: isDark ? AppColors.nightText : AppColors.textDark,
               ),
             ),
-
             const SizedBox(height: 8),
-
             Text(
               "Log your first mood to place the first star.",
               textAlign: TextAlign.center,
@@ -505,9 +491,7 @@ class _ConstellationLegend extends StatelessWidget {
             vertical: 7,
           ),
           decoration: BoxDecoration(
-            color: isDark
-                ? AppColors.nightCardSoft
-                : color.withOpacity(0.45),
+            color: isDark ? AppColors.nightCardSoft : color.withOpacity(0.45),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: isDark

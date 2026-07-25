@@ -131,7 +131,6 @@ class _BreathingScreenState extends State<BreathingScreen>
       body: Stack(
         children: [
           const _BreathingBackground(),
-
           SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(22, 18, 22, 32),
@@ -150,14 +149,12 @@ class _BreathingScreenState extends State<BreathingScreen>
                         text: completed
                             ? "Done"
                             : isRunning
-                            ? "Breathing"
-                            : "Ready",
+                                ? "Breathing"
+                                : "Ready",
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 28),
-
                   Text(
                     "Soft Breath",
                     textAlign: TextAlign.center,
@@ -167,9 +164,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                       color: AppColors.textDark,
                     ),
                   ),
-
                   const SizedBox(height: 10),
-
                   Text(
                     "A tiny calm reset for your body and mind.",
                     textAlign: TextAlign.center,
@@ -179,9 +174,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                       color: AppColors.textSoft,
                     ),
                   ),
-
                   const SizedBox(height: 34),
-
                   _BreathingCard(
                     phase: phase,
                     seconds: seconds,
@@ -190,30 +183,23 @@ class _BreathingScreenState extends State<BreathingScreen>
                     progress: progress,
                     animation: pulseAnimation,
                   ),
-
                   const SizedBox(height: 26),
-
                   _InstructionCard(
                     instruction: instruction,
                     phase: phase,
                   ),
-
                   const SizedBox(height: 24),
-
                   _BreathingSteps(
                     phase: phase,
                     completed: completed,
                   ),
-
                   const SizedBox(height: 28),
-
                   if (!isRunning && !completed)
                     _MainButton(
                       text: "Start Breathing",
                       icon: Icons.play_arrow_rounded,
                       onTap: startBreathing,
                     ),
-
                   if (isRunning)
                     Row(
                       children: [
@@ -234,7 +220,6 @@ class _BreathingScreenState extends State<BreathingScreen>
                         ),
                       ],
                     ),
-
                   if (completed)
                     Column(
                       children: [
@@ -314,17 +299,15 @@ class _BreathingCard extends StatelessWidget {
             completed
                 ? "Beautifully done"
                 : isRunning
-                ? "Follow the circle"
-                : "Ready to begin?",
+                    ? "Follow the circle"
+                    : "Ready to begin?",
             style: GoogleFonts.poppins(
               fontSize: 13,
               fontWeight: FontWeight.w700,
               color: AppColors.deepBlue,
             ),
           ),
-
           const SizedBox(height: 28),
-
           AnimatedBuilder(
             animation: animation,
             builder: (context, child) {
@@ -340,9 +323,7 @@ class _BreathingCard extends StatelessWidget {
               );
             },
           ),
-
           const SizedBox(height: 30),
-
           _ClockProgress(
             progress: progress,
             completed: completed,
@@ -382,7 +363,6 @@ class _BreathingOrb extends StatelessWidget {
             color: Colors.white.withOpacity(0.28),
           ),
         ),
-
         Container(
           height: 220,
           width: 220,
@@ -404,7 +384,6 @@ class _BreathingOrb extends StatelessWidget {
             ],
           ),
         ),
-
         SizedBox(
           height: 238,
           width: 238,
@@ -417,7 +396,6 @@ class _BreathingOrb extends StatelessWidget {
             ),
           ),
         ),
-
         Container(
           height: 174,
           width: 174,
@@ -435,13 +413,11 @@ class _BreathingOrb extends StatelessWidget {
                 completed
                     ? "🌸"
                     : isRunning
-                    ? "🫧"
-                    : "☁️",
+                        ? "🫧"
+                        : "☁️",
                 style: const TextStyle(fontSize: 44),
               ),
-
               const SizedBox(height: 12),
-
               FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
@@ -454,15 +430,13 @@ class _BreathingOrb extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 6),
-
               Text(
                 completed
                     ? "Complete"
                     : isRunning
-                    ? "$seconds sec"
-                    : "4 + 6",
+                        ? "$seconds sec"
+                        : "4 + 6",
                 style: GoogleFonts.poppins(
                   fontSize: 17,
                   fontWeight: FontWeight.w800,
@@ -472,7 +446,6 @@ class _BreathingOrb extends StatelessWidget {
             ],
           ),
         ),
-
         const Positioned(
           top: 20,
           left: 34,
@@ -481,7 +454,6 @@ class _BreathingOrb extends StatelessWidget {
             color: AppColors.warmYellow,
           ),
         ),
-
         const Positioned(
           bottom: 28,
           right: 32,
@@ -534,9 +506,7 @@ class _ClockProgress extends StatelessWidget {
               color: AppColors.deepBlue,
             ),
           ),
-
           const SizedBox(width: 14),
-
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
@@ -550,15 +520,13 @@ class _ClockProgress extends StatelessWidget {
               ),
             ),
           ),
-
           const SizedBox(width: 12),
-
           Text(
             completed
                 ? "100%"
                 : isRunning
-                ? "$percent%"
-                : "0%",
+                    ? "$percent%"
+                    : "0%",
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w800,
               color: AppColors.deepBlue,
@@ -604,13 +572,11 @@ class _InstructionCard extends StatelessWidget {
             phase == "Exhale"
                 ? "🌬️"
                 : phase == "Completed"
-                ? "🌸"
-                : "☁️",
+                    ? "🌸"
+                    : "☁️",
             style: const TextStyle(fontSize: 36),
           ),
-
           const SizedBox(width: 16),
-
           Expanded(
             child: Text(
               instruction,
@@ -686,7 +652,9 @@ class _StepPill extends StatelessWidget {
       duration: const Duration(milliseconds: 220),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: active || done ? color.withOpacity(0.86) : Colors.white.withOpacity(0.50),
+        color: active || done
+            ? color.withOpacity(0.86)
+            : Colors.white.withOpacity(0.50),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
           color: active ? AppColors.deepBlue : Colors.white.withOpacity(0.9),
@@ -699,8 +667,8 @@ class _StepPill extends StatelessWidget {
             done
                 ? "✓"
                 : active
-                ? "•"
-                : "○",
+                    ? "•"
+                    : "○",
             style: GoogleFonts.poppins(
               fontSize: 18,
               fontWeight: FontWeight.w800,
@@ -907,7 +875,6 @@ class _BreathingBackground extends StatelessWidget {
     return Stack(
       children: [
         Container(color: AppColors.cream),
-
         Positioned(
           top: -90,
           right: -80,
@@ -916,7 +883,6 @@ class _BreathingBackground extends StatelessWidget {
             size: 250,
           ),
         ),
-
         Positioned(
           bottom: 130,
           left: -90,
@@ -925,7 +891,6 @@ class _BreathingBackground extends StatelessWidget {
             size: 270,
           ),
         ),
-
         Positioned(
           top: 300,
           left: 46,
@@ -934,7 +899,6 @@ class _BreathingBackground extends StatelessWidget {
             size: 140,
           ),
         ),
-
         Positioned(
           bottom: -50,
           right: 30,

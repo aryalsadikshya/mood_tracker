@@ -128,7 +128,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     try {
       final credential =
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -153,7 +153,7 @@ class _SignupScreenState extends State<SignupScreen> {
         MaterialPageRoute(
           builder: (_) => const MainNavigation(),
         ),
-            (route) => false,
+        (route) => false,
       );
     } catch (e) {
       final error = e.toString().toLowerCase();
@@ -190,7 +190,6 @@ class _SignupScreenState extends State<SignupScreen> {
           child: Column(
             children: [
               const SizedBox(height: 48),
-
               Text(
                 "Create Account",
                 textAlign: TextAlign.center,
@@ -201,9 +200,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   color: const Color(0xFF262323),
                 ),
               ),
-
               const SizedBox(height: 14),
-
               Text(
                 "Begin your calm reflection journey and create your personal MindBloom space.",
                 textAlign: TextAlign.center,
@@ -213,9 +210,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   color: const Color(0xFF746C6A),
                 ),
               ),
-
               const SizedBox(height: 34),
-
               Container(
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
@@ -239,9 +234,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         icon: Icons.person_outline_rounded,
                       ),
                     ),
-
                     const SizedBox(height: 16),
-
                     TextField(
                       controller: ageController,
                       keyboardType: TextInputType.number,
@@ -250,9 +243,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         icon: Icons.cake_outlined,
                       ),
                     ),
-
                     const SizedBox(height: 16),
-
                     DropdownButtonFormField<String>(
                       value: selectedFocus,
                       decoration: inputDecoration(
@@ -277,9 +268,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         });
                       },
                     ),
-
                     const SizedBox(height: 16),
-
                     TextField(
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -288,9 +277,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         icon: Icons.mail_outline_rounded,
                       ),
                     ),
-
                     const SizedBox(height: 16),
-
                     TextField(
                       controller: passwordController,
                       obscureText: obscurePassword,
@@ -312,9 +299,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 16),
-
                     TextField(
                       controller: confirmPasswordController,
                       obscureText: obscureConfirmPassword,
@@ -330,16 +315,13 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           onPressed: () {
                             setState(() {
-                              obscureConfirmPassword =
-                              !obscureConfirmPassword;
+                              obscureConfirmPassword = !obscureConfirmPassword;
                             });
                           },
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 24),
-
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -355,28 +337,26 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         child: isLoading
                             ? const SizedBox(
-                          height: 22,
-                          width: 22,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Color(0xFF2A2430),
-                          ),
-                        )
+                                height: 22,
+                                width: 22,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Color(0xFF2A2430),
+                                ),
+                              )
                             : Text(
-                          "Create Account",
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                                "Create Account",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
                       ),
                     ),
                   ],
                 ),
               ),
-
               const SizedBox(height: 28),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -402,7 +382,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 32),
             ],
           ),

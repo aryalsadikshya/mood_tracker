@@ -138,15 +138,13 @@ class _MoodCalendarScreenState extends State<MoodCalendarScreen> {
                 ),
                 daysOfWeekStyle: DaysOfWeekStyle(
                   weekdayStyle: GoogleFonts.poppins(
-                    color: isDark
-                        ? AppColors.nightTextSoft
-                        : AppColors.textSoft,
+                    color:
+                        isDark ? AppColors.nightTextSoft : AppColors.textSoft,
                     fontWeight: FontWeight.w600,
                   ),
                   weekendStyle: GoogleFonts.poppins(
-                    color: isDark
-                        ? AppColors.nightTextSoft
-                        : AppColors.textSoft,
+                    color:
+                        isDark ? AppColors.nightTextSoft : AppColors.textSoft,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

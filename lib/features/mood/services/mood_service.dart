@@ -33,8 +33,8 @@ class MoodService {
         .snapshots()
         .map(
           (snapshot) => snapshot.docs
-          .map((doc) => MoodModel.fromMap(doc.data(), doc.id))
-          .toList(),
-    );
+              .map((doc) => MoodModel.fromMap(doc.data(), doc.id))
+              .toList(),
+        );
   }
 }

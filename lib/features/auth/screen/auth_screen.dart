@@ -194,7 +194,7 @@ class _AuthScreenState extends State<AuthScreen> {
         MaterialPageRoute(
           builder: (_) => const MainNavigation(),
         ),
-            (route) => false,
+        (route) => false,
       );
     } catch (e) {
       debugPrint("GOOGLE SIGN IN ERROR: $e");
@@ -226,7 +226,6 @@ class _AuthScreenState extends State<AuthScreen> {
             child: Column(
               children: [
                 const SizedBox(height: 54),
-
                 Text(
                   "Welcome Back",
                   textAlign: TextAlign.center,
@@ -237,9 +236,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     color: const Color(0xFF262323),
                   ),
                 ),
-
                 const SizedBox(height: 14),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 14),
                   child: Text(
@@ -252,9 +249,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 42),
-
                 Container(
                   padding: const EdgeInsets.all(22),
                   decoration: BoxDecoration(
@@ -281,9 +276,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           icon: Icons.mail_outline_rounded,
                         ),
                       ),
-
                       const SizedBox(height: 16),
-
                       TextField(
                         controller: passwordController,
                         obscureText: obscurePassword,
@@ -305,9 +298,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 10),
-
                       Align(
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
@@ -326,9 +317,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 18),
-
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
@@ -346,25 +335,23 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                           child: isLoading
                               ? const SizedBox(
-                            height: 22,
-                            width: 22,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Color(0xFF2A2430),
-                            ),
-                          )
+                                  height: 22,
+                                  width: 22,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Color(0xFF2A2430),
+                                  ),
+                                )
                               : Text(
-                            "Login",
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
+                                  "Login",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
                         ),
                       ),
-
                       const SizedBox(height: 22),
-
                       Row(
                         children: [
                           const Expanded(
@@ -393,9 +380,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 22),
-
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
@@ -414,27 +399,25 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                           child: isGoogleLoading
                               ? const SizedBox(
-                            height: 22,
-                            width: 22,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                            ),
-                          )
+                                  height: 22,
+                                  width: 22,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
                               : Text(
-                            "Continue with Google",
-                            style: GoogleFonts.poppins(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                                  "Continue with Google",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                         ),
                       ),
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 28),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -465,7 +448,6 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 32),
               ],
             ),
@@ -475,4 +457,3 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 }
-

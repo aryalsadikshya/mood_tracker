@@ -7,12 +7,10 @@ class VerifyEmailScreen extends StatefulWidget {
   const VerifyEmailScreen({super.key});
 
   @override
-  State<VerifyEmailScreen> createState() =>
-      _VerifyEmailScreenState();
+  State<VerifyEmailScreen> createState() => _VerifyEmailScreenState();
 }
 
-class _VerifyEmailScreenState
-    extends State<VerifyEmailScreen> {
+class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   bool isLoading = false;
 
   Future<void> checkVerification() async {
@@ -32,7 +30,7 @@ class _VerifyEmailScreenState
         MaterialPageRoute(
           builder: (_) => const MainNavigation(),
         ),
-            (route) => false,
+        (route) => false,
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -50,8 +48,7 @@ class _VerifyEmailScreenState
   }
 
   Future<void> resendEmail() async {
-    await FirebaseAuth.instance.currentUser
-        ?.sendEmailVerification();
+    await FirebaseAuth.instance.currentUser?.sendEmailVerification();
 
     if (!mounted) return;
 
@@ -66,8 +63,7 @@ class _VerifyEmailScreenState
 
   @override
   Widget build(BuildContext context) {
-    final email =
-        FirebaseAuth.instance.currentUser?.email ?? "";
+    final email = FirebaseAuth.instance.currentUser?.email ?? "";
 
     return Scaffold(
       body: SafeArea(
@@ -80,9 +76,7 @@ class _VerifyEmailScreenState
                 Icons.mark_email_read_rounded,
                 size: 90,
               ),
-
               const SizedBox(height: 24),
-
               const Text(
                 "Verify Your Email",
                 style: TextStyle(
@@ -90,31 +84,24 @@ class _VerifyEmailScreenState
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
               const SizedBox(height: 16),
-
               Text(
                 "We sent a verification email to:\n$email",
                 textAlign: TextAlign.center,
               ),
-
               const SizedBox(height: 32),
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed:
-                  isLoading ? null : checkVerification,
+                  onPressed: isLoading ? null : checkVerification,
                   child: isLoading
                       ? const CircularProgressIndicator()
                       : const Text(
-                    "I Verified My Email",
-                  ),
+                          "I Verified My Email",
+                        ),
                 ),
               ),
-
               const SizedBox(height: 14),
-
               TextButton(
                 onPressed: resendEmail,
                 child: const Text(

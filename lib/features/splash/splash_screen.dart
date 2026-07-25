@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../onboarding/onboarding_screen.dart';
 import '../auth/screen/auth_screen.dart';
 
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -49,9 +48,7 @@ class _SplashScreenState extends State<SplashScreen>
       } else if (currentUser != null) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (_) => const MainNavigation()
-          ),
+          MaterialPageRoute(builder: (_) => const MainNavigation()),
         );
       } else {
         Navigator.pushReplacement(
@@ -78,7 +75,7 @@ class _SplashScreenState extends State<SplashScreen>
           animation: _controller,
           builder: (context, child) {
             double opacity =
-            (_controller.value - (index * 0.2)).clamp(0.0, 1.0);
+                (_controller.value - (index * 0.2)).clamp(0.0, 1.0);
 
             return Opacity(
               opacity: opacity,
@@ -116,7 +113,6 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
           ),
-
           Positioned(
             bottom: -90,
             left: -70,
@@ -129,7 +125,6 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
           ),
-
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -154,8 +149,7 @@ class _SplashScreenState extends State<SplashScreen>
                   child: const CircleAvatar(
                     radius: 78,
                     backgroundColor: Color(0xFFFDFCF0),
-                    backgroundImage:
-                    AssetImage('assets/images/logosplash.jpg'),
+                    backgroundImage: AssetImage('assets/images/logosplash.jpg'),
                   ),
                 ),
                 const Text(
@@ -166,9 +160,6 @@ class _SplashScreenState extends State<SplashScreen>
                     color: Color(0xFF263238),
                   ),
                 ),
-
-
-
                 const Text(
                   "Pause. Reflect. Grow.",
                   style: TextStyle(
@@ -177,9 +168,7 @@ class _SplashScreenState extends State<SplashScreen>
                     color: Color(0xFF7A6F73),
                   ),
                 ),
-
                 const SizedBox(height: 23),
-
                 buildDots(),
               ],
             ),
@@ -189,5 +178,3 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 }
-
-

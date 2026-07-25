@@ -29,8 +29,8 @@ class ComfortMessage {
           ? ComfortMessageRole.assistant
           : ComfortMessageRole.user,
       createdAt: DateTime.tryParse(
-        (map["createdAt"] ?? "").toString(),
-      ) ??
+            (map["createdAt"] ?? "").toString(),
+          ) ??
           DateTime.now(),
     );
   }

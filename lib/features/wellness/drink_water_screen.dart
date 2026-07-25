@@ -59,7 +59,6 @@ class _DrinkWaterScreenState extends State<DrinkWaterScreen>
       body: Stack(
         children: [
           const _CuteHydrationBackground(),
-
           SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(22, 18, 22, 34),
@@ -69,9 +68,7 @@ class _DrinkWaterScreenState extends State<DrinkWaterScreen>
                     onBack: () => Navigator.pop(context),
                     onReset: resetCups,
                   ),
-
                   const SizedBox(height: 18),
-
                   _MainHydrationCard(
                     controller: _controller,
                     progress: progress,
@@ -80,9 +77,7 @@ class _DrinkWaterScreenState extends State<DrinkWaterScreen>
                     percent: percent,
                     onAddCup: addCup,
                   ),
-
                   const SizedBox(height: 22),
-
                   _HydrationStreakCard(
                     cupsDrunk: cupsDrunk,
                     dailyGoal: dailyGoal,
@@ -237,9 +232,7 @@ class _MainHydrationCard extends StatelessWidget {
             cupsDrunk: cupsDrunk,
             dailyGoal: dailyGoal,
           ),
-
           const SizedBox(height: 20),
-
           SizedBox(
             height: 370,
             child: Stack(
@@ -254,13 +247,11 @@ class _MainHydrationCard extends StatelessWidget {
                     opacity: 0.50,
                   ),
                 ),
-
                 Positioned(
                   right: 8,
                   bottom: 30,
                   child: _CutePlant(),
                 ),
-
                 Positioned(
                   top: 8,
                   right: 42,
@@ -269,7 +260,6 @@ class _MainHydrationCard extends StatelessWidget {
                     child: _CuteJug(controller: controller),
                   ),
                 ),
-
                 Positioned(
                   bottom: 0,
                   child: _CuteGlass(
@@ -277,7 +267,6 @@ class _MainHydrationCard extends StatelessWidget {
                     controller: controller,
                   ),
                 ),
-
                 Positioned(
                   left: 0,
                   top: 145,
@@ -287,7 +276,6 @@ class _MainHydrationCard extends StatelessWidget {
                     value: "$dailyGoal Cups",
                   ),
                 ),
-
                 Positioned(
                   right: 0,
                   top: 160,
@@ -300,9 +288,7 @@ class _MainHydrationCard extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 16),
-
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
             decoration: BoxDecoration(
@@ -340,9 +326,7 @@ class _MainHydrationCard extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 18),
-
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -350,10 +334,9 @@ class _MainHydrationCard extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 backgroundColor:
-                completed ? AppColors.mint : AppColors.deepBlue,
+                    completed ? AppColors.mint : AppColors.deepBlue,
                 disabledBackgroundColor: AppColors.mint.withOpacity(0.85),
-                foregroundColor:
-                completed ? AppColors.deepBlue : Colors.white,
+                foregroundColor: completed ? AppColors.deepBlue : Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 17),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -523,7 +506,6 @@ class _CuteGlass extends StatelessWidget {
               ),
             ),
           ),
-
           ClipPath(
             clipper: _GlassClipper(),
             child: Align(
@@ -546,7 +528,6 @@ class _CuteGlass extends StatelessWidget {
               ),
             ),
           ),
-
           AnimatedBuilder(
             animation: controller,
             builder: (context, child) {
@@ -562,12 +543,10 @@ class _CuteGlass extends StatelessWidget {
               );
             },
           ),
-
           CustomPaint(
             size: const Size(190, 250),
             painter: _GlassOutlinePainter(),
           ),
-
           Positioned(
             bottom: 72,
             child: Column(
@@ -587,7 +566,6 @@ class _CuteGlass extends StatelessWidget {
               ],
             ),
           ),
-
           Positioned(
             bottom: 94,
             left: 43,
@@ -728,9 +706,7 @@ class _HydrationStreakCard extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Icon(
-            done
-                ? Icons.check_circle_rounded
-                : Icons.favorite_border_rounded,
+            done ? Icons.check_circle_rounded : Icons.favorite_border_rounded,
             color: done ? AppColors.mint : AppColors.lakeBlue,
             size: 34,
           ),
@@ -1051,8 +1027,7 @@ class _WavePainter extends CustomPainter {
 
     final path = Path();
     for (double x = 30; x <= size.width - 30; x++) {
-      final y = waterTop +
-          8 * math.sin((x / 18) + animation * math.pi * 2);
+      final y = waterTop + 8 * math.sin((x / 18) + animation * math.pi * 2);
       if (x == 30) {
         path.moveTo(x, y);
       } else {
@@ -1201,8 +1176,8 @@ class _LeafPainter extends CustomPainter {
 
     final path = Path();
     path.moveTo(size.width / 2, 0);
-    path.quadraticBezierTo(size.width, size.height * 0.42, size.width / 2,
-        size.height);
+    path.quadraticBezierTo(
+        size.width, size.height * 0.42, size.width / 2, size.height);
     path.quadraticBezierTo(0, size.height * 0.42, size.width / 2, 0);
     path.close();
 

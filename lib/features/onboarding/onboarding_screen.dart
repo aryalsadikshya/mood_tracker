@@ -105,7 +105,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               );
             },
           ),
-
           Positioned(
             left: 0,
             right: 0,
@@ -148,7 +147,6 @@ class _FullScreenOnboardingImage extends StatelessWidget {
             filterQuality: FilterQuality.high,
           ),
         ),
-
         Positioned.fill(
           child: BackdropFilter(
             filter: ImageFilter.blur(
@@ -160,7 +158,6 @@ class _FullScreenOnboardingImage extends StatelessWidget {
             ),
           ),
         ),
-
         Positioned.fill(
           child: Container(
             decoration: BoxDecoration(
@@ -177,7 +174,6 @@ class _FullScreenOnboardingImage extends StatelessWidget {
             ),
           ),
         ),
-
         Positioned(
           top: -70,
           left: -65,
@@ -186,7 +182,6 @@ class _FullScreenOnboardingImage extends StatelessWidget {
             size: 220,
           ),
         ),
-
         Positioned(
           top: 0,
           right: -60,
@@ -195,7 +190,6 @@ class _FullScreenOnboardingImage extends StatelessWidget {
             size: 190,
           ),
         ),
-
         Positioned(
           bottom: 180,
           right: -80,
@@ -204,7 +198,6 @@ class _FullScreenOnboardingImage extends StatelessWidget {
             size: 240,
           ),
         ),
-
         SafeArea(
           bottom: false,
           child: Padding(
@@ -327,9 +320,7 @@ class _OnboardingBottomPanel extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 10),
-
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 280),
                     child: Text(
@@ -344,16 +335,12 @@ class _OnboardingBottomPanel extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 20),
-
                   _PageIndicator(
                     currentPage: currentPage,
                     totalPages: totalPages,
                   ),
-
                   const SizedBox(height: 22),
-
                   Row(
                     children: [
                       Expanded(
@@ -407,12 +394,12 @@ class _PageIndicator extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
             boxShadow: active
                 ? [
-              BoxShadow(
-                color: AppColors.lakeBlue.withOpacity(0.18),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ]
+                    BoxShadow(
+                      color: AppColors.lakeBlue.withOpacity(0.18),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ]
                 : [],
           ),
         );

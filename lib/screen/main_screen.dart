@@ -37,8 +37,10 @@ class _MainScreenState extends State<MainScreen> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: "Stats"),
-          BottomNavigationBarItem(icon:Icon(Icons.calendar_today),label:"Calendar"),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_today), label: "Calendar"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: "Settings"),
         ],
       ),
     );

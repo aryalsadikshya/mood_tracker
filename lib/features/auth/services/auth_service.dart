@@ -43,10 +43,9 @@ class AuthService {
     );
 
     final GoogleSignInAccount googleUser =
-    await GoogleSignIn.instance.authenticate();
+        await GoogleSignIn.instance.authenticate();
 
-    final GoogleSignInAuthentication googleAuth =
-        googleUser.authentication;
+    final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
     final credential = GoogleAuthProvider.credential(
       idToken: googleAuth.idToken,
@@ -64,6 +63,7 @@ class AuthService {
 
     await _auth.signOut();
   }
+
   Future<void> resetPassword({
     required String email,
   }) async {

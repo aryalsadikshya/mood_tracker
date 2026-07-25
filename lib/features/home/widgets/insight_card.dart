@@ -46,9 +46,7 @@ class InsightCard extends StatelessWidget {
             color: AppColors.deepBlue,
             size: 28,
           ),
-
           const SizedBox(height: 16),
-
           Text(
             "Your Insight Today",
             style: GoogleFonts.poppins(
@@ -57,9 +55,7 @@ class InsightCard extends StatelessWidget {
               color: AppColors.deepBlue,
             ),
           ),
-
           const SizedBox(height: 8),
-
           Text(
             insight,
             style: GoogleFonts.playfairDisplay(
@@ -69,9 +65,7 @@ class InsightCard extends StatelessWidget {
               color: AppColors.textDark,
             ),
           ),
-
           const SizedBox(height: 16),
-
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(

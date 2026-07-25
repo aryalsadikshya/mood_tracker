@@ -16,9 +16,7 @@ class HomeWelcomeBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-
       padding: const EdgeInsets.all(28),
-
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [
@@ -29,9 +27,7 @@ class HomeWelcomeBanner extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-
         borderRadius: BorderRadius.circular(38),
-
         boxShadow: [
           BoxShadow(
             color: AppColors.softPurple.withOpacity(0.18),
@@ -40,52 +36,36 @@ class HomeWelcomeBanner extends StatelessWidget {
           ),
         ],
       ),
-
       child: Column(
-        crossAxisAlignment:
-        CrossAxisAlignment.start,
-
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             greeting,
-
-            style:
-            GoogleFonts.playfairDisplay(
+            style: GoogleFonts.playfairDisplay(
               fontSize: 38,
               fontWeight: FontWeight.w700,
               color: AppColors.textDark,
             ),
           ),
-
           const SizedBox(height: 12),
-
           Text(
             subGreeting,
-
             style: GoogleFonts.poppins(
               fontSize: 15,
               height: 1.7,
               color: AppColors.textSoft,
             ),
           ),
-
           const SizedBox(height: 26),
-
           Container(
-            padding:
-            const EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 10,
             ),
-
             decoration: BoxDecoration(
-              color:
-              Colors.white.withOpacity(0.5),
-
-              borderRadius:
-              BorderRadius.circular(24),
+              color: Colors.white.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(24),
             ),
-
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -94,19 +74,13 @@ class HomeWelcomeBanner extends StatelessWidget {
                   size: 18,
                   color: AppColors.deepBlue,
                 ),
-
                 const SizedBox(width: 8),
-
                 Text(
                   "Your emotional space is ready",
-
-                  style:
-                  GoogleFonts.poppins(
+                  style: GoogleFonts.poppins(
                     fontSize: 13,
-                    fontWeight:
-                    FontWeight.w600,
-                    color:
-                    AppColors.deepBlue,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.deepBlue,
                   ),
                 ),
               ],

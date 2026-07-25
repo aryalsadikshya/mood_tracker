@@ -34,6 +34,7 @@ class _MoodHomeScreenState extends State<MoodHomeScreen> {
       history = data;
     });
   }
+
   void addMoodWithNote() {
     if (selectedMood.isEmpty) return;
 
@@ -87,7 +88,6 @@ class _MoodHomeScreenState extends State<MoodHomeScreen> {
     );
   }
 
-
   /// 📊 Analytics
   Map<String, int> getStats() {
     Map<String, int> stats = {};
@@ -135,7 +135,8 @@ class _MoodHomeScreenState extends State<MoodHomeScreen> {
               end: Alignment.bottomCenter,
             ),
           ),
-          child: SingleChildScrollView( // ✅ FULL PAGE SCROLL
+          child: SingleChildScrollView(
+            // ✅ FULL PAGE SCROLL
             child: Padding(
               padding: const EdgeInsets.all(18),
               child: Column(
@@ -153,7 +154,10 @@ class _MoodHomeScreenState extends State<MoodHomeScreen> {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(24),
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.2),
                     ),
                     child: Text(
                       selectedMood.isEmpty
@@ -190,8 +194,9 @@ class _MoodHomeScreenState extends State<MoodHomeScreen> {
                               borderRadius: BorderRadius.circular(24),
                               border: isSelected
                                   ? Border.all(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  width: 1.5)
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      width: 1.5)
                                   : null,
                             ),
                             child: Column(
@@ -219,8 +224,7 @@ class _MoodHomeScreenState extends State<MoodHomeScreen> {
                     child: ElevatedButton(
                       onPressed: addMoodWithNote,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                        Theme.of(context).colorScheme.primary,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 40, vertical: 14),
                         shape: RoundedRectangleBorder(
@@ -247,8 +251,7 @@ class _MoodHomeScreenState extends State<MoodHomeScreen> {
                     children: stats.entries.map((e) {
                       return Text(
                         "${e.key} - ${e.value} times",
-                        style:
-                        Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.bodySmall,
                       );
                     }).toList(),
                   ),
@@ -257,8 +260,7 @@ class _MoodHomeScreenState extends State<MoodHomeScreen> {
 
                   const Text(
                     "History",
-                    style:
-                    TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
 
                   const SizedBox(height: 10),
@@ -266,78 +268,66 @@ class _MoodHomeScreenState extends State<MoodHomeScreen> {
                   /// ✅ HISTORY LIST FIXED
                   history.isEmpty
                       ? Column(
-                    children: const [
-                      Icon(Icons.mood_bad,
-                          size: 60, color: Colors.grey),
-                      SizedBox(height: 10),
-                      Text("No moods logged yet"),
-                      Text("Start tracking your feelings today"),
-                    ],
-                  )
+                          children: const [
+                            Icon(Icons.mood_bad, size: 60, color: Colors.grey),
+                            SizedBox(height: 10),
+                            Text("No moods logged yet"),
+                            Text("Start tracking your feelings today"),
+                          ],
+                        )
                       : ListView.builder(
-                    shrinkWrap: true, // ✅ IMPORTANT
-                    physics:
-                    const NeverScrollableScrollPhysics(), // ✅ IMPORTANT
-                    itemCount: history.length,
-                    itemBuilder: (context, index) {
-                      final item = history[index];
+                          shrinkWrap: true, // ✅ IMPORTANT
+                          physics:
+                              const NeverScrollableScrollPhysics(), // ✅ IMPORTANT
+                          itemCount: history.length,
+                          itemBuilder: (context, index) {
+                            final item = history[index];
 
-                      return Dismissible(
-                        key: Key(item.date),
-                        onDismissed: (direction) async {
-                          setState(() {
-                            history.removeAt(index);
-                          });
+                            return Dismissible(
+                              key: Key(item.date),
+                              onDismissed: (direction) async {
+                                setState(() {
+                                  history.removeAt(index);
+                                });
 
-                          await MoodStorage.saveMoods(history);
-                        },
-                        background:
-                        Container(color: Colors.red),
-                        child: Container(
-                          margin:
-                          const EdgeInsets.only(bottom: 12),
-                          padding: const EdgeInsets.all(14),
-                          decoration: BoxDecoration(
-                            color:
-                            Theme
-                                .of(context)
-                                .cardColor,
-                            borderRadius:
-                            BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                item.mood,
-                                style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .titleMedium,
-                              ),
-                              if (item.note != null &&
-                                  item.note!.isNotEmpty)
-                                Text(
-                                  item.note!,
-                                  style: Theme
-                                      .of(context)
-                                      .textTheme
-                                      .bodySmall,
+                                await MoodStorage.saveMoods(history);
+                              },
+                              background: Container(color: Colors.red),
+                              child: Container(
+                                margin: const EdgeInsets.only(bottom: 12),
+                                padding: const EdgeInsets.all(14),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                              Text(
-                                item.date.substring(0, 10),
-                                style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .bodySmall,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item.mood,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium,
+                                    ),
+                                    if (item.note != null &&
+                                        item.note!.isNotEmpty)
+                                      Text(
+                                        item.note!,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
+                                      ),
+                                    Text(
+                                      item.date.substring(0, 10),
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ],
               ),
             ),
@@ -345,4 +335,5 @@ class _MoodHomeScreenState extends State<MoodHomeScreen> {
         ),
       ),
     );
-  } }
+  }
+}

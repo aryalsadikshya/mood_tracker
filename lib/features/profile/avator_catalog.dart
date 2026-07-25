@@ -48,7 +48,7 @@ const List<AvatarOption> mindBloomAvatars = [
 
 AvatarOption getAvatarById(String? avatarId) {
   return mindBloomAvatars.firstWhere(
-        (avatar) => avatar.id == avatarId,
+    (avatar) => avatar.id == avatarId,
     orElse: () => mindBloomAvatars.first,
   );
 }

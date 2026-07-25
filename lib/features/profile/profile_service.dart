@@ -32,13 +32,10 @@ class ProfileService {
       data["avatarId"] = avatarId.trim();
     }
 
-    await _firestore
-        .collection("users")
-        .doc(user.uid)
-        .set(
-      data,
-      SetOptions(merge: true),
-    );
+    await _firestore.collection("users").doc(user.uid).set(
+          data,
+          SetOptions(merge: true),
+        );
   }
 
   Stream<DocumentSnapshot<Map<String, dynamic>>> getProfileData() {
@@ -48,10 +45,7 @@ class ProfileService {
       return const Stream.empty();
     }
 
-    return _firestore
-        .collection("users")
-        .doc(user.uid)
-        .snapshots();
+    return _firestore.collection("users").doc(user.uid).snapshots();
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getProfileOnce() async {
@@ -61,9 +55,6 @@ class ProfileService {
       throw Exception("No logged-in user found.");
     }
 
-    return _firestore
-        .collection("users")
-        .doc(user.uid)
-        .get();
+    return _firestore.collection("users").doc(user.uid).get();
   }
 }

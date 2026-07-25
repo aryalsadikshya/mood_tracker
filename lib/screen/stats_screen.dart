@@ -42,6 +42,7 @@ class _StatsScreenState extends State<StatsScreen> {
 
     return stats.entries.reduce((a, b) => a.value > b.value ? a : b).key;
   }
+
   String getInsight() {
     if (moods.isEmpty) return "Start tracking your mood";
 
@@ -70,80 +71,77 @@ class _StatsScreenState extends State<StatsScreen> {
     final stats = getStats();
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Statistics")
-
-      ),
+      appBar: AppBar(title: const Text("Statistics")),
       body: moods.isEmpty
           ? const Center(child: Text("No data yet"))
           : SingleChildScrollView(
-            child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// 📊 Summary Card
-              Container(
-                margin: const EdgeInsets.only(bottom:20),
+              child: Padding(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Total Entries: ${moods.length}"),
-                    const SizedBox(height: 8),
-                    Text("Top Mood: ${getTopMood()}"),
+                    /// 📊 Summary Card
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 20),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Total Entries: ${moods.length}"),
+                          const SizedBox(height: 8),
+                          Text("Top Mood: ${getTopMood()}"),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    /// 📈 Chart Title
+                    const Text(
+                      "Weekly Activity",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    /// 📊 Chart
+                    SizedBox(
+                      height: 200,
+                      child: BarChart(
+                        BarChartData(
+                          borderData: FlBorderData(show: false),
+                          titlesData: FlTitlesData(show: false),
+                          barGroups: getWeeklyData(),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    /// 📋 Mood Breakdown
+                    const Text(
+                      "Mood Breakdown",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    ...stats.entries.map((e) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Text("${e.key} - ${e.value} times"),
+                      );
+                    }),
                   ],
                 ),
               ),
-            
-              const SizedBox(height: 20),
-            
-              /// 📈 Chart Title
-              const Text(
-                "Weekly Activity",
-                style: TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            
-              const SizedBox(height: 10),
-            
-              /// 📊 Chart
-              SizedBox(
-                height: 200,
-                child: BarChart(
-                  BarChartData(
-                    borderData: FlBorderData(show: false),
-                    titlesData: FlTitlesData(show: false),
-                    barGroups: getWeeklyData(),
-                  ),
-                ),
-              ),
-            
-              const SizedBox(height: 20),
-            
-              /// 📋 Mood Breakdown
-              const Text(
-                "Mood Breakdown",
-                style: TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            
-              const SizedBox(height: 10),
-            
-              ...stats.entries.map((e) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 6),
-                  child: Text("${e.key} - ${e.value} times"),
-                );
-              }),
-            ],
-                    ),
-                  ),
-          ),
+            ),
     );
   }
 }

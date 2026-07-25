@@ -21,11 +21,9 @@ class MoodModel {
 
   bool get hasNote => note.trim().isNotEmpty;
 
-  bool get isPositiveMood =>
-      moodLabel == "Happy" || moodLabel == "Calm";
+  bool get isPositiveMood => moodLabel == "Happy" || moodLabel == "Calm";
 
-  bool get isNegativeMood =>
-      moodLabel == "Low" || moodLabel == "Stressed";
+  bool get isNegativeMood => moodLabel == "Low" || moodLabel == "Stressed";
 
   Map<String, dynamic> toMap() {
     return {
@@ -39,9 +37,9 @@ class MoodModel {
   }
 
   factory MoodModel.fromMap(
-      Map<String, dynamic> map,
-      String id,
-      ) {
+    Map<String, dynamic> map,
+    String id,
+  ) {
     return MoodModel(
       id: id,
       moodEmoji: map['moodEmoji'] ?? '',

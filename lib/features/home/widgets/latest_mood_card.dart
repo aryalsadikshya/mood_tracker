@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/widgets/empty_state_card.dart';
@@ -68,9 +67,7 @@ class LatestMoodCard extends StatelessWidget {
               style: const TextStyle(fontSize: 32),
             ),
           ),
-
           const SizedBox(width: 16),
-
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,9 +80,7 @@ class LatestMoodCard extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-
                 const SizedBox(height: 4),
-
                 Text(
                   mood.moodLabel,
                   style: GoogleFonts.poppins(
@@ -94,10 +89,8 @@ class LatestMoodCard extends StatelessWidget {
                     color: AppColors.textDark,
                   ),
                 ),
-
                 if (mood.note.trim().isNotEmpty) ...[
                   const SizedBox(height: 4),
-
                   Text(
                     mood.note,
                     maxLines: 1,
@@ -111,7 +104,6 @@ class LatestMoodCard extends StatelessWidget {
               ],
             ),
           ),
-
           Text(
             time,
             style: GoogleFonts.poppins(
@@ -134,7 +126,7 @@ class EmptyLastMoodCard extends StatelessWidget {
       emoji: "🌱",
       title: "Your journey begins here",
       subtitle:
-      "Your first emotional reflection will appear here and slowly become part of your personal story.",
+          "Your first emotional reflection will appear here and slowly become part of your personal story.",
     );
   }
 }

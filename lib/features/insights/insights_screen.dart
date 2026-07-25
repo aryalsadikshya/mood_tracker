@@ -18,7 +18,7 @@ class InsightsScreen extends StatelessWidget {
 
     final total = moods.fold<int>(
       0,
-          (sum, mood) => sum + mood.moodValue,
+      (sum, mood) => sum + mood.moodValue,
     );
 
     return total / moods.length;
@@ -76,39 +76,27 @@ class InsightsScreen extends StatelessWidget {
                     style: GoogleFonts.playfairDisplay(
                       fontSize: 40,
                       fontWeight: FontWeight.w700,
-                      color: Theme.of(context)
-                          .textTheme
-                          .headlineLarge
-                          ?.color ??
+                      color: Theme.of(context).textTheme.headlineLarge?.color ??
                           AppColors.textDark,
                       height: 1.05,
                     ),
                   ),
-
                   const SizedBox(height: 8),
-
                   Text(
                     "Understand your emotional patterns through gentle, visual reflection.",
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       height: 1.5,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.color ??
+                      color: Theme.of(context).textTheme.bodyMedium?.color ??
                           AppColors.textSoft,
                     ),
                   ),
-
                   const SizedBox(height: 26),
-
                   _InsightHeroCard(
                     title: getInsightTitle(moods),
                     subtitle: getInsightSubtitle(moods),
                   ),
-
                   const SizedBox(height: 24),
-
                   Row(
                     children: [
                       Expanded(
@@ -136,26 +124,22 @@ class InsightsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 30),
-
                   Text(
                     "Explore",
                     style: GoogleFonts.playfairDisplay(
                       fontSize: 28,
                       fontWeight: FontWeight.w700,
-                      color: Theme.of(context)
-                          .textTheme
-                          .headlineMedium
-                          ?.color ??
-                          AppColors.textDark,
+                      color:
+                          Theme.of(context).textTheme.headlineMedium?.color ??
+                              AppColors.textDark,
                     ),
                   ),
-
                   const SizedBox(height: 16),
                   _InsightFeatureCard(
                     title: "Emotional Constellation",
-                    subtitle: "Revisit your latest mood memories as a soft visual sky.",
+                    subtitle:
+                        "Revisit your latest mood memories as a soft visual sky.",
                     icon: Icons.auto_awesome_rounded,
                     color: AppColors.paleBlue,
                     onTap: () {
@@ -165,8 +149,6 @@ class InsightsScreen extends StatelessWidget {
                       );
                     },
                   ),
-
-
                   _InsightFeatureCard(
                     title: "Mood Calendar",
                     subtitle: "View your emotional patterns across days.",
@@ -179,7 +161,6 @@ class InsightsScreen extends StatelessWidget {
                       );
                     },
                   ),
-
                   _InsightFeatureCard(
                     title: "Mood Trends",
                     subtitle: "See how your mood direction changes over time.",
@@ -192,7 +173,6 @@ class InsightsScreen extends StatelessWidget {
                       );
                     },
                   ),
-
                   _InsightFeatureCard(
                     title: "Achievements",
                     subtitle: "Track milestones from your reflection journey.",
@@ -226,32 +206,29 @@ class _InsightHeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient:  LinearGradient(
-          colors: isDark ?
-          [
-            AppColors.nightCardSoft,
-            AppColors.nightCard,
-            AppColors.nightBackground,
-          ]
+        gradient: LinearGradient(
+          colors: isDark
+              ? [
+                  AppColors.nightCardSoft,
+                  AppColors.nightCard,
+                  AppColors.nightBackground,
+                ]
               : [
-            AppColors.blush,
-            AppColors.lavender,
-            AppColors.paleBlue,
-          ],
+                  AppColors.blush,
+                  AppColors.lavender,
+                  AppColors.paleBlue,
+                ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(36),
         border: Border.all(
-          color: isDark
-              ? AppColors.nightBorder
-              : Colors.white.withOpacity(0.9),
+          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.9),
         ),
         boxShadow: [
           BoxShadow(
@@ -269,13 +246,9 @@ class _InsightHeroCard extends StatelessWidget {
           Icon(
             Icons.auto_awesome_rounded,
             size: 30,
-            color: isDark
-                ? AppColors.nightBlue
-                : AppColors.deepBlue,
+            color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
           ),
-
           const SizedBox(height: 18),
-
           Text(
             title,
             style: GoogleFonts.playfairDisplay(
@@ -285,9 +258,7 @@ class _InsightHeroCard extends StatelessWidget {
               color: isDark ? AppColors.nightText : AppColors.textDark,
             ),
           ),
-
           const SizedBox(height: 10),
-
           Text(
             subtitle,
             style: GoogleFonts.poppins(
@@ -315,20 +286,15 @@ class _MiniStatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       height: 108,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: isDark
-            ? AppColors.nightCard
-            : color.withOpacity(0.72),
+        color: isDark ? AppColors.nightCard : color.withOpacity(0.72),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
-          color: isDark
-              ? AppColors.nightCard
-              : color.withOpacity(0.72),
+          color: isDark ? AppColors.nightCard : color.withOpacity(0.72),
         ),
         boxShadow: [
           BoxShadow(
@@ -347,25 +313,17 @@ class _MiniStatCard extends StatelessWidget {
             value,
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
-              fontSize: 22,
-              fontWeight: FontWeight.w800,
-              color: isDark
-                  ? AppColors.nightText
-                  : AppColors.textDark
-            ),
+                fontSize: 22,
+                fontWeight: FontWeight.w800,
+                color: isDark ? AppColors.nightText : AppColors.textDark),
           ),
-
           const SizedBox(height: 6),
-
           Text(
             title,
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
-              fontSize: 11,
-              color: isDark
-                  ? AppColors.nightTextSoft
-                  : AppColors.textSoft
-            ),
+                fontSize: 11,
+                color: isDark ? AppColors.nightTextSoft : AppColors.textSoft),
           ),
         ],
       ),
@@ -390,8 +348,7 @@ class _InsightFeatureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: GestureDetector(
@@ -400,9 +357,7 @@ class _InsightFeatureCard extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: isDark
-                ? AppColors.nightCard
-                : AppColors.whiteGlass,
+            color: isDark ? AppColors.nightCard : AppColors.whiteGlass,
             borderRadius: BorderRadius.circular(32),
             border: Border.all(
               color: isDark
@@ -430,15 +385,11 @@ class _InsightFeatureCard extends StatelessWidget {
                 ),
                 child: Icon(
                   icon,
-                  color: isDark
-                      ? AppColors.nightBlue
-                      : AppColors.deepBlue,
+                  color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
                   size: 27,
                 ),
               ),
-
               const SizedBox(width: 16),
-
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -448,14 +399,11 @@ class _InsightFeatureCard extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
-                        color: isDark
-                            ? AppColors.nightText
-                            : AppColors.textDark,
+                        color:
+                            isDark ? AppColors.nightText : AppColors.textDark,
                       ),
                     ),
-
                     const SizedBox(height: 5),
-
                     Text(
                       subtitle,
                       style: GoogleFonts.poppins(
@@ -469,13 +417,10 @@ class _InsightFeatureCard extends StatelessWidget {
                   ],
                 ),
               ),
-
-               Icon(
+              Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 16,
-                color: isDark
-                    ? AppColors.nightBlue
-                    : AppColors.deepBlue,
+                color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
               ),
             ],
           ),

@@ -19,9 +19,7 @@ class EmptyStateCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-
       padding: const EdgeInsets.all(28),
-
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [
@@ -31,9 +29,7 @@ class EmptyStateCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-
         borderRadius: BorderRadius.circular(34),
-
         boxShadow: [
           BoxShadow(
             color: AppColors.softPurple.withOpacity(0.12),
@@ -42,7 +38,6 @@ class EmptyStateCard extends StatelessWidget {
           ),
         ],
       ),
-
       child: Column(
         children: [
           Text(
@@ -51,27 +46,20 @@ class EmptyStateCard extends StatelessWidget {
               fontSize: 54,
             ),
           ),
-
           const SizedBox(height: 18),
-
           Text(
             title,
             textAlign: TextAlign.center,
-
-            style:
-            GoogleFonts.playfairDisplay(
+            style: GoogleFonts.playfairDisplay(
               fontSize: 28,
               fontWeight: FontWeight.w700,
               color: AppColors.textDark,
             ),
           ),
-
           const SizedBox(height: 12),
-
           Text(
             subtitle,
             textAlign: TextAlign.center,
-
             style: GoogleFonts.poppins(
               fontSize: 14,
               height: 1.7,

@@ -84,8 +84,7 @@ class MoodTrendScreen extends StatelessWidget {
           }
 
           final averageMood = getAverageMood(moods);
-          final chartColor =
-          isDark ? AppColors.nightBlue : AppColors.lakeBlue;
+          final chartColor = isDark ? AppColors.nightBlue : AppColors.lakeBlue;
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(20),
@@ -98,14 +97,14 @@ class MoodTrendScreen extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: isDark
                           ? [
-                        AppColors.nightCardSoft,
-                        AppColors.nightCard,
-                        AppColors.nightBackground,
-                      ]
+                              AppColors.nightCardSoft,
+                              AppColors.nightCard,
+                              AppColors.nightBackground,
+                            ]
                           : [
-                        getMoodColor(averageMood).withOpacity(0.9),
-                        AppColors.blush,
-                      ],
+                              getMoodColor(averageMood).withOpacity(0.9),
+                              AppColors.blush,
+                            ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -139,7 +138,7 @@ class MoodTrendScreen extends StatelessWidget {
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
                           color:
-                          isDark ? AppColors.nightText : AppColors.textDark,
+                              isDark ? AppColors.nightText : AppColors.textDark,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -149,15 +148,13 @@ class MoodTrendScreen extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
                           color:
-                          isDark ? AppColors.nightBlue : AppColors.deepBlue,
+                              isDark ? AppColors.nightBlue : AppColors.deepBlue,
                         ),
                       ),
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 30),
-
                 Container(
                   height: 320,
                   width: double.infinity,
@@ -191,7 +188,7 @@ class MoodTrendScreen extends StatelessWidget {
                           fontSize: 24,
                           fontWeight: FontWeight.w700,
                           color:
-                          isDark ? AppColors.nightText : AppColors.textDark,
+                              isDark ? AppColors.nightText : AppColors.textDark,
                         ),
                       ),
                       const SizedBox(height: 8),

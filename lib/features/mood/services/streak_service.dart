@@ -7,11 +7,11 @@ class StreakService {
     final uniqueDays = moods
         .map(
           (mood) => DateTime(
-        mood.createdAt.year,
-        mood.createdAt.month,
-        mood.createdAt.day,
-      ),
-    )
+            mood.createdAt.year,
+            mood.createdAt.month,
+            mood.createdAt.day,
+          ),
+        )
         .toSet()
         .toList();
 

@@ -44,25 +44,20 @@ class HomeMoodOverviewSection extends StatelessWidget {
             moods.isEmpty
                 ? const EmptyLastMoodCard()
                 : LatestMoodCard(
-              mood: moods.first,
-              time: HomeHelpers.formatTime(
-                moods.first.createdAt,
-              ),
-            ),
-
+                    mood: moods.first,
+                    time: HomeHelpers.formatTime(
+                      moods.first.createdAt,
+                    ),
+                  ),
             const SizedBox(height: AppSpacing.lg),
-
             StreakCard(
               streak: StreakService.calculateStreak(moods),
             ),
-
             const SizedBox(height: AppSpacing.lg),
-
             InsightCard(
               insight: MoodAnalyzer.getInsight(moods),
               recommendation: MoodAnalyzer.getRecommendation(moods),
             ),
-
             if (bestMemory != null) ...[
               const SizedBox(height: AppSpacing.lg),
               BestMemoryCard(memory: bestMemory),

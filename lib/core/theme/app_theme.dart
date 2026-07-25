@@ -7,14 +7,12 @@ class AppTheme {
     useMaterial3: true,
     scaffoldBackgroundColor: AppColors.cream,
     primaryColor: AppColors.lakeBlue,
-
     colorScheme: const ColorScheme.light(
       primary: AppColors.lakeBlue,
       secondary: AppColors.softPurple,
       surface: AppColors.cream,
       error: Color(0xFFD98C8C),
     ),
-
     textTheme: TextTheme(
       headlineLarge: GoogleFonts.playfairDisplay(
         fontSize: 38,
@@ -39,7 +37,6 @@ class AppTheme {
         fontWeight: FontWeight.w700,
       ),
     ),
-
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.cream,
       elevation: 0,
@@ -53,7 +50,6 @@ class AppTheme {
         color: AppColors.textDark,
       ),
     ),
-
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: Colors.white.withOpacity(0.75),
@@ -79,7 +75,6 @@ class AppTheme {
         ),
       ),
     ),
-
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         elevation: 0,
@@ -99,20 +94,15 @@ class AppTheme {
 
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
-
     scaffoldBackgroundColor: AppColors.nightBackground,
-
     primaryColor: AppColors.nightBlue,
-
     brightness: Brightness.dark,
-
     colorScheme: const ColorScheme.dark(
       primary: AppColors.nightBlue,
       secondary: AppColors.nightLavender,
       surface: AppColors.nightCard,
       error: Color(0xFFD98C8C),
     ),
-
     textTheme: TextTheme(
       headlineLarge: GoogleFonts.playfairDisplay(
         fontSize: 38,
@@ -138,7 +128,6 @@ class AppTheme {
         color: AppColors.nightText,
       ),
     ),
-
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.nightBackground,
       elevation: 0,
@@ -152,9 +141,7 @@ class AppTheme {
         color: AppColors.nightText,
       ),
     ),
-
     cardColor: AppColors.nightCard,
-
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppColors.nightCardSoft,
@@ -180,7 +167,6 @@ class AppTheme {
         ),
       ),
     ),
-
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         elevation: 0,

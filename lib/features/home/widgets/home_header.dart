@@ -32,7 +32,7 @@ class HomeHeader extends StatelessWidget {
               padding: const EdgeInsets.all(22),
               decoration: BoxDecoration(
                 color: AppColors.cream,
-                borderRadius:BorderRadius.circular(AppRadius.xl),
+                borderRadius: BorderRadius.circular(AppRadius.xl),
                 border: Border.all(color: Colors.white.withOpacity(0.9)),
                 boxShadow: [
                   BoxShadow(

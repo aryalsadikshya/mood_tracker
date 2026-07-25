@@ -79,7 +79,9 @@ class _EmptyConversation extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
-          color: isDark ? AppColors.nightBorder : Colors.white.withValues(alpha:0.9),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withValues(alpha: 0.9),
         ),
       ),
       child: Row(
@@ -153,7 +155,7 @@ class _MessageBubble extends StatelessWidget {
                 ? Colors.transparent
                 : isDark
                     ? AppColors.nightBorder
-                    : Colors.white.withValues(alpha:0.85),
+                    : Colors.white.withValues(alpha: 0.85),
           ),
         ),
         child: Column(
@@ -199,10 +201,10 @@ class _MessageBubble extends StatelessWidget {
                 fontSize: 9.5,
                 fontWeight: FontWeight.w500,
                 color: isUser
-                    ? Colors.white.withValues(alpha:.72)
+                    ? Colors.white.withValues(alpha: .72)
                     : isDark
-                        ? AppColors.nightTextSoft.withValues(alpha:0.72)
-                        : AppColors.textSoft.withValues(alpha:0.72),
+                        ? AppColors.nightTextSoft.withValues(alpha: 0.72)
+                        : AppColors.textSoft.withValues(alpha: 0.72),
               ),
             ),
           ],
@@ -275,8 +277,9 @@ class _ThinkingBubbleState extends State<_ThinkingBubble>
             bottomRight: Radius.circular(22),
           ),
           border: Border.all(
-            color:
-                isDark ? AppColors.nightBorder : Colors.white.withValues(alpha:0.85),
+            color: isDark
+                ? AppColors.nightBorder
+                : Colors.white.withValues(alpha: 0.85),
           ),
         ),
         child: Row(

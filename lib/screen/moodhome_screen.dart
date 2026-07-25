@@ -28,8 +28,11 @@ class _MoodHomeScreenState extends State<MoodHomeScreen> {
     loadMoods();
   }
 
-  void loadMoods() async {
+  Future<void> loadMoods() async {
     final data = await MoodStorage.loadMoods();
+
+    if (!mounted) return;
+
     setState(() {
       history = data;
     });
@@ -76,6 +79,7 @@ class _MoodHomeScreenState extends State<MoodHomeScreen> {
                   });
 
                   await MoodStorage.saveMoods(history);
+                  if (!context.mounted) return;
 
                   Navigator.pop(context);
                 },
@@ -157,7 +161,7 @@ class _MoodHomeScreenState extends State<MoodHomeScreen> {
                       color: Theme.of(context)
                           .colorScheme
                           .primary
-                          .withOpacity(0.2),
+                          .withValues(alpha: 0.2),
                     ),
                     child: Text(
                       selectedMood.isEmpty

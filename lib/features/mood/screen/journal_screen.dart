@@ -47,24 +47,25 @@ void showMindBloomSnackBar(
                         AppColors.nightBackground,
                       ]
                     : [
-                        AppColors.lavender.withOpacity(0.95),
-                        AppColors.paleBlue.withOpacity(0.95),
-                        AppColors.mint.withOpacity(0.90),
+                        AppColors.lavender.withValues(alpha: 0.95),
+                        AppColors.paleBlue.withValues(alpha: 0.95),
+                        AppColors.mint.withValues(alpha: 0.90),
                       ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color:
-                isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.85),
+            color: isDark
+                ? AppColors.nightBorder
+                : Colors.white.withValues(alpha: 0.85),
             width: 1.2,
           ),
           boxShadow: [
             BoxShadow(
               color: isDark
-                  ? Colors.black.withOpacity(0.28)
-                  : AppColors.softPurple.withOpacity(0.18),
+                  ? Colors.black.withValues(alpha: 0.28)
+                  : AppColors.softPurple.withValues(alpha: 0.18),
               blurRadius: 24,
               offset: const Offset(0, 12),
             ),
@@ -78,7 +79,7 @@ void showMindBloomSnackBar(
               decoration: BoxDecoration(
                 color: isDark
                     ? AppColors.nightCardSoft
-                    : Colors.white.withOpacity(0.65),
+                    : Colors.white.withValues(alpha: 0.65),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -339,8 +340,8 @@ class _PastelNotebookBackground extends StatelessWidget {
           right: -70,
           child: _GlowCircle(
             color: isDark
-                ? AppColors.nightLavender.withOpacity(0.16)
-                : AppColors.lavender.withOpacity(0.55),
+                ? AppColors.nightLavender.withValues(alpha: 0.16)
+                : AppColors.lavender.withValues(alpha: 0.55),
             size: 220,
           ),
         ),
@@ -349,8 +350,8 @@ class _PastelNotebookBackground extends StatelessWidget {
           left: -80,
           child: _GlowCircle(
             color: isDark
-                ? AppColors.nightBlue.withOpacity(0.14)
-                : AppColors.paleBlue.withOpacity(0.55),
+                ? AppColors.nightBlue.withValues(alpha: 0.14)
+                : AppColors.paleBlue.withValues(alpha: 0.55),
             size: 240,
           ),
         ),
@@ -370,26 +371,26 @@ class _PastelGridPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final whitePaint = Paint()
       ..color = isDark
-          ? Colors.white.withOpacity(0.025)
-          : Colors.white.withOpacity(0.35)
+          ? Colors.white.withValues(alpha: 0.025)
+          : Colors.white.withValues(alpha: 0.35)
       ..strokeWidth = 22;
 
     final lavenderPaint = Paint()
       ..color = isDark
-          ? AppColors.nightLavender.withOpacity(0.055)
-          : AppColors.lavender.withOpacity(0.26)
+          ? AppColors.nightLavender.withValues(alpha: 0.055)
+          : AppColors.lavender.withValues(alpha: 0.26)
       ..strokeWidth = 14;
 
     final bluePaint = Paint()
       ..color = isDark
-          ? AppColors.nightBlue.withOpacity(0.05)
-          : AppColors.paleBlue.withOpacity(0.30)
+          ? AppColors.nightBlue.withValues(alpha: 0.05)
+          : AppColors.paleBlue.withValues(alpha: 0.30)
       ..strokeWidth = 10;
 
     final blushPaint = Paint()
       ..color = isDark
-          ? AppColors.nightBlush.withOpacity(0.04)
-          : AppColors.blush.withOpacity(0.24)
+          ? AppColors.nightBlush.withValues(alpha: 0.04)
+          : AppColors.blush.withValues(alpha: 0.24)
       ..strokeWidth = 12;
 
     for (double x = 30; x < size.width; x += 95) {
@@ -492,7 +493,7 @@ class _DiaryTitle extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.softPurple.withOpacity(0.12),
+                    color: AppColors.softPurple.withValues(alpha: 0.12),
                     blurRadius: 8,
                     offset: const Offset(0, 5),
                   ),
@@ -529,17 +530,19 @@ class _PromptCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.nightCard : Colors.white.withOpacity(0.70),
+        color:
+            isDark ? AppColors.nightCard : Colors.white.withValues(alpha: 0.70),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
-          color:
-              isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.85),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withValues(alpha: 0.85),
         ),
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.22)
-                : AppColors.lakeBlue.withOpacity(0.12),
+                ? Colors.black.withValues(alpha: 0.22)
+                : AppColors.lakeBlue.withValues(alpha: 0.12),
             blurRadius: 22,
             offset: const Offset(0, 12),
           ),
@@ -590,8 +593,8 @@ class _BigDiaryPaper extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: isDark
-                    ? Colors.black.withOpacity(0.28)
-                    : AppColors.lakeBlue.withOpacity(0.20),
+                    ? Colors.black.withValues(alpha: 0.28)
+                    : AppColors.lakeBlue.withValues(alpha: 0.20),
                 blurRadius: 30,
                 offset: const Offset(0, 16),
               ),
@@ -622,8 +625,8 @@ class _BigDiaryPaper extends StatelessWidget {
                         fontSize: 14,
                         height: 1.85,
                         color: isDark
-                            ? AppColors.nightTextSoft.withOpacity(0.56)
-                            : AppColors.textSoft.withOpacity(0.62),
+                            ? AppColors.nightTextSoft.withValues(alpha: 0.56)
+                            : AppColors.textSoft.withValues(alpha: 0.62),
                       ),
                     ),
                   ),
@@ -710,8 +713,8 @@ class _PaperLinePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final linePaint = Paint()
       ..color = isDark
-          ? AppColors.nightBorder.withOpacity(0.55)
-          : AppColors.lavender.withOpacity(0.48)
+          ? AppColors.nightBorder.withValues(alpha: 0.55)
+          : AppColors.lavender.withValues(alpha: 0.48)
       ..strokeWidth = 1.3;
 
     for (double y = 35; y < size.height; y += 32) {
@@ -815,9 +818,9 @@ class _JournalHistory extends StatelessWidget {
                         AppColors.nightBackground,
                       ]
                     : [
-                        AppColors.blush.withOpacity(0.95),
-                        AppColors.lavender.withOpacity(0.90),
-                        AppColors.paleBlue.withOpacity(0.92),
+                        AppColors.blush.withValues(alpha: 0.95),
+                        AppColors.lavender.withValues(alpha: 0.90),
+                        AppColors.paleBlue.withValues(alpha: 0.92),
                       ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -826,13 +829,13 @@ class _JournalHistory extends StatelessWidget {
               border: Border.all(
                 color: isDark
                     ? AppColors.nightBorder
-                    : Colors.white.withOpacity(0.9),
+                    : Colors.white.withValues(alpha: 0.9),
               ),
               boxShadow: [
                 BoxShadow(
                   color: isDark
-                      ? Colors.black.withOpacity(0.25)
-                      : AppColors.softPurple.withOpacity(0.18),
+                      ? Colors.black.withValues(alpha: 0.25)
+                      : AppColors.softPurple.withValues(alpha: 0.18),
                   blurRadius: 28,
                   offset: const Offset(0, 14),
                 ),
@@ -846,7 +849,7 @@ class _JournalHistory extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isDark
                         ? AppColors.nightCardSoft
-                        : Colors.white.withOpacity(0.55),
+                        : Colors.white.withValues(alpha: 0.55),
                     shape: BoxShape.circle,
                   ),
                   alignment: Alignment.center,
@@ -885,7 +888,7 @@ class _JournalHistory extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isDark
                         ? AppColors.nightCardSoft
-                        : Colors.white.withOpacity(0.55),
+                        : Colors.white.withValues(alpha: 0.55),
                     borderRadius: BorderRadius.circular(22),
                   ),
                   child: Text(
@@ -978,26 +981,28 @@ class _SavedDiaryCard extends StatelessWidget {
         gradient: LinearGradient(
           colors: isDark
               ? [
-                  cardColor.withOpacity(0.38),
-                  AppColors.nightCard.withOpacity(0.96),
+                  cardColor.withValues(alpha: 0.38),
+                  AppColors.nightCard.withValues(alpha: 0.96),
                 ]
               : [
-                  cardColor.withOpacity(0.88),
-                  Colors.white.withOpacity(0.65),
+                  cardColor.withValues(alpha: 0.88),
+                  Colors.white.withValues(alpha: 0.65),
                 ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
-          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.9),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withValues(alpha: 0.9),
           width: 1.3,
         ),
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.22)
-                : cardColor.withOpacity(0.30),
+                ? Colors.black.withValues(alpha: 0.22)
+                : cardColor.withValues(alpha: 0.30),
             blurRadius: 22,
             offset: const Offset(0, 12),
           ),
@@ -1016,7 +1021,7 @@ class _SavedDiaryCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isDark
                       ? AppColors.nightCardSoft
-                      : Colors.white.withOpacity(0.60),
+                      : Colors.white.withValues(alpha: 0.60),
                   borderRadius: BorderRadius.circular(18),
                 ),
                 child: Text(

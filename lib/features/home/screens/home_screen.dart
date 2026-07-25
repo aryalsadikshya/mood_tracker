@@ -219,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen>
         color: moodForDay == null
             ? isDark
                 ? AppColors.nightCardSoft
-                : Colors.white.withOpacity(0.60)
+                : Colors.white.withValues(alpha: 0.60)
             : moodColor(moodForDay.moodLabel),
         isToday: date.year == today.year &&
             date.month == today.month &&
@@ -401,9 +401,9 @@ class _AnimatedPastelBackground extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    colors[0].withOpacity(isDark ? 0.26 : 0.72),
-                    colors[1].withOpacity(isDark ? 0.22 : 0.60),
-                    colors[2].withOpacity(isDark ? 1 : 0.84),
+                    colors[0].withValues(alpha: isDark ? 0.26 : 0.72),
+                    colors[1].withValues(alpha: isDark ? 0.22 : 0.60),
+                    colors[2].withValues(alpha: isDark ? 1 : 0.84),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -422,7 +422,7 @@ class _AnimatedPastelBackground extends StatelessWidget {
               top: -80 + animation.value * 24,
               right: -70,
               child: _SoftBlob(
-                color: colors[0].withOpacity(isDark ? 0.18 : 0.46),
+                color: colors[0].withValues(alpha: isDark ? 0.18 : 0.46),
                 size: 260,
               ),
             ),
@@ -430,7 +430,7 @@ class _AnimatedPastelBackground extends StatelessWidget {
               bottom: 110 - animation.value * 24,
               left: -90,
               child: _SoftBlob(
-                color: colors[1].withOpacity(isDark ? 0.16 : 0.44),
+                color: colors[1].withValues(alpha: isDark ? 0.16 : 0.44),
                 size: 270,
               ),
             ),
@@ -438,7 +438,7 @@ class _AnimatedPastelBackground extends StatelessWidget {
               top: 310 + animation.value * 16,
               right: -90,
               child: _SoftBlob(
-                color: colors[2].withOpacity(isDark ? 0.18 : 0.40),
+                color: colors[2].withValues(alpha: isDark ? 0.18 : 0.40),
                 size: 230,
               ),
             ),
@@ -472,18 +472,18 @@ class _CuteFloatingPainter extends CustomPainter {
 
     final colors = isDark
         ? [
-            Colors.white.withOpacity(0.18),
-            AppColors.nightLavender.withOpacity(0.20),
-            AppColors.nightBlue.withOpacity(0.18),
-            AppColors.nightBlush.withOpacity(0.16),
-            AppColors.nightMint.withOpacity(0.14),
+            Colors.white.withValues(alpha: 0.18),
+            AppColors.nightLavender.withValues(alpha: 0.20),
+            AppColors.nightBlue.withValues(alpha: 0.18),
+            AppColors.nightBlush.withValues(alpha: 0.16),
+            AppColors.nightMint.withValues(alpha: 0.14),
           ]
         : [
-            Colors.white.withOpacity(0.50),
-            AppColors.blush.withOpacity(0.34),
-            AppColors.lavender.withOpacity(0.34),
-            AppColors.paleBlue.withOpacity(0.34),
-            AppColors.mint.withOpacity(0.30),
+            Colors.white.withValues(alpha: 0.50),
+            AppColors.blush.withValues(alpha: 0.34),
+            AppColors.lavender.withValues(alpha: 0.34),
+            AppColors.paleBlue.withValues(alpha: 0.34),
+            AppColors.mint.withValues(alpha: 0.30),
           ];
 
     for (int i = 0; i < 42; i++) {
@@ -544,19 +544,19 @@ class _GreetingHeader extends StatelessWidget {
           width: 62,
           decoration: BoxDecoration(
             color: isDark
-                ? AppColors.nightCardSoft.withOpacity(0.92)
-                : Colors.white.withOpacity(0.58),
+                ? AppColors.nightCardSoft.withValues(alpha: 0.92)
+                : Colors.white.withValues(alpha: 0.58),
             shape: BoxShape.circle,
             border: Border.all(
               color: isDark
                   ? AppColors.nightBorder
-                  : Colors.white.withOpacity(0.94),
+                  : Colors.white.withValues(alpha: 0.94),
             ),
             boxShadow: [
               BoxShadow(
                 color: isDark
-                    ? Colors.black.withOpacity(0.22)
-                    : AppColors.softPurple.withOpacity(0.16),
+                    ? Colors.black.withValues(alpha: 0.22)
+                    : AppColors.softPurple.withValues(alpha: 0.16),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
               ),
@@ -577,19 +577,19 @@ class _GreetingHeader extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: isDark
-                  ? AppColors.nightCard.withOpacity(0.92)
-                  : Colors.white.withOpacity(0.52),
+                  ? AppColors.nightCard.withValues(alpha: 0.92)
+                  : Colors.white.withValues(alpha: 0.52),
               borderRadius: BorderRadius.circular(28),
               border: Border.all(
                 color: isDark
                     ? AppColors.nightBorder
-                    : Colors.white.withOpacity(0.88),
+                    : Colors.white.withValues(alpha: 0.88),
               ),
               boxShadow: [
                 BoxShadow(
                   color: isDark
-                      ? Colors.black.withOpacity(0.18)
-                      : AppColors.softPurple.withOpacity(0.10),
+                      ? Colors.black.withValues(alpha: 0.18)
+                      : AppColors.softPurple.withValues(alpha: 0.10),
                   blurRadius: 18,
                   offset: const Offset(0, 8),
                 ),
@@ -650,29 +650,30 @@ class _MoodAndWeeklyCard extends StatelessWidget {
         gradient: LinearGradient(
           colors: isDark
               ? [
-                  AppColors.nightCardSoft.withOpacity(0.96),
-                  AppColors.nightCard.withOpacity(0.98),
-                  AppColors.nightBackground.withOpacity(0.96),
+                  AppColors.nightCardSoft.withValues(alpha: 0.96),
+                  AppColors.nightCard.withValues(alpha: 0.98),
+                  AppColors.nightBackground.withValues(alpha: 0.96),
                 ]
               : [
-                  color.withOpacity(0.76),
-                  Colors.white.withOpacity(0.66),
-                  AppColors.cream.withOpacity(0.80),
+                  color.withValues(alpha: 0.76),
+                  Colors.white.withValues(alpha: 0.66),
+                  AppColors.cream.withValues(alpha: 0.80),
                 ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(42),
         border: Border.all(
-          color:
-              isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.94),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withValues(alpha: 0.94),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.28)
-                : color.withOpacity(0.34),
+                ? Colors.black.withValues(alpha: 0.28)
+                : color.withValues(alpha: 0.34),
             blurRadius: 34,
             offset: const Offset(0, 18),
           ),
@@ -711,7 +712,7 @@ class _MoodAndWeeklyCard extends StatelessWidget {
                 width: double.infinity,
                 color: isDark
                     ? AppColors.nightBorder
-                    : Colors.white.withOpacity(0.62),
+                    : Colors.white.withValues(alpha: 0.62),
               ),
               const SizedBox(height: 20),
               _WeeklyOverviewSection(
@@ -765,19 +766,19 @@ class _TodayMoodSection extends StatelessWidget {
                 width: 98,
                 decoration: BoxDecoration(
                   color: isDark
-                      ? AppColors.nightCardSoft.withOpacity(0.88)
-                      : Colors.white.withOpacity(0.60),
+                      ? AppColors.nightCardSoft.withValues(alpha: 0.88)
+                      : Colors.white.withValues(alpha: 0.60),
                   borderRadius: BorderRadius.circular(32),
                   border: Border.all(
                     color: isDark
                         ? AppColors.nightBorder
-                        : Colors.white.withOpacity(0.94),
+                        : Colors.white.withValues(alpha: 0.94),
                   ),
                   boxShadow: [
                     BoxShadow(
                       color: isDark
-                          ? Colors.black.withOpacity(0.20)
-                          : color.withOpacity(0.25),
+                          ? Colors.black.withValues(alpha: 0.20)
+                          : color.withValues(alpha: 0.25),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -917,7 +918,7 @@ class _WeeklyMoodBubble extends StatelessWidget {
           height: data.isToday ? 48 : 42,
           width: data.isToday ? 48 : 42,
           decoration: BoxDecoration(
-            color: data.color.withOpacity(data.hasMood ? 0.86 : 0.58),
+            color: data.color.withValues(alpha: data.hasMood ? 0.86 : 0.58),
             shape: BoxShape.circle,
             border: Border.all(
               color: data.isToday
@@ -926,12 +927,12 @@ class _WeeklyMoodBubble extends StatelessWidget {
                       : AppColors.deepBlue
                   : isDark
                       ? AppColors.nightBorder
-                      : Colors.white.withOpacity(0.92),
+                      : Colors.white.withValues(alpha: 0.92),
               width: data.isToday ? 1.5 : 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: data.color.withOpacity(isDark ? 0.10 : 0.24),
+                color: data.color.withValues(alpha: isDark ? 0.10 : 0.24),
                 blurRadius: 12,
                 offset: const Offset(0, 6),
               ),
@@ -1010,8 +1011,8 @@ class _SoftStatCard extends StatelessWidget {
                         AppColors.nightCard,
                       ]
                     : [
-                        color.withOpacity(0.86),
-                        Colors.white.withOpacity(0.66),
+                        color.withValues(alpha: 0.86),
+                        Colors.white.withValues(alpha: 0.66),
                       ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -1020,13 +1021,13 @@ class _SoftStatCard extends StatelessWidget {
               border: Border.all(
                 color: isDark
                     ? AppColors.nightBorder
-                    : Colors.white.withOpacity(0.94),
+                    : Colors.white.withValues(alpha: 0.94),
               ),
               boxShadow: [
                 BoxShadow(
                   color: isDark
-                      ? Colors.black.withOpacity(0.24)
-                      : color.withOpacity(0.28),
+                      ? Colors.black.withValues(alpha: 0.24)
+                      : color.withValues(alpha: 0.28),
                   blurRadius: 22,
                   offset: const Offset(0, 12),
                 ),
@@ -1101,14 +1102,15 @@ class _InsightCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(34),
         border: Border.all(
-          color:
-              isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.94),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withValues(alpha: 0.94),
         ),
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.24)
-                : AppColors.lakeBlue.withOpacity(0.16),
+                ? Colors.black.withValues(alpha: 0.24)
+                : AppColors.lakeBlue.withValues(alpha: 0.16),
             blurRadius: 24,
             offset: const Offset(0, 12),
           ),
@@ -1123,7 +1125,7 @@ class _InsightCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: isDark
                   ? AppColors.nightCardSoft
-                  : Colors.white.withOpacity(0.54),
+                  : Colors.white.withValues(alpha: 0.54),
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
@@ -1180,17 +1182,19 @@ class _TinyResetCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.nightCard : Colors.white.withOpacity(0.60),
+        color:
+            isDark ? AppColors.nightCard : Colors.white.withValues(alpha: 0.60),
         borderRadius: BorderRadius.circular(34),
         border: Border.all(
-          color:
-              isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.94),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withValues(alpha: 0.94),
         ),
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.22)
-                : AppColors.softPurple.withOpacity(0.12),
+                ? Colors.black.withValues(alpha: 0.22)
+                : AppColors.softPurple.withValues(alpha: 0.12),
             blurRadius: 22,
             offset: const Offset(0, 10),
           ),
@@ -1259,17 +1263,18 @@ class _StickerBubble extends StatelessWidget {
       height: 43,
       width: 43,
       decoration: BoxDecoration(
-        color: color.withOpacity(isDark ? 0.28 : 0.72),
+        color: color.withValues(alpha: isDark ? 0.28 : 0.72),
         shape: BoxShape.circle,
         border: Border.all(
-          color:
-              isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.96),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withValues(alpha: 0.96),
         ),
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.16)
-                : color.withOpacity(0.25),
+                ? Colors.black.withValues(alpha: 0.16)
+                : color.withValues(alpha: 0.25),
             blurRadius: 14,
             offset: const Offset(0, 7),
           ),

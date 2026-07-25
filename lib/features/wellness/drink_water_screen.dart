@@ -158,11 +158,11 @@ class _RoundIconButton extends StatelessWidget {
         height: 58,
         width: 58,
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.86),
+          color: Colors.white.withValues(alpha: 0.86),
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: AppColors.lakeBlue.withOpacity(0.13),
+              color: AppColors.lakeBlue.withValues(alpha: 0.13),
               blurRadius: 18,
               offset: const Offset(0, 9),
             ),
@@ -205,21 +205,21 @@ class _MainHydrationCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.paleBlue.withOpacity(0.60),
-            AppColors.mint.withOpacity(0.48),
-            Colors.white.withOpacity(0.78),
+            AppColors.paleBlue.withValues(alpha: 0.60),
+            AppColors.mint.withValues(alpha: 0.48),
+            Colors.white.withValues(alpha: 0.78),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(42),
         border: Border.all(
-          color: Colors.white.withOpacity(0.95),
+          color: Colors.white.withValues(alpha: 0.95),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.lakeBlue.withOpacity(0.16),
+            color: AppColors.lakeBlue.withValues(alpha: 0.16),
             blurRadius: 34,
             offset: const Offset(0, 18),
           ),
@@ -292,14 +292,14 @@ class _MainHydrationCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.78),
+              color: Colors.white.withValues(alpha: 0.78),
               borderRadius: BorderRadius.circular(32),
               border: Border.all(
-                color: Colors.white.withOpacity(0.95),
+                color: Colors.white.withValues(alpha: 0.95),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.lakeBlue.withOpacity(0.10),
+                  color: AppColors.lakeBlue.withValues(alpha: 0.10),
                   blurRadius: 18,
                   offset: const Offset(0, 8),
                 ),
@@ -335,7 +335,7 @@ class _MainHydrationCard extends StatelessWidget {
                 elevation: 0,
                 backgroundColor:
                     completed ? AppColors.mint : AppColors.deepBlue,
-                disabledBackgroundColor: AppColors.mint.withOpacity(0.85),
+                disabledBackgroundColor: AppColors.mint.withValues(alpha: 0.85),
                 foregroundColor: completed ? AppColors.deepBlue : Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 17),
                 shape: RoundedRectangleBorder(
@@ -387,10 +387,10 @@ class _CuteMessageBubble extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.80),
+        color: Colors.white.withValues(alpha: 0.80),
         borderRadius: BorderRadius.circular(30),
         border: Border.all(
-          color: Colors.white.withOpacity(0.95),
+          color: Colors.white.withValues(alpha: 0.95),
         ),
       ),
       child: Row(
@@ -400,7 +400,7 @@ class _CuteMessageBubble extends StatelessWidget {
             height: 46,
             width: 46,
             decoration: BoxDecoration(
-              color: AppColors.paleBlue.withOpacity(0.55),
+              color: AppColors.paleBlue.withValues(alpha: 0.55),
               shape: BoxShape.circle,
             ),
             child: const Icon(
@@ -501,7 +501,7 @@ class _CuteGlass extends StatelessWidget {
               height: 34,
               width: 160,
               decoration: BoxDecoration(
-                color: AppColors.textDark.withOpacity(0.08),
+                color: AppColors.textDark.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(50),
               ),
             ),
@@ -518,8 +518,8 @@ class _CuteGlass extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      const Color(0xFFAEE8FF).withOpacity(0.95),
-                      AppColors.lakeBlue.withOpacity(0.70),
+                      const Color(0xFFAEE8FF).withValues(alpha: 0.95),
+                      AppColors.lakeBlue.withValues(alpha: 0.70),
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -599,14 +599,14 @@ class _MiniStatCircle extends StatelessWidget {
       height: 116,
       width: 116,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.72),
+        color: Colors.white.withValues(alpha: 0.72),
         shape: BoxShape.circle,
         border: Border.all(
-          color: Colors.white.withOpacity(0.95),
+          color: Colors.white.withValues(alpha: 0.95),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.lakeBlue.withOpacity(0.10),
+            color: AppColors.lakeBlue.withValues(alpha: 0.10),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),
@@ -662,14 +662,14 @@ class _HydrationStreakCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.78),
+        color: Colors.white.withValues(alpha: 0.78),
         borderRadius: BorderRadius.circular(34),
         border: Border.all(
-          color: Colors.white.withOpacity(0.94),
+          color: Colors.white.withValues(alpha: 0.94),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withOpacity(0.11),
+            color: AppColors.softPurple.withValues(alpha: 0.11),
             blurRadius: 22,
             offset: const Offset(0, 12),
           ),
@@ -681,7 +681,7 @@ class _HydrationStreakCard extends StatelessWidget {
             height: 62,
             width: 62,
             decoration: BoxDecoration(
-              color: AppColors.paleBlue.withOpacity(0.55),
+              color: AppColors.paleBlue.withValues(alpha: 0.55),
               shape: BoxShape.circle,
             ),
             child: const Icon(
@@ -728,7 +728,7 @@ class _CuteHydrationBackground extends StatelessWidget {
           top: -80,
           right: -70,
           child: _SoftBlob(
-            color: AppColors.paleBlue.withOpacity(0.55),
+            color: AppColors.paleBlue.withValues(alpha: 0.55),
             size: 250,
           ),
         ),
@@ -736,7 +736,7 @@ class _CuteHydrationBackground extends StatelessWidget {
           bottom: 90,
           left: -90,
           child: _SoftBlob(
-            color: AppColors.mint.withOpacity(0.55),
+            color: AppColors.mint.withValues(alpha: 0.55),
             size: 250,
           ),
         ),
@@ -744,7 +744,7 @@ class _CuteHydrationBackground extends StatelessWidget {
           top: 310,
           right: -80,
           child: _SoftBlob(
-            color: AppColors.lavender.withOpacity(0.33),
+            color: AppColors.lavender.withValues(alpha: 0.33),
             size: 220,
           ),
         ),
@@ -810,10 +810,10 @@ class _CutePlant extends StatelessWidget {
               height: 38,
               width: 48,
               decoration: BoxDecoration(
-                color: AppColors.peach.withOpacity(0.85),
+                color: AppColors.peach.withValues(alpha: 0.85),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: AppColors.textDark.withOpacity(0.22),
+                  color: AppColors.textDark.withValues(alpha: 0.22),
                   width: 1.4,
                 ),
               ),
@@ -870,7 +870,7 @@ class _FloatingLeaf extends StatelessWidget {
     return Transform.rotate(
       angle: angle,
       child: _Leaf(
-        color: AppColors.mint.withOpacity(opacity),
+        color: AppColors.mint.withValues(alpha: opacity),
         size: size,
       ),
     );
@@ -918,7 +918,7 @@ class _BlushDot extends StatelessWidget {
       height: 12,
       width: 20,
       decoration: BoxDecoration(
-        color: AppColors.blush.withOpacity(0.80),
+        color: AppColors.blush.withValues(alpha: 0.80),
         borderRadius: BorderRadius.circular(20),
       ),
     );
@@ -954,16 +954,16 @@ class _GlassOutlinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final glassFill = Paint()
-      ..color = Colors.white.withOpacity(0.34)
+      ..color = Colors.white.withValues(alpha: 0.34)
       ..style = PaintingStyle.fill;
 
     final border = Paint()
-      ..color = AppColors.deepBlue.withOpacity(0.42)
+      ..color = AppColors.deepBlue.withValues(alpha: 0.42)
       ..strokeWidth = 3
       ..style = PaintingStyle.stroke;
 
     final highlight = Paint()
-      ..color = Colors.white.withOpacity(0.70)
+      ..color = Colors.white.withValues(alpha: 0.70)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
@@ -988,7 +988,7 @@ class _GlassOutlinePainter extends CustomPainter {
     canvas.drawPath(highlightPath, highlight);
 
     final markPaint = Paint()
-      ..color = AppColors.deepBlue.withOpacity(0.22)
+      ..color = AppColors.deepBlue.withValues(alpha: 0.22)
       ..strokeWidth = 1.2;
 
     for (double y = 74; y <= 194; y += 40) {
@@ -1021,7 +1021,7 @@ class _WavePainter extends CustomPainter {
 
     final waterTop = size.height - (235 * progress);
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.45)
+      ..color = Colors.white.withValues(alpha: 0.45)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
@@ -1048,11 +1048,11 @@ class _JugPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final body = Paint()
-      ..color = const Color(0xFFBDEFFF).withOpacity(0.86)
+      ..color = const Color(0xFFBDEFFF).withValues(alpha: 0.86)
       ..style = PaintingStyle.fill;
 
     final border = Paint()
-      ..color = AppColors.deepBlue.withOpacity(0.40)
+      ..color = AppColors.deepBlue.withValues(alpha: 0.40)
       ..strokeWidth = 2.4
       ..style = PaintingStyle.stroke;
 
@@ -1085,7 +1085,7 @@ class _JugPainter extends CustomPainter {
     canvas.drawPath(smile, smilePaint);
 
     final blush = Paint()
-      ..color = AppColors.blush.withOpacity(0.65)
+      ..color = AppColors.blush.withValues(alpha: 0.65)
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(const Offset(38, 57), 4.5, blush);
@@ -1106,7 +1106,7 @@ class _WaterStreamPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppColors.paleBlue.withOpacity(0.82)
+      ..color = AppColors.paleBlue.withValues(alpha: 0.82)
       ..strokeWidth = 10
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
@@ -1123,7 +1123,7 @@ class _WaterStreamPainter extends CustomPainter {
     canvas.drawPath(path, paint);
 
     final dropPaint = Paint()
-      ..color = AppColors.lakeBlue.withOpacity(0.50)
+      ..color = AppColors.lakeBlue.withValues(alpha: 0.50)
       ..style = PaintingStyle.fill;
 
     for (int i = 0; i < 4; i++) {
@@ -1184,7 +1184,7 @@ class _LeafPainter extends CustomPainter {
     canvas.drawPath(path, paint);
 
     final vein = Paint()
-      ..color = Colors.white.withOpacity(0.42)
+      ..color = Colors.white.withValues(alpha: 0.42)
       ..strokeWidth = 1.2
       ..style = PaintingStyle.stroke;
 

@@ -253,14 +253,14 @@ class _AuthScreenState extends State<AuthScreen> {
                 Container(
                   padding: const EdgeInsets.all(22),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFF8FA).withValues(alpha:0.78),
+                    color: const Color(0xFFFFF8FA).withValues(alpha: 0.78),
                     borderRadius: BorderRadius.circular(34),
                     border: Border.all(
                       color: const Color(0xFFF1DDE5),
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFFDAB8C8).withValues(alpha:0.22),
+                        color: const Color(0xFFDAB8C8).withValues(alpha: 0.22),
                         blurRadius: 32,
                         offset: const Offset(0, 18),
                       ),

@@ -32,7 +32,7 @@ class EmptyStateCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(34),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withValues(alpha:0.12),
+            color: AppColors.softPurple.withValues(alpha: 0.12),
             blurRadius: 24,
             offset: const Offset(0, 12),
           ),

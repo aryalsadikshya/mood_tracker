@@ -58,13 +58,13 @@ class EmotionalConstellationScreen extends StatelessWidget {
                     border: Border.all(
                       color: isDark
                           ? AppColors.nightBorder
-                          : Colors.white.withOpacity(0.9),
+                          : Colors.white.withValues(alpha: 0.9),
                     ),
                     boxShadow: [
                       BoxShadow(
                         color: isDark
-                            ? Colors.black.withOpacity(0.25)
-                            : AppColors.softPurple.withOpacity(0.22),
+                            ? Colors.black.withValues(alpha: 0.25)
+                            : AppColors.softPurple.withValues(alpha: 0.22),
                         blurRadius: 30,
                         offset: const Offset(0, 16),
                       ),
@@ -117,7 +117,7 @@ class EmotionalConstellationScreen extends StatelessWidget {
                             border: Border.all(
                               color: isDark
                                   ? AppColors.nightBorder
-                                  : Colors.white.withOpacity(0.9),
+                                  : Colors.white.withValues(alpha: 0.9),
                             ),
                           ),
                           child: latestMoods.isEmpty
@@ -217,13 +217,13 @@ class _ConstellationSky extends StatelessWidget {
             border: Border.all(
               color: isDark
                   ? AppColors.nightBorder
-                  : Colors.white.withOpacity(0.9),
+                  : Colors.white.withValues(alpha: 0.9),
             ),
             boxShadow: [
               BoxShadow(
                 color: isDark
-                    ? Colors.black.withOpacity(0.28)
-                    : AppColors.softPurple.withOpacity(0.24),
+                    ? Colors.black.withValues(alpha: 0.28)
+                    : AppColors.softPurple.withValues(alpha: 0.24),
                 blurRadius: 30,
                 offset: const Offset(0, 14),
               ),
@@ -246,11 +246,11 @@ class _ConstellationSky extends StatelessWidget {
                   height: 76,
                   width: 76,
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.75),
+                    color: color.withValues(alpha: 0.75),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: color.withOpacity(isDark ? 0.25 : 0.35),
+                        color: color.withValues(alpha: isDark ? 0.25 : 0.35),
                         blurRadius: 22,
                         offset: const Offset(0, 10),
                       ),
@@ -347,12 +347,12 @@ class _ConstellationSky extends StatelessWidget {
                       height: isLatest ? 38 : 30,
                       width: isLatest ? 38 : 30,
                       decoration: BoxDecoration(
-                        color: color.withOpacity(0.92),
+                        color: color.withValues(alpha: 0.92),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: color.withOpacity(
-                              isLatest ? 0.65 : 0.35,
+                            color: color.withValues(
+                              alpha: isLatest ? 0.65 : 0.35,
                             ),
                             blurRadius: isLatest ? 24 : 14,
                             spreadRadius: isLatest ? 3 : 1,
@@ -364,7 +364,7 @@ class _ConstellationSky extends StatelessWidget {
                         height: isLatest ? 11 : 8,
                         width: isLatest ? 11 : 8,
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -397,8 +397,8 @@ class _ConstellationLinePainter extends CustomPainter {
 
     final paint = Paint()
       ..color = isDark
-          ? AppColors.nightBlue.withOpacity(0.22)
-          : AppColors.deepBlue.withOpacity(0.15)
+          ? AppColors.nightBlue.withValues(alpha: 0.22)
+          : AppColors.deepBlue.withValues(alpha: 0.15)
       ..strokeWidth = 1.1
       ..style = PaintingStyle.stroke;
 
@@ -491,12 +491,14 @@ class _ConstellationLegend extends StatelessWidget {
             vertical: 7,
           ),
           decoration: BoxDecoration(
-            color: isDark ? AppColors.nightCardSoft : color.withOpacity(0.45),
+            color: isDark
+                ? AppColors.nightCardSoft
+                : color.withValues(alpha: 0.45),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: isDark
                   ? AppColors.nightBorder
-                  : Colors.white.withOpacity(0.9),
+                  : Colors.white.withValues(alpha: 0.9),
             ),
           ),
           child: Text(

@@ -102,7 +102,7 @@ class MoodTrendScreen extends StatelessWidget {
                               AppColors.nightBackground,
                             ]
                           : [
-                              getMoodColor(averageMood).withOpacity(0.9),
+                              getMoodColor(averageMood).withValues(alpha: 0.9),
                               AppColors.blush,
                             ],
                       begin: Alignment.topLeft,
@@ -112,8 +112,8 @@ class MoodTrendScreen extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(
                         color: isDark
-                            ? Colors.black.withOpacity(0.24)
-                            : getMoodColor(averageMood).withOpacity(0.25),
+                            ? Colors.black.withValues(alpha: 0.24)
+                            : getMoodColor(averageMood).withValues(alpha: 0.25),
                         blurRadius: 24,
                         offset: const Offset(0, 14),
                       ),
@@ -162,18 +162,18 @@ class MoodTrendScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isDark
                         ? AppColors.nightCard
-                        : Colors.white.withOpacity(0.65),
+                        : Colors.white.withValues(alpha: 0.65),
                     borderRadius: BorderRadius.circular(34),
                     border: Border.all(
                       color: isDark
                           ? AppColors.nightBorder
-                          : Colors.white.withOpacity(0.8),
+                          : Colors.white.withValues(alpha: 0.8),
                     ),
                     boxShadow: [
                       BoxShadow(
                         color: isDark
-                            ? Colors.black.withOpacity(0.22)
-                            : AppColors.softPurple.withOpacity(0.14),
+                            ? Colors.black.withValues(alpha: 0.22)
+                            : AppColors.softPurple.withValues(alpha: 0.14),
                         blurRadius: 24,
                         offset: const Offset(0, 14),
                       ),
@@ -277,7 +277,7 @@ class MoodTrendScreen extends StatelessWidget {
                                 ),
                                 belowBarData: BarAreaData(
                                   show: true,
-                                  color: chartColor.withOpacity(0.15),
+                                  color: chartColor.withValues(alpha: 0.15),
                                 ),
                               ),
                             ],

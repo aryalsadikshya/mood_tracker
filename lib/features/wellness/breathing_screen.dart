@@ -282,12 +282,12 @@ class _BreathingCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(42),
         border: Border.all(
-          color: Colors.white.withOpacity(0.95),
+          color: Colors.white.withValues(alpha: 0.95),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withOpacity(0.22),
+            color: AppColors.softPurple.withValues(alpha: 0.22),
             blurRadius: 32,
             offset: const Offset(0, 18),
           ),
@@ -360,7 +360,7 @@ class _BreathingOrb extends StatelessWidget {
           width: 260,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.white.withOpacity(0.28),
+            color: Colors.white.withValues(alpha: 0.28),
           ),
         ),
         Container(
@@ -377,7 +377,7 @@ class _BreathingOrb extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.lakeBlue.withOpacity(0.22),
+                color: AppColors.lakeBlue.withValues(alpha: 0.22),
                 blurRadius: 38,
                 offset: const Offset(0, 16),
               ),
@@ -390,7 +390,7 @@ class _BreathingOrb extends StatelessWidget {
           child: CircularProgressIndicator(
             value: progress,
             strokeWidth: 7,
-            backgroundColor: Colors.white.withOpacity(0.45),
+            backgroundColor: Colors.white.withValues(alpha: 0.45),
             valueColor: const AlwaysStoppedAnimation<Color>(
               AppColors.deepBlue,
             ),
@@ -401,9 +401,9 @@ class _BreathingOrb extends StatelessWidget {
           width: 174,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.white.withOpacity(0.55),
+            color: Colors.white.withValues(alpha: 0.55),
             border: Border.all(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
             ),
           ),
           child: Column(
@@ -486,10 +486,10 @@ class _ClockProgress extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.50),
+        color: Colors.white.withValues(alpha: 0.50),
         borderRadius: BorderRadius.circular(26),
         border: Border.all(
-          color: Colors.white.withOpacity(0.85),
+          color: Colors.white.withValues(alpha: 0.85),
         ),
       ),
       child: Row(
@@ -513,7 +513,7 @@ class _ClockProgress extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: progress,
                 minHeight: 12,
-                backgroundColor: Colors.white.withOpacity(0.65),
+                backgroundColor: Colors.white.withValues(alpha: 0.65),
                 valueColor: const AlwaysStoppedAnimation<Color>(
                   AppColors.deepBlue,
                 ),
@@ -553,14 +553,14 @@ class _InstructionCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.66),
+        color: Colors.white.withValues(alpha: 0.66),
         borderRadius: BorderRadius.circular(34),
         border: Border.all(
-          color: Colors.white.withOpacity(0.9),
+          color: Colors.white.withValues(alpha: 0.9),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withOpacity(0.10),
+            color: AppColors.softPurple.withValues(alpha: 0.10),
             blurRadius: 22,
             offset: const Offset(0, 10),
           ),
@@ -653,11 +653,12 @@ class _StepPill extends StatelessWidget {
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: active || done
-            ? color.withOpacity(0.86)
-            : Colors.white.withOpacity(0.50),
+            ? color.withValues(alpha: 0.86)
+            : Colors.white.withValues(alpha: 0.50),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
-          color: active ? AppColors.deepBlue : Colors.white.withOpacity(0.9),
+          color:
+              active ? AppColors.deepBlue : Colors.white.withValues(alpha: 0.9),
           width: active ? 1.5 : 1,
         ),
       ),
@@ -785,10 +786,10 @@ class _SmallPill extends StatelessWidget {
         vertical: 9,
       ),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.58),
+        color: Colors.white.withValues(alpha: 0.58),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: Colors.white.withOpacity(0.85),
+          color: Colors.white.withValues(alpha: 0.85),
         ),
       ),
       child: Text(
@@ -815,7 +816,7 @@ class _CircleIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white.withOpacity(0.58),
+      color: Colors.white.withValues(alpha: 0.58),
       shape: const CircleBorder(),
       child: InkWell(
         customBorder: const CircleBorder(),
@@ -848,10 +849,10 @@ class _TinySticker extends StatelessWidget {
       height: 42,
       width: 42,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.76),
+        color: color.withValues(alpha: 0.76),
         shape: BoxShape.circle,
         border: Border.all(
-          color: Colors.white.withOpacity(0.94),
+          color: Colors.white.withValues(alpha: 0.94),
         ),
       ),
       alignment: Alignment.center,
@@ -879,7 +880,7 @@ class _BreathingBackground extends StatelessWidget {
           top: -90,
           right: -80,
           child: _Blob(
-            color: AppColors.lavender.withOpacity(0.58),
+            color: AppColors.lavender.withValues(alpha: 0.58),
             size: 250,
           ),
         ),
@@ -887,7 +888,7 @@ class _BreathingBackground extends StatelessWidget {
           bottom: 130,
           left: -90,
           child: _Blob(
-            color: AppColors.paleBlue.withOpacity(0.56),
+            color: AppColors.paleBlue.withValues(alpha: 0.56),
             size: 270,
           ),
         ),
@@ -895,7 +896,7 @@ class _BreathingBackground extends StatelessWidget {
           top: 300,
           left: 46,
           child: _Blob(
-            color: AppColors.blush.withOpacity(0.42),
+            color: AppColors.blush.withValues(alpha: 0.42),
             size: 140,
           ),
         ),
@@ -903,7 +904,7 @@ class _BreathingBackground extends StatelessWidget {
           bottom: -50,
           right: 30,
           child: _Blob(
-            color: AppColors.mint.withOpacity(0.36),
+            color: AppColors.mint.withValues(alpha: 0.36),
             size: 160,
           ),
         ),

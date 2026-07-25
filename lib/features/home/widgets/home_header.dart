@@ -33,10 +33,10 @@ class HomeHeader extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.cream,
                 borderRadius: BorderRadius.circular(AppRadius.xl),
-                border: Border.all(color: Colors.white.withOpacity(0.9)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.9)),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.softPurple.withOpacity(0.25),
+                    color: AppColors.softPurple.withValues(alpha: 0.25),
                     blurRadius: 30,
                     offset: const Offset(0, 14),
                   ),
@@ -168,7 +168,7 @@ class HomeHeader extends StatelessWidget {
               border: Border.all(color: Colors.white, width: 2),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.lakeBlue.withOpacity(0.22),
+                  color: AppColors.lakeBlue.withValues(alpha: 0.22),
                   blurRadius: 18,
                   offset: const Offset(0, 8),
                 ),

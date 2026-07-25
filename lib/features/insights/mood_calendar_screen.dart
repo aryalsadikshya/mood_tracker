@@ -67,18 +67,18 @@ class _MoodCalendarScreenState extends State<MoodCalendarScreen> {
               decoration: BoxDecoration(
                 color: isDark
                     ? AppColors.nightCard
-                    : Colors.white.withOpacity(0.55),
+                    : Colors.white.withValues(alpha: 0.55),
                 borderRadius: BorderRadius.circular(34),
                 border: Border.all(
                   color: isDark
                       ? AppColors.nightBorder
-                      : Colors.white.withOpacity(0.8),
+                      : Colors.white.withValues(alpha: 0.8),
                 ),
                 boxShadow: [
                   BoxShadow(
                     color: isDark
-                        ? Colors.black.withOpacity(0.24)
-                        : AppColors.softPurple.withOpacity(0.12),
+                        ? Colors.black.withValues(alpha: 0.24)
+                        : AppColors.softPurple.withValues(alpha: 0.12),
                     blurRadius: 24,
                     offset: const Offset(0, 14),
                   ),
@@ -101,8 +101,8 @@ class _MoodCalendarScreenState extends State<MoodCalendarScreen> {
                   outsideDaysVisible: false,
                   todayDecoration: BoxDecoration(
                     color: isDark
-                        ? AppColors.nightBlue.withOpacity(0.34)
-                        : AppColors.lakeBlue.withOpacity(0.25),
+                        ? AppColors.nightBlue.withValues(alpha: 0.34)
+                        : AppColors.lakeBlue.withValues(alpha: 0.25),
                     shape: BoxShape.circle,
                   ),
                   selectedDecoration: BoxDecoration(
@@ -127,13 +127,13 @@ class _MoodCalendarScreenState extends State<MoodCalendarScreen> {
                   ),
                   disabledTextStyle: GoogleFonts.poppins(
                     color: isDark
-                        ? AppColors.nightTextSoft.withOpacity(0.35)
-                        : AppColors.textSoft.withOpacity(0.45),
+                        ? AppColors.nightTextSoft.withValues(alpha: 0.35)
+                        : AppColors.textSoft.withValues(alpha: 0.45),
                   ),
                   outsideTextStyle: GoogleFonts.poppins(
                     color: isDark
-                        ? AppColors.nightTextSoft.withOpacity(0.30)
-                        : AppColors.textSoft.withOpacity(0.40),
+                        ? AppColors.nightTextSoft.withValues(alpha: 0.30)
+                        : AppColors.textSoft.withValues(alpha: 0.40),
                   ),
                 ),
                 daysOfWeekStyle: DaysOfWeekStyle(
@@ -193,12 +193,12 @@ class _MoodCalendarScreenState extends State<MoodCalendarScreen> {
                       margin: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
                         color: getMoodColor(moodForDay.moodLabel)
-                            .withOpacity(isDark ? 0.82 : 1),
+                            .withValues(alpha: isDark ? 0.82 : 1),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
                             color: getMoodColor(moodForDay.moodLabel)
-                                .withOpacity(isDark ? 0.18 : 0.16),
+                                .withValues(alpha: isDark ? 0.18 : 0.16),
                             blurRadius: 10,
                             offset: const Offset(0, 5),
                           ),

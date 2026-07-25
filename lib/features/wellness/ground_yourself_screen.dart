@@ -312,21 +312,21 @@ class _GroundingCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            step.color.withOpacity(0.74),
-            Colors.white.withOpacity(0.78),
-            AppColors.cream.withOpacity(0.92),
+            step.color.withValues(alpha: 0.74),
+            Colors.white.withValues(alpha: 0.78),
+            AppColors.cream.withValues(alpha: 0.92),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(42),
         border: Border.all(
-          color: Colors.white.withOpacity(0.95),
+          color: Colors.white.withValues(alpha: 0.95),
           width: 1.4,
         ),
         boxShadow: [
           BoxShadow(
-            color: step.color.withOpacity(0.23),
+            color: step.color.withValues(alpha: 0.23),
             blurRadius: 32,
             offset: const Offset(0, 16),
           ),
@@ -344,11 +344,11 @@ class _GroundingCard extends StatelessWidget {
             height: 96,
             width: 96,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.72),
+              color: Colors.white.withValues(alpha: 0.72),
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: step.color.withOpacity(0.24),
+                  color: step.color.withValues(alpha: 0.24),
                   blurRadius: 22,
                   offset: const Offset(0, 10),
                 ),
@@ -458,7 +458,7 @@ class _StepProgress extends StatelessWidget {
                   border: Border.all(
                     color: active
                         ? AppColors.deepBlue
-                        : AppColors.textSoft.withOpacity(0.25),
+                        : AppColors.textSoft.withValues(alpha: 0.25),
                     width: 1.3,
                   ),
                 ),
@@ -499,10 +499,10 @@ class _CuteInputField extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.72),
+        color: Colors.white.withValues(alpha: 0.72),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: Colors.white.withOpacity(0.95),
+          color: Colors.white.withValues(alpha: 0.95),
         ),
       ),
       child: Row(
@@ -511,7 +511,7 @@ class _CuteInputField extends StatelessWidget {
             height: 32,
             width: 32,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.62),
+              color: color.withValues(alpha: 0.62),
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
@@ -539,7 +539,7 @@ class _CuteInputField extends StatelessWidget {
                 hintText: hint,
                 hintStyle: GoogleFonts.poppins(
                   fontSize: 13,
-                  color: AppColors.textSoft.withOpacity(0.68),
+                  color: AppColors.textSoft.withValues(alpha: 0.68),
                 ),
               ),
             ),
@@ -574,14 +574,15 @@ class _SoftButton extends StatelessWidget {
       child: Container(
         height: 56,
         decoration: BoxDecoration(
-          color: color.withOpacity(isWhite ? 0.78 : 1),
+          color: color.withValues(alpha: isWhite ? 0.78 : 1),
           borderRadius: BorderRadius.circular(28),
           border: Border.all(
-            color: Colors.white.withOpacity(0.95),
+            color: Colors.white.withValues(alpha: 0.95),
           ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.softPurple.withOpacity(isWhite ? 0.09 : 0.16),
+              color:
+                  AppColors.softPurple.withValues(alpha: isWhite ? 0.09 : 0.16),
               blurRadius: 16,
               offset: const Offset(0, 8),
             ),
@@ -626,14 +627,14 @@ class _CalmGarden extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.76),
+        color: Colors.white.withValues(alpha: 0.76),
         borderRadius: BorderRadius.circular(34),
         border: Border.all(
-          color: Colors.white.withOpacity(0.92),
+          color: Colors.white.withValues(alpha: 0.92),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withOpacity(0.10),
+            color: AppColors.softPurple.withValues(alpha: 0.10),
             blurRadius: 22,
             offset: const Offset(0, 12),
           ),
@@ -671,8 +672,8 @@ class _CalmGarden extends StatelessWidget {
                 width: grown ? 54 : 44,
                 decoration: BoxDecoration(
                   color: grown
-                      ? AppColors.blush.withOpacity(0.52)
-                      : AppColors.border.withOpacity(0.35),
+                      ? AppColors.blush.withValues(alpha: 0.52)
+                      : AppColors.border.withValues(alpha: 0.35),
                   shape: BoxShape.circle,
                 ),
                 alignment: Alignment.center,
@@ -707,20 +708,20 @@ class _CompleteCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.mint.withOpacity(0.76),
-            AppColors.paleBlue.withOpacity(0.58),
-            AppColors.blush.withOpacity(0.48),
+            AppColors.mint.withValues(alpha: 0.76),
+            AppColors.paleBlue.withValues(alpha: 0.58),
+            AppColors.blush.withValues(alpha: 0.48),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(44),
         border: Border.all(
-          color: Colors.white.withOpacity(0.95),
+          color: Colors.white.withValues(alpha: 0.95),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.lakeBlue.withOpacity(0.18),
+            color: AppColors.lakeBlue.withValues(alpha: 0.18),
             blurRadius: 32,
             offset: const Offset(0, 16),
           ),
@@ -732,7 +733,7 @@ class _CompleteCard extends StatelessWidget {
             height: 116,
             width: 116,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.74),
+              color: Colors.white.withValues(alpha: 0.74),
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
@@ -767,7 +768,7 @@ class _CompleteCard extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.70),
+              color: Colors.white.withValues(alpha: 0.70),
               borderRadius: BorderRadius.circular(30),
             ),
             child: Text(
@@ -807,7 +808,7 @@ class _GroundingBackground extends StatelessWidget {
           top: -70,
           right: -70,
           child: _SoftBlob(
-            color: AppColors.blush.withOpacity(0.48),
+            color: AppColors.blush.withValues(alpha: 0.48),
             size: 240,
           ),
         ),
@@ -815,7 +816,7 @@ class _GroundingBackground extends StatelessWidget {
           top: 260,
           left: -90,
           child: _SoftBlob(
-            color: AppColors.paleBlue.withOpacity(0.52),
+            color: AppColors.paleBlue.withValues(alpha: 0.52),
             size: 250,
           ),
         ),
@@ -823,7 +824,7 @@ class _GroundingBackground extends StatelessWidget {
           bottom: 80,
           right: -90,
           child: _SoftBlob(
-            color: AppColors.lavender.withOpacity(0.42),
+            color: AppColors.lavender.withValues(alpha: 0.42),
             size: 260,
           ),
         ),

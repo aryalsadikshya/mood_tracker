@@ -28,10 +28,10 @@ class ReflectionCard extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(AppRadius.xl),
-        border: Border.all(color: Colors.white.withOpacity(0.9)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.9)),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withOpacity(0.24),
+            color: AppColors.softPurple.withValues(alpha: 0.24),
             blurRadius: 30,
             offset: const Offset(0, 16),
           ),

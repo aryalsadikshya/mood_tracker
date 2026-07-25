@@ -167,10 +167,10 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
     final softTextColor = isDark ? AppColors.nightTextSoft : AppColors.textSoft;
 
     final defaultCardColor =
-        isDark ? AppColors.nightCard : Colors.white.withOpacity(0.55);
+        isDark ? AppColors.nightCard : Colors.white.withValues(alpha: 0.55);
 
     final defaultBorderColor =
-        isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.7);
+        isDark ? AppColors.nightBorder : Colors.white.withValues(alpha: 0.7);
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -234,7 +234,7 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? moodColor.withOpacity(isDark ? 0.30 : 0.22)
+                            ? moodColor.withValues(alpha: isDark ? 0.30 : 0.22)
                             : defaultCardColor,
                         borderRadius: BorderRadius.circular(28),
                         border: Border.all(
@@ -244,8 +244,8 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
                         boxShadow: isSelected
                             ? [
                                 BoxShadow(
-                                  color: moodColor.withOpacity(
-                                    isDark ? 0.22 : 0.35,
+                                  color: moodColor.withValues(
+                                    alpha: isDark ? 0.22 : 0.35,
                                   ),
                                   blurRadius: 18,
                                   offset: const Offset(0, 8),
@@ -317,7 +317,7 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
                     ),
                     decoration: BoxDecoration(
                       color: selected
-                          ? activityColor.withOpacity(isDark ? 0.78 : 1)
+                          ? activityColor.withValues(alpha: isDark ? 0.78 : 1)
                           : isDark
                               ? AppColors.nightCard
                               : AppColors.whiteGlass,
@@ -359,12 +359,12 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
               decoration: InputDecoration(
                 hintText: "Write a gentle reflection...",
                 hintStyle: GoogleFonts.poppins(
-                  color: softTextColor.withOpacity(0.72),
+                  color: softTextColor.withValues(alpha: 0.72),
                 ),
                 filled: true,
                 fillColor: isDark
                     ? AppColors.nightCard
-                    : Colors.white.withOpacity(0.6),
+                    : Colors.white.withValues(alpha: 0.6),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(28),
                   borderSide: BorderSide.none,
@@ -374,7 +374,7 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
                   borderSide: BorderSide(
                     color: isDark
                         ? AppColors.nightBorder
-                        : Colors.white.withOpacity(0.8),
+                        : Colors.white.withValues(alpha: 0.8),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
@@ -398,7 +398,7 @@ class _AddMoodScreenState extends State<AddMoodScreen> {
                   foregroundColor: Colors.white,
                   disabledBackgroundColor: isDark
                       ? AppColors.nightCardSoft
-                      : selectedMoodColor.withOpacity(0.45),
+                      : selectedMoodColor.withValues(alpha: 0.45),
                   padding: const EdgeInsets.symmetric(
                     vertical: 18,
                   ),

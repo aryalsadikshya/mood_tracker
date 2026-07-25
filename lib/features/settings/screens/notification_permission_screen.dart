@@ -25,7 +25,6 @@ class _NotificationPermissionScreenState
     try {
       final prefs = await SharedPreferences.getInstance();
 
-
       await NotificationService.initialize();
 
       await NotificationService.scheduleDailyReminder(
@@ -41,7 +40,7 @@ class _NotificationPermissionScreenState
 
       await showDialog(
         context: context,
-        barrierColor: Colors.black.withOpacity(0.12),
+        barrierColor: Colors.black.withValues(alpha: 0.12),
         builder: (_) {
           return Dialog(
             backgroundColor: Colors.transparent,
@@ -60,12 +59,12 @@ class _NotificationPermissionScreenState
                 ),
                 borderRadius: BorderRadius.circular(38),
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   width: 1.4,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.softPurple.withOpacity(0.22),
+                    color: AppColors.softPurple.withValues(alpha: 0.22),
                     blurRadius: 28,
                     offset: const Offset(0, 16),
                   ),
@@ -78,7 +77,7 @@ class _NotificationPermissionScreenState
                     height: 92,
                     width: 92,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.45),
+                      color: Colors.white.withValues(alpha: 0.45),
                       shape: BoxShape.circle,
                     ),
                     child: Stack(
@@ -127,7 +126,7 @@ class _NotificationPermissionScreenState
                       vertical: 12,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.42),
+                      color: Colors.white.withValues(alpha: 0.42),
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: Text(

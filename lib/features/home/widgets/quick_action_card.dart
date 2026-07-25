@@ -29,14 +29,14 @@ class QuickActionCard extends StatelessWidget {
         margin: const EdgeInsets.only(right: 14),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.82),
+          color: color.withValues(alpha: 0.82),
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
-            color: Colors.white.withOpacity(0.85),
+            color: Colors.white.withValues(alpha: 0.85),
           ),
           boxShadow: [
             BoxShadow(
-              color: color.withOpacity(0.32),
+              color: color.withValues(alpha: 0.32),
               blurRadius: 18,
               offset: const Offset(0, 10),
             ),

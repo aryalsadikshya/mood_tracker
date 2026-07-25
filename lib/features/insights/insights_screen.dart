@@ -228,13 +228,15 @@ class _InsightHeroCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(36),
         border: Border.all(
-          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.9),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withValues(alpha: 0.9),
         ),
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.22)
-                : AppColors.softPurple.withOpacity(0.22),
+                ? Colors.black.withValues(alpha: 0.22)
+                : AppColors.softPurple.withValues(alpha: 0.22),
             blurRadius: 28,
             offset: const Offset(0, 16),
           ),
@@ -291,16 +293,16 @@ class _MiniStatCard extends StatelessWidget {
       height: 108,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.nightCard : color.withOpacity(0.72),
+        color: isDark ? AppColors.nightCard : color.withValues(alpha: 0.72),
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
-          color: isDark ? AppColors.nightCard : color.withOpacity(0.72),
+          color: isDark ? AppColors.nightCard : color.withValues(alpha: 0.72),
         ),
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.22)
-                : color.withOpacity(0.22),
+                ? Colors.black.withValues(alpha: 0.22)
+                : color.withValues(alpha: 0.22),
             blurRadius: 18,
             offset: const Offset(0, 10),
           ),
@@ -362,11 +364,11 @@ class _InsightFeatureCard extends StatelessWidget {
             border: Border.all(
               color: isDark
                   ? AppColors.nightBorder
-                  : Colors.white.withOpacity(0.9),
+                  : Colors.white.withValues(alpha: 0.9),
             ),
             boxShadow: [
               BoxShadow(
-                color: color.withOpacity(0.20),
+                color: color.withValues(alpha: 0.20),
                 blurRadius: 22,
                 offset: const Offset(0, 12),
               ),
@@ -380,7 +382,7 @@ class _InsightFeatureCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isDark
                       ? AppColors.nightCardSoft
-                      : color.withOpacity(0.78),
+                      : color.withValues(alpha: 0.78),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(

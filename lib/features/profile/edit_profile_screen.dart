@@ -109,7 +109,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       width: 140,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: avatar.color.withOpacity(isDark ? 0.55 : 0.75),
+        color: avatar.color.withValues(alpha: isDark ? 0.55 : 0.75),
         border: Border.all(
           color: isDark ? AppColors.nightBorder : Colors.white,
           width: 3,
@@ -117,8 +117,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.24)
-                : avatar.color.withOpacity(0.35),
+                ? Colors.black.withValues(alpha: 0.24)
+                : avatar.color.withValues(alpha: 0.35),
             blurRadius: 28,
             offset: const Offset(0, 14),
           ),
@@ -156,7 +156,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               shape: BoxShape.circle,
               color: isDark
                   ? AppColors.nightCardSoft
-                  : avatar.color.withOpacity(isSelected ? 0.95 : 0.55),
+                  : avatar.color.withValues(alpha: isSelected ? 0.95 : 0.55),
               border: Border.all(
                 color: isSelected
                     ? isDark
@@ -170,9 +170,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               boxShadow: [
                 BoxShadow(
                   color: isDark
-                      ? Colors.black.withOpacity(isSelected ? 0.24 : 0.12)
-                      : avatar.color.withOpacity(
-                          isSelected ? 0.35 : 0.12,
+                      ? Colors.black.withValues(alpha: isSelected ? 0.24 : 0.12)
+                      : avatar.color.withValues(
+                          alpha: isSelected ? 0.35 : 0.12,
                         ),
                   blurRadius: isSelected ? 18 : 10,
                   offset: const Offset(0, 8),
@@ -199,17 +199,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         vertical: 6,
       ),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.nightCard : Colors.white.withOpacity(0.65),
+        color:
+            isDark ? AppColors.nightCard : Colors.white.withValues(alpha: 0.65),
         borderRadius: BorderRadius.circular(30),
         border: Border.all(
-          color:
-              isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.85),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withValues(alpha: 0.85),
         ),
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.16)
-                : AppColors.softPurple.withOpacity(0.08),
+                ? Colors.black.withValues(alpha: 0.16)
+                : AppColors.softPurple.withValues(alpha: 0.08),
             blurRadius: 16,
             offset: const Offset(0, 8),
           ),
@@ -249,7 +251,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           foregroundColor: Colors.white,
           disabledBackgroundColor: isDark
               ? AppColors.nightCardSoft
-              : AppColors.lakeBlue.withOpacity(0.45),
+              : AppColors.lakeBlue.withValues(alpha: 0.45),
           padding: const EdgeInsets.symmetric(vertical: 18),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(28),

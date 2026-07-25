@@ -28,10 +28,10 @@ class StreakCard extends StatelessWidget {
           ],
         ),
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: Colors.white.withOpacity(0.9)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.9)),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withOpacity(0.25),
+            color: AppColors.softPurple.withValues(alpha: 0.25),
             blurRadius: 25,
             offset: const Offset(0, 14),
           ),

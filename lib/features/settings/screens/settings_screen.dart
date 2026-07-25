@@ -138,6 +138,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       value,
     );
 
+    if (!mounted) return;
+
     if (value) {
       await Navigator.push(
         context,
@@ -145,6 +147,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           builder: (_) => const NotificationPermissionScreen(),
         ),
       );
+
+      if (!mounted) return;
 
       await NotificationService.initialize();
 

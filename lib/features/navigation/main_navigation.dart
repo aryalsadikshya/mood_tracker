@@ -64,10 +64,10 @@ class _MainNavigationState extends State<MainNavigation> {
         decoration: BoxDecoration(
           color: AppColors.whiteGlass,
           borderRadius: BorderRadius.circular(30),
-          border: Border.all(color: Colors.white.withOpacity(0.9)),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.9)),
           boxShadow: [
             BoxShadow(
-              color: AppColors.softPurple.withOpacity(0.2),
+              color: AppColors.softPurple.withValues(alpha: 0.2),
               blurRadius: 24,
               offset: const Offset(0, 10),
             ),
@@ -177,7 +177,7 @@ class _BreathingFabState extends State<_BreathingFab>
                   width: 76,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.lakeBlue.withOpacity(0.18),
+                    color: AppColors.lakeBlue.withValues(alpha: 0.18),
                   ),
                 ),
               ),
@@ -188,7 +188,7 @@ class _BreathingFabState extends State<_BreathingFab>
                   width: 92,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.lakeBlue.withOpacity(0.09),
+                    color: AppColors.lakeBlue.withValues(alpha: 0.09),
                   ),
                 ),
               ),

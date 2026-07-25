@@ -66,8 +66,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   return Container(
                     margin: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      color:
-                          mood == null ? null : Colors.purple.withOpacity(0.3),
+                      color: mood == null
+                          ? null
+                          : Colors.purple.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(

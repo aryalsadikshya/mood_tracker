@@ -154,7 +154,7 @@ class _FullScreenOnboardingImage extends StatelessWidget {
               sigmaY: 24,
             ),
             child: Container(
-              color: AppColors.cream.withOpacity(0.14),
+              color: AppColors.cream.withValues(alpha: 0.14),
             ),
           ),
         ),
@@ -163,10 +163,10 @@ class _FullScreenOnboardingImage extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  colors[0].withOpacity(0.32),
-                  colors[1].withOpacity(0.18),
-                  colors[2].withOpacity(0.14),
-                  AppColors.cream.withOpacity(0.92),
+                  colors[0].withValues(alpha: 0.32),
+                  colors[1].withValues(alpha: 0.18),
+                  colors[2].withValues(alpha: 0.14),
+                  AppColors.cream.withValues(alpha: 0.92),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -178,7 +178,7 @@ class _FullScreenOnboardingImage extends StatelessWidget {
           top: -70,
           left: -65,
           child: _SoftBlob(
-            color: colors[0].withOpacity(0.52),
+            color: colors[0].withValues(alpha: 0.52),
             size: 220,
           ),
         ),
@@ -186,7 +186,7 @@ class _FullScreenOnboardingImage extends StatelessWidget {
           top: 0,
           right: -60,
           child: _SoftBlob(
-            color: colors[1].withOpacity(0.48),
+            color: colors[1].withValues(alpha: 0.48),
             size: 190,
           ),
         ),
@@ -194,7 +194,7 @@ class _FullScreenOnboardingImage extends StatelessWidget {
           bottom: 180,
           right: -80,
           child: _SoftBlob(
-            color: colors[2].withOpacity(0.48),
+            color: colors[2].withValues(alpha: 0.48),
             size: 240,
           ),
         ),
@@ -210,15 +210,15 @@ class _FullScreenOnboardingImage extends StatelessWidget {
                 ),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: tintColor.withOpacity(0.38),
+                  color: tintColor.withValues(alpha: 0.38),
                   borderRadius: BorderRadius.circular(38),
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.72),
+                    color: Colors.white.withValues(alpha: 0.72),
                     width: 1.2,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: tintColor.withOpacity(0.20),
+                      color: tintColor.withValues(alpha: 0.20),
                       blurRadius: 28,
                       offset: const Offset(0, 14),
                     ),
@@ -229,7 +229,7 @@ class _FullScreenOnboardingImage extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.22),
+                      color: Colors.white.withValues(alpha: 0.22),
                       shape: BoxShape.circle,
                     ),
                     child: ClipOval(
@@ -289,15 +289,15 @@ class _OnboardingBottomPanel extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(20, 24, 20, 18),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.62),
+                color: Colors.white.withValues(alpha: 0.62),
                 borderRadius: BorderRadius.circular(38),
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.90),
+                  color: Colors.white.withValues(alpha: 0.90),
                   width: 1.2,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: tintColor.withOpacity(0.16),
+                    color: tintColor.withValues(alpha: 0.16),
                     blurRadius: 24,
                     offset: const Offset(0, 12),
                   ),
@@ -395,7 +395,7 @@ class _PageIndicator extends StatelessWidget {
             boxShadow: active
                 ? [
                     BoxShadow(
-                      color: AppColors.lakeBlue.withOpacity(0.18),
+                      color: AppColors.lakeBlue.withValues(alpha: 0.18),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -423,7 +423,7 @@ class _SkipButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 17),
         backgroundColor: const Color(0xFFF7EFF4),
         side: BorderSide(
-          color: AppColors.softPurple.withOpacity(0.35),
+          color: AppColors.softPurple.withValues(alpha: 0.35),
           width: 1.2,
         ),
         shape: RoundedRectangleBorder(

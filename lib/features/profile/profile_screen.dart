@@ -23,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
 
     final total = moods.fold<int>(
       0,
-      (sum, mood) => sum + mood.moodValue,
+      (runningTotal, mood) => runningTotal + mood.moodValue,
     );
 
     return total / moods.length;
@@ -213,13 +213,15 @@ class _ProfileHeader extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(36),
         border: Border.all(
-          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.9),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withValues(alpha: 0.9),
         ),
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.24)
-                : AppColors.softPurple.withOpacity(0.22),
+                ? Colors.black.withValues(alpha: 0.24)
+                : AppColors.softPurple.withValues(alpha: 0.22),
             blurRadius: 30,
             offset: const Offset(0, 16),
           ),
@@ -231,7 +233,7 @@ class _ProfileHeader extends StatelessWidget {
             height: 92,
             width: 92,
             decoration: BoxDecoration(
-              color: avatar.color.withOpacity(isDark ? 0.55 : 0.75),
+              color: avatar.color.withValues(alpha: isDark ? 0.55 : 0.75),
               shape: BoxShape.circle,
               border: Border.all(
                 color: isDark ? AppColors.nightBorder : Colors.white,
@@ -239,7 +241,7 @@ class _ProfileHeader extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: avatar.color.withOpacity(isDark ? 0.20 : 0.32),
+                  color: avatar.color.withValues(alpha: isDark ? 0.20 : 0.32),
                   blurRadius: 22,
                   offset: const Offset(0, 10),
                 ),
@@ -279,13 +281,13 @@ class _ProfileHeader extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: isDark
-                  ? AppColors.nightCardSoft.withOpacity(0.72)
-                  : Colors.white.withOpacity(0.55),
+                  ? AppColors.nightCardSoft.withValues(alpha: 0.72)
+                  : Colors.white.withValues(alpha: 0.55),
               borderRadius: BorderRadius.circular(22),
               border: Border.all(
                 color: isDark
                     ? AppColors.nightBorder
-                    : Colors.white.withOpacity(0.85),
+                    : Colors.white.withValues(alpha: 0.85),
               ),
             ),
             child: Text(
@@ -344,17 +346,18 @@ class _StatCard extends StatelessWidget {
       height: 118,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.nightCard : color.withOpacity(0.72),
+        color: isDark ? AppColors.nightCard : color.withValues(alpha: 0.72),
         borderRadius: BorderRadius.circular(30),
         border: Border.all(
-          color:
-              isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.85),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withValues(alpha: 0.85),
         ),
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.22)
-                : color.withOpacity(0.30),
+                ? Colors.black.withValues(alpha: 0.22)
+                : color.withValues(alpha: 0.30),
             blurRadius: 22,
             offset: const Offset(0, 11),
           ),
@@ -431,13 +434,13 @@ class _ActionTile extends StatelessWidget {
             border: Border.all(
               color: isDark
                   ? AppColors.nightBorder
-                  : Colors.white.withOpacity(0.9),
+                  : Colors.white.withValues(alpha: 0.9),
             ),
             boxShadow: [
               BoxShadow(
                 color: isDark
-                    ? Colors.black.withOpacity(0.20)
-                    : AppColors.softPurple.withOpacity(0.10),
+                    ? Colors.black.withValues(alpha: 0.20)
+                    : AppColors.softPurple.withValues(alpha: 0.10),
                 blurRadius: 18,
                 offset: const Offset(0, 9),
               ),
@@ -507,7 +510,7 @@ class _EmotionMeter extends StatelessWidget {
 
     final total = moods.fold<double>(
       0,
-      (sum, mood) => sum + mood.moodValue,
+      (runningTotal, mood) => runningTotal + mood.moodValue,
     );
 
     return (total / moods.length) / 5;
@@ -539,13 +542,15 @@ class _EmotionMeter extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(32),
         border: Border.all(
-          color: isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.9),
+          color: isDark
+              ? AppColors.nightBorder
+              : Colors.white.withValues(alpha: 0.9),
         ),
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.24)
-                : AppColors.softPurple.withOpacity(0.18),
+                ? Colors.black.withValues(alpha: 0.24)
+                : AppColors.softPurple.withValues(alpha: 0.18),
             blurRadius: 24,
             offset: const Offset(0, 12),
           ),
@@ -582,7 +587,7 @@ class _EmotionMeter extends StatelessWidget {
               minHeight: 16,
               backgroundColor: isDark
                   ? AppColors.nightCardSoft
-                  : Colors.white.withOpacity(0.55),
+                  : Colors.white.withValues(alpha: 0.55),
               valueColor: AlwaysStoppedAnimation<Color>(
                 energy >= 0.75
                     ? AppColors.softPink

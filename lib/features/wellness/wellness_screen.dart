@@ -6,7 +6,7 @@ import '../../core/theme/app_colours.dart';
 import '../ai_comfort/models/comfort_message.dart';
 import '../ai_comfort/services/gemini_services.dart';
 import '../ai_comfort/widgets/comfort_conversation.dart';
-import 'Ground_Yourself_Screen.dart';
+import 'ground_yourself_screen.dart';
 import 'breathing_screen.dart';
 import 'drink_water_screen.dart';
 
@@ -300,8 +300,8 @@ class _CuteBackground extends StatelessWidget {
           right: -60,
           child: _SoftBlob(
             color: isDark
-                ? AppColors.nightLavender.withValues(alpha:0.20)
-                : AppColors.lavender.withValues(alpha:0.55),
+                ? AppColors.nightLavender.withValues(alpha: 0.20)
+                : AppColors.lavender.withValues(alpha: 0.55),
             size: 220,
           ),
         ),
@@ -310,8 +310,8 @@ class _CuteBackground extends StatelessWidget {
           left: -80,
           child: _SoftBlob(
             color: isDark
-                ? AppColors.nightBlush.withValues(alpha:0.18)
-                : AppColors.blush.withValues(alpha:0.50),
+                ? AppColors.nightBlush.withValues(alpha: 0.18)
+                : AppColors.blush.withValues(alpha: 0.50),
             size: 210,
           ),
         ),
@@ -320,8 +320,8 @@ class _CuteBackground extends StatelessWidget {
           right: -70,
           child: _SoftBlob(
             color: isDark
-                ? AppColors.nightBlue.withValues(alpha:0.18)
-                : AppColors.paleBlue.withValues(alpha:0.55),
+                ? AppColors.nightBlue.withValues(alpha: 0.18)
+                : AppColors.paleBlue.withValues(alpha: 0.55),
             size: 250,
           ),
         ),
@@ -387,7 +387,7 @@ class _CuteWellnessHero extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withValues(alpha:0.18),
+            color: AppColors.softPurple.withValues(alpha: 0.18),
             blurRadius: 28,
             offset: const Offset(0, 16),
           ),
@@ -399,7 +399,7 @@ class _CuteWellnessHero extends StatelessWidget {
             height: 76,
             width: 76,
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha:0.65),
+              color: Colors.white.withValues(alpha: 0.65),
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
@@ -466,14 +466,17 @@ class _CuteCompanionCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.nightCard : Colors.white.withValues(alpha:0.72),
+        color:
+            isDark ? AppColors.nightCard : Colors.white.withValues(alpha: 0.72),
         borderRadius: BorderRadius.circular(36),
         border: Border.all(
-          color: isDark ? AppColors.nightCard : Colors.white.withValues(alpha:0.72),
+          color: isDark
+              ? AppColors.nightCard
+              : Colors.white.withValues(alpha: 0.72),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.lakeBlue.withValues(alpha:0.13),
+            color: AppColors.lakeBlue.withValues(alpha: 0.13),
             blurRadius: 26,
             offset: const Offset(0, 14),
           ),
@@ -567,7 +570,7 @@ class _CuteCompanionCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: isDark
                   ? AppColors.nightCardSoft
-                  : AppColors.cream.withValues(alpha:0.80),
+                  : AppColors.cream.withValues(alpha: 0.80),
               borderRadius: BorderRadius.circular(28),
               border: Border.all(
                 color: AppColors.border,
@@ -593,8 +596,8 @@ class _CuteCompanionCard extends StatelessWidget {
                 hintText: "Today my mind feels...",
                 hintStyle: GoogleFonts.poppins(
                   color: isDark
-                      ? AppColors.nightTextSoft.withValues(alpha:0.7)
-                      : AppColors.textSoft.withValues(alpha:0.7),
+                      ? AppColors.nightTextSoft.withValues(alpha: 0.7)
+                      : AppColors.textSoft.withValues(alpha: 0.7),
                 ),
               ),
             ),
@@ -656,9 +659,9 @@ class _ComfortChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return ActionChip(
       onPressed: onTap,
-      backgroundColor: Colors.white.withValues(alpha:0.62),
+      backgroundColor: Colors.white.withValues(alpha: 0.62),
       side: BorderSide(
-        color: Colors.white.withValues(alpha:0.9),
+        color: Colors.white.withValues(alpha: 0.9),
       ),
       label: Text(
         "$emoji $label",
@@ -763,15 +766,15 @@ class _CuteWellnessItem extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: color.withValues(alpha:0.78),
+          color: color.withValues(alpha: 0.78),
           borderRadius: BorderRadius.circular(34),
           border: Border.all(
-            color: Colors.white.withValues(alpha:0.90),
+            color: Colors.white.withValues(alpha: 0.90),
             width: 1.4,
           ),
           boxShadow: [
             BoxShadow(
-              color: color.withValues(alpha:0.30),
+              color: color.withValues(alpha: 0.30),
               blurRadius: 22,
               offset: const Offset(0, 12),
             ),
@@ -792,9 +795,9 @@ class _CuteWellnessItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Colors.white.withValues(alpha:0.08),
-                        color.withValues(alpha:0.35),
-                        Colors.black.withValues(alpha:0.28),
+                        Colors.white.withValues(alpha: 0.08),
+                        color.withValues(alpha: 0.35),
+                        Colors.black.withValues(alpha: 0.28),
                       ],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
@@ -809,7 +812,7 @@ class _CuteWellnessItem extends StatelessWidget {
                   height: 34,
                   width: 34,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha:0.72),
+                    color: Colors.white.withValues(alpha: 0.72),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -840,7 +843,7 @@ class _CuteWellnessItem extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
-                        color: Colors.white.withValues(alpha:0.88),
+                        color: Colors.white.withValues(alpha: 0.88),
                       ),
                     ),
                   ],
@@ -894,19 +897,19 @@ class _CuteMovementItem extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              color.withValues(alpha:0.78),
-              Colors.white.withValues(alpha:0.64),
+              color.withValues(alpha: 0.78),
+              Colors.white.withValues(alpha: 0.64),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
-            color: Colors.white.withValues(alpha:0.88),
+            color: Colors.white.withValues(alpha: 0.88),
           ),
           boxShadow: [
             BoxShadow(
-              color: color.withValues(alpha:0.22),
+              color: color.withValues(alpha: 0.22),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),
@@ -918,7 +921,7 @@ class _CuteMovementItem extends StatelessWidget {
               height: 58,
               width: 58,
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha:0.60),
+                color: Colors.white.withValues(alpha: 0.60),
                 shape: BoxShape.circle,
               ),
               alignment: Alignment.center,
@@ -1037,10 +1040,10 @@ class _CuteResetTile extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 14),
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: color.withValues(alpha:0.65),
+          color: color.withValues(alpha: 0.65),
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
-            color: Colors.white.withValues(alpha:0.9),
+            color: Colors.white.withValues(alpha: 0.9),
           ),
         ),
         child: Row(

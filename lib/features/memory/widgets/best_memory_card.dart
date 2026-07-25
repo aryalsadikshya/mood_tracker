@@ -34,11 +34,11 @@ class BestMemoryCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(AppRadius.xl),
         border: Border.all(
-          color: Colors.white.withOpacity(0.9),
+          color: Colors.white.withValues(alpha: 0.9),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withOpacity(0.20),
+            color: AppColors.softPurple.withValues(alpha: 0.20),
             blurRadius: 28,
             offset: const Offset(0, 14),
           ),
@@ -53,7 +53,7 @@ class BestMemoryCard extends StatelessWidget {
                 height: 52,
                 width: 52,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.55),
+                  color: Colors.white.withValues(alpha: 0.55),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -94,7 +94,7 @@ class BestMemoryCard extends StatelessWidget {
               vertical: 8,
             ),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.45),
+              color: Colors.white.withValues(alpha: 0.45),
               borderRadius: BorderRadius.circular(18),
             ),
             child: Text(

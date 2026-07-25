@@ -30,7 +30,7 @@ class HomeWelcomeBanner extends StatelessWidget {
         borderRadius: BorderRadius.circular(38),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withOpacity(0.18),
+            color: AppColors.softPurple.withValues(alpha: 0.18),
             blurRadius: 30,
             offset: const Offset(0, 18),
           ),
@@ -63,7 +63,7 @@ class HomeWelcomeBanner extends StatelessWidget {
               vertical: 10,
             ),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.white.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(24),
             ),
             child: Row(

@@ -42,11 +42,11 @@ class LatestMoodCard extends StatelessWidget {
         color: AppColors.whiteGlass,
         borderRadius: BorderRadius.circular(34),
         border: Border.all(
-          color: Colors.white.withOpacity(0.9),
+          color: Colors.white.withValues(alpha: 0.9),
         ),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.26),
+            color: color.withValues(alpha: 0.26),
             blurRadius: 26,
             offset: const Offset(0, 14),
           ),

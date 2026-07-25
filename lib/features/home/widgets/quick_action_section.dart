@@ -14,7 +14,7 @@ class QuickActionsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: const [
         DashboardSectionTitle(title: "Quick Wellness Actions"),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg),
         SizedBox(
           height: 122,
           child: _QuickActionsList(),

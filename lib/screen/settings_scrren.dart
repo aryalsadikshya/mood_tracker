@@ -111,14 +111,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.62),
+        color: Colors.white.withValues(alpha: 0.62),
         borderRadius: BorderRadius.circular(30),
         border: Border.all(
-          color: Colors.white.withOpacity(0.82),
+          color: Colors.white.withValues(alpha: 0.82),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softPurple.withOpacity(0.12),
+            color: AppColors.softPurple.withValues(alpha: 0.12),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -196,7 +196,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 builder: (context, value, child) {
                   return Switch(
                     value: value,
-                    activeColor: AppColors.softPurple,
+                    activeThumbColor: AppColors.softPurple,
                     onChanged: (bool val) async {
                       isDarkMode.value = val;
 
@@ -213,7 +213,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               icon: Icons.notifications_active_rounded,
               trailing: Switch(
                 value: notificationsEnabled,
-                activeColor: AppColors.lakeBlue,
+                activeThumbColor: AppColors.lakeBlue,
                 onChanged: (value) async {
                   setState(() {
                     notificationsEnabled = value;
@@ -244,7 +244,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               icon: Icons.spa_rounded,
               trailing: Switch(
                 value: calmMode,
-                activeColor: AppColors.mint,
+                activeThumbColor: AppColors.mint,
                 onChanged: (value) async {
                   setState(() {
                     calmMode = value;
@@ -263,7 +263,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               icon: Icons.vibration_rounded,
               trailing: Switch(
                 value: hapticsEnabled,
-                activeColor: AppColors.softPurple,
+                activeThumbColor: AppColors.softPurple,
                 onChanged: (value) async {
                   setState(() {
                     hapticsEnabled = value;

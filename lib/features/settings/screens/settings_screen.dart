@@ -3,11 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../main.dart';
 import '../../../core/theme/app_colours.dart';
+import '../../../main.dart';
 import '../../../services/notification_service.dart';
-import '../../auth/screen/auth_screen.dart';
-import '../../auth/services/auth_service.dart';
 import 'notification_permission_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -19,12 +17,13 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool notificationsEnabled = true;
-  bool calmMode = false;
   bool hapticsEnabled = true;
   bool darkMode = false;
-  bool isLoggingOut = false;
 
-  TimeOfDay reminderTime = const TimeOfDay(hour: 20, minute: 0);
+  TimeOfDay reminderTime = const TimeOfDay(
+    hour: 20,
+    minute: 0,
+  );
 
   @override
   void initState() {
@@ -35,20 +34,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
 
+    // Remove the old Calm Mode preference from the device.
+    await prefs.remove('calmMode');
+
+    if (!mounted) return;
+
     setState(() {
-      notificationsEnabled = prefs.getBool("notificationsEnabled") ?? true;
-      calmMode = prefs.getBool("calmMode") ?? false;
-      hapticsEnabled = prefs.getBool("hapticsEnabled") ?? true;
-      darkMode = prefs.getBool("darkMode") ?? false;
+      notificationsEnabled =
+          prefs.getBool('notificationsEnabled') ?? true;
 
-      final hour = prefs.getInt("reminderHour") ?? 20;
-      final minute = prefs.getInt("reminderMinute") ?? 0;
+      hapticsEnabled =
+          prefs.getBool('hapticsEnabled') ?? true;
 
-      reminderTime = TimeOfDay(hour: hour, minute: minute);
+      darkMode =
+          prefs.getBool('darkMode') ?? false;
+
+      final hour =
+          prefs.getInt('reminderHour') ?? 20;
+
+      final minute =
+          prefs.getInt('reminderMinute') ?? 0;
+
+      reminderTime = TimeOfDay(
+        hour: hour,
+        minute: minute,
+      );
     });
   }
 
-  Future<void> saveBool(String key, bool value) async {
+  Future<void> saveBool(
+      String key,
+      bool value,
+      ) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(key, value);
   }
@@ -58,14 +75,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
       darkMode = value;
     });
 
-    await saveBool("darkMode", value);
+    await saveBool(
+      'darkMode',
+      value,
+    );
+
     isDarkMode.value = value;
   }
 
-  Future<void> saveReminderTime(TimeOfDay time) async {
+  Future<void> saveReminderTime(
+      TimeOfDay time,
+      ) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt("reminderHour", time.hour);
-    await prefs.setInt("reminderMinute", time.minute);
+
+    await prefs.setInt(
+      'reminderHour',
+      time.hour,
+    );
+
+    await prefs.setInt(
+      'reminderMinute',
+      time.minute,
+    );
   }
 
   Future<void> pickReminderTime() async {
@@ -96,7 +127,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          "Reminder time changed to ${formatTime(picked)}.",
+          'Reminder time changed to ${formatTime(picked)}.',
         ),
       ),
     );
@@ -107,13 +138,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       notificationsEnabled = value;
     });
 
-    await saveBool("notificationsEnabled", value);
+    await saveBool(
+      'notificationsEnabled',
+      value,
+    );
 
     if (value) {
       await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => const NotificationPermissionScreen(),
+          builder: (_) =>
+          const NotificationPermissionScreen(),
         ),
       );
 
@@ -129,7 +164,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Daily reminder set for ${formatTime(reminderTime)}.",
+            'Daily reminder set for ${formatTime(reminderTime)}.',
           ),
         ),
       );
@@ -140,7 +175,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Daily reminders turned off."),
+          content: Text(
+            'Daily reminders turned off.',
+          ),
         ),
       );
     }
@@ -151,71 +188,75 @@ class _SettingsScreenState extends State<SettingsScreen> {
       hapticsEnabled = value;
     });
 
-    await saveBool("hapticsEnabled", value);
+    await saveBool(
+      'hapticsEnabled',
+      value,
+    );
 
     if (value) {
-      HapticFeedback.lightImpact();
+      await HapticFeedback.lightImpact();
     }
   }
 
-  Future<void> logoutUser() async {
-    setState(() {
-      isLoggingOut = true;
-    });
-
-    await AuthService().logout();
-
-    if (!mounted) return;
-
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const AuthScreen(),
-      ),
-          (route) => false,
-    );
-  }
-
   String formatTime(TimeOfDay time) {
-    final hour = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
-    final minute = time.minute.toString().padLeft(2, '0');
-    final period = time.period == DayPeriod.am ? "AM" : "PM";
+    final hour = time.hourOfPeriod == 0
+        ? 12
+        : time.hourOfPeriod;
 
-    return "$hour:$minute $period";
+    final minute =
+    time.minute.toString().padLeft(2, '0');
+
+    final period =
+    time.period == DayPeriod.am ? 'AM' : 'PM';
+
+    return '$hour:$minute $period';
   }
 
   void showAboutMindBloom() {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
 
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (_) {
         return AlertDialog(
-          backgroundColor: isDark ? AppColors.nightCard : AppColors.cream,
+          backgroundColor: isDark
+              ? AppColors.nightCard
+              : AppColors.cream,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(28),
           ),
           title: Text(
-            "About MindBloom",
+            'About MindBloom',
             style: GoogleFonts.playfairDisplay(
               fontWeight: FontWeight.w700,
-              color: isDark ? AppColors.nightText : AppColors.textDark,
+              color: isDark
+                  ? AppColors.nightText
+                  : AppColors.textDark,
             ),
           ),
           content: Text(
-            "MindBloom is a calm emotional wellness app created to help users reflect, journal, track moods, and build self-awareness through a soft and private experience.",
+            'MindBloom is a calm emotional wellness app created '
+                'to help users reflect, journal, track moods, and build '
+                'self-awareness through a soft and private experience.',
             style: GoogleFonts.poppins(
               height: 1.6,
-              color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
+              color: isDark
+                  ? AppColors.nightTextSoft
+                  : AppColors.textSoft,
             ),
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pop(context);
+              },
               child: Text(
-                "Close",
+                'Close',
                 style: GoogleFonts.poppins(
-                  color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
+                  color: isDark
+                      ? AppColors.nightBlue
+                      : AppColors.deepBlue,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -227,37 +268,51 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void showVersionDetails() {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
 
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (_) {
         return AlertDialog(
-          backgroundColor: isDark ? AppColors.nightCard : AppColors.cream,
+          backgroundColor: isDark
+              ? AppColors.nightCard
+              : AppColors.cream,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(28),
           ),
           title: Text(
-            "Version Details",
+            'Version Details',
             style: GoogleFonts.playfairDisplay(
               fontWeight: FontWeight.w700,
-              color: isDark ? AppColors.nightText : AppColors.textDark,
+              color: isDark
+                  ? AppColors.nightText
+                  : AppColors.textDark,
             ),
           ),
           content: Text(
-            "MindBloom v1.0.0\n\nFirst Flutter project build.\nIncludes mood tracking, diary journaling, profile, settings, Firebase authentication, Firestore storage, and emotional UI polish.",
+            'MindBloom v1.0.0\n\n'
+                'Includes mood tracking, diary journaling, profile, '
+                'settings, Firebase authentication, Firestore storage, '
+                'wellness activities, and emotional UI design.',
             style: GoogleFonts.poppins(
               height: 1.6,
-              color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
+              color: isDark
+                  ? AppColors.nightTextSoft
+                  : AppColors.textSoft,
             ),
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pop(context);
+              },
               child: Text(
-                "Close",
+                'Close',
                 style: GoogleFonts.poppins(
-                  color: isDark ? AppColors.nightBlue : AppColors.deepBlue,
+                  color: isDark
+                      ? AppColors.nightBlue
+                      : AppColors.deepBlue,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -269,16 +324,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget buildSectionTitle(String title) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 14, top: 6),
+      padding: const EdgeInsets.only(
+        bottom: 14,
+        top: 6,
+      ),
       child: Text(
         title,
         style: GoogleFonts.playfairDisplay(
           fontSize: 24,
           fontWeight: FontWeight.w700,
-          color: isDark ? AppColors.nightText : AppColors.textDark,
+          color: isDark
+              ? AppColors.nightText
+              : AppColors.textDark,
         ),
       ),
     );
@@ -292,13 +353,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
     VoidCallback? onTap,
     bool isDanger = false,
   }) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
 
-    final tileColor =
-    isDark ? AppColors.nightCard : Colors.white.withOpacity(0.62);
+    final tileColor = isDark
+        ? AppColors.nightCard
+        : Colors.white.withValues(alpha: 0.62);
 
-    final borderColor =
-    isDark ? AppColors.nightBorder : Colors.white.withOpacity(0.8);
+    final borderColor = isDark
+        ? AppColors.nightBorder
+        : Colors.white.withValues(alpha: 0.80);
 
     final titleColor = isDanger
         ? const Color(0xFFD98282)
@@ -306,8 +370,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ? AppColors.nightText
         : AppColors.textDark;
 
-    final subtitleColor =
-    isDark ? AppColors.nightTextSoft : AppColors.textSoft;
+    final subtitleColor = isDark
+        ? AppColors.nightTextSoft
+        : AppColors.textSoft;
 
     final iconBackground = isDanger
         ? const Color(0xFFFFE7E7)
@@ -332,8 +397,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.20)
-                : AppColors.softPurple.withOpacity(0.12),
+                ? Colors.black.withValues(alpha: 0.20)
+                : AppColors.softPurple.withValues(
+              alpha: 0.12,
+            ),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -380,72 +447,87 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Icon trailingArrow() {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
 
     return Icon(
       Icons.arrow_forward_ios_rounded,
       size: 16,
-      color: isDark ? AppColors.nightTextSoft : AppColors.textSoft,
+      color: isDark
+          ? AppColors.nightTextSoft
+          : AppColors.textSoft,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor:
+      Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor:
-        isDark ? AppColors.nightBackground : AppColors.cream,
+        backgroundColor: isDark
+            ? AppColors.nightBackground
+            : AppColors.cream,
         elevation: 0,
         centerTitle: true,
         title: Text(
-          "Settings",
+          'Settings',
           style: GoogleFonts.playfairDisplay(
             fontSize: 30,
             fontWeight: FontWeight.w700,
-            color: isDark ? AppColors.nightText : AppColors.textDark,
+            color: isDark
+                ? AppColors.nightText
+                : AppColors.textDark,
           ),
         ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+          CrossAxisAlignment.start,
           children: [
-            buildSectionTitle("Preferences"),
+            buildSectionTitle('Preferences'),
 
             buildTile(
-              title: "Night Bloom Mode",
+              title: 'Night Bloom Mode',
               subtitle: darkMode
-                  ? "Soft navy theme is enabled"
-                  : "Switch to a calmer night theme",
+                  ? 'Soft navy theme is enabled'
+                  : 'Switch to a calmer night theme',
               icon: Icons.dark_mode_rounded,
               trailing: Switch(
                 value: darkMode,
-                activeColor: AppColors.nightBlue,
+                activeThumbColor: AppColors.nightBlue,
                 onChanged: toggleDarkMode,
               ),
-              onTap: () => toggleDarkMode(!darkMode),
+              onTap: () {
+                toggleDarkMode(!darkMode);
+              },
             ),
 
             buildTile(
-              title: "Notifications",
+              title: 'Notifications',
               subtitle: notificationsEnabled
-                  ? "Gentle reflection reminders are enabled"
-                  : "Turn on gentle reflection reminders",
+                  ? 'Gentle reflection reminders are enabled'
+                  : 'Turn on gentle reflection reminders',
               icon: Icons.notifications_active_rounded,
               trailing: Switch(
                 value: notificationsEnabled,
-                activeColor: AppColors.lakeBlue,
+                activeThumbColor: AppColors.lakeBlue,
                 onChanged: toggleNotifications,
               ),
-              onTap: () => toggleNotifications(!notificationsEnabled),
+              onTap: () {
+                toggleNotifications(
+                  !notificationsEnabled,
+                );
+              },
             ),
 
             buildTile(
-              title: "Reminder Time",
+              title: 'Reminder Time',
               subtitle: formatTime(reminderTime),
               icon: Icons.schedule_rounded,
               trailing: trailingArrow(),
@@ -453,52 +535,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
 
             buildTile(
-              title: "Calm Mode",
-              subtitle: calmMode
-                  ? "Calm mode preference is enabled"
-                  : "Reduce overwhelming visual stimulation",
-              icon: Icons.spa_rounded,
-              trailing: Switch(
-                value: calmMode,
-                activeColor: AppColors.mint,
-                onChanged: (value) async {
-                  setState(() {
-                    calmMode = value;
-                  });
-
-                  await saveBool("calmMode", value);
-                },
-              ),
-            ),
-
-            buildTile(
-              title: "Haptic Feedback",
+              title: 'Haptic Feedback',
               subtitle: hapticsEnabled
-                  ? "Soft touch feedback is enabled"
-                  : "Subtle vibration during interactions",
+                  ? 'Soft touch feedback is enabled'
+                  : 'Subtle vibration during interactions',
               icon: Icons.vibration_rounded,
               trailing: Switch(
                 value: hapticsEnabled,
-                activeColor: AppColors.softPurple,
+                activeThumbColor: AppColors.softPurple,
                 onChanged: toggleHaptics,
               ),
+              onTap: () {
+                toggleHaptics(!hapticsEnabled);
+              },
             ),
 
             const SizedBox(height: 18),
 
-            buildSectionTitle("About"),
+            buildSectionTitle('About'),
 
             buildTile(
-              title: "MindBloom",
-              subtitle: "A reflective emotional wellness experience",
+              title: 'MindBloom',
+              subtitle:
+              'A reflective emotional wellness experience',
               icon: Icons.favorite_rounded,
               trailing: trailingArrow(),
               onTap: showAboutMindBloom,
             ),
 
             buildTile(
-              title: "Version",
-              subtitle: "v1.0.0",
+              title: 'Version',
+              subtitle: 'v1.0.0',
               icon: Icons.info_outline_rounded,
               trailing: trailingArrow(),
               onTap: showVersionDetails,

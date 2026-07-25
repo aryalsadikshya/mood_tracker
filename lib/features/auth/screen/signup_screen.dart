@@ -214,12 +214,12 @@ class _SignupScreenState extends State<SignupScreen> {
               Container(
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF8FA).withOpacity(0.78),
+                  color: const Color(0xFFFFF8FA).withValues(alpha:0.78),
                   borderRadius: BorderRadius.circular(34),
                   border: Border.all(color: const Color(0xFFF1DDE5)),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFFDAB8C8).withOpacity(0.22),
+                      color: const Color(0xFFDAB8C8).withValues(alpha:0.22),
                       blurRadius: 32,
                       offset: const Offset(0, 18),
                     ),
@@ -245,7 +245,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     const SizedBox(height: 16),
                     DropdownButtonFormField<String>(
-                      value: selectedFocus,
+                      initialValue: selectedFocus,
                       decoration: inputDecoration(
                         hint: "Wellness focus",
                         icon: Icons.favorite_border_rounded,

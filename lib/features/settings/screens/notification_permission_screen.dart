@@ -25,8 +25,6 @@ class _NotificationPermissionScreenState
     try {
       final prefs = await SharedPreferences.getInstance();
 
-      final hour = prefs.getInt("reminderHour") ?? 20;
-      final minute = prefs.getInt("reminderMinute") ?? 0;
 
       await NotificationService.initialize();
 

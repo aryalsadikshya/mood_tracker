@@ -45,18 +45,18 @@ class AchievementScreen extends StatelessWidget {
               final cardColor = achievement.unlocked
                   ? isDark
                       ? AppColors.nightCard
-                      : Colors.white.withOpacity(0.75)
+                      : Colors.white.withValues(alpha:0.75)
                   : isDark
                       ? AppColors.nightCardSoft
-                      : Colors.white.withOpacity(0.35);
+                      : Colors.white.withValues(alpha:0.35);
 
               final borderColor = achievement.unlocked
                   ? isDark
                       ? AppColors.nightBorder
-                      : AppColors.softPurple.withOpacity(0.3)
+                      : AppColors.softPurple.withValues(alpha:0.3)
                   : isDark
-                      ? AppColors.nightBorder.withOpacity(0.5)
-                      : Colors.white.withOpacity(0.2);
+                      ? AppColors.nightBorder.withValues(alpha:0.5)
+                      : Colors.white.withValues(alpha:0.2);
 
               final badgeColor = achievement.unlocked
                   ? isDark
@@ -64,7 +64,7 @@ class AchievementScreen extends StatelessWidget {
                       : AppColors.blush
                   : isDark
                       ? AppColors.nightBorder
-                      : AppColors.border.withOpacity(0.4);
+                      : AppColors.border.withValues(alpha:0.4);
 
               final titleColor = achievement.unlocked
                   ? isDark
@@ -98,8 +98,8 @@ class AchievementScreen extends StatelessWidget {
                       ? [
                           BoxShadow(
                             color: isDark
-                                ? Colors.black.withOpacity(0.22)
-                                : AppColors.softPurple.withOpacity(0.18),
+                                ? Colors.black.withValues(alpha:0.22)
+                                : AppColors.softPurple.withValues(alpha:0.18),
                             blurRadius: 20,
                             offset: const Offset(0, 12),
                           ),

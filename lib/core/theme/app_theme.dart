@@ -52,7 +52,7 @@ class AppTheme {
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: Colors.white.withOpacity(0.75),
+      fillColor: Colors.white.withValues(alpha:0.75),
       hintStyle: GoogleFonts.poppins(
         color: AppColors.textSoft,
         fontSize: 14,

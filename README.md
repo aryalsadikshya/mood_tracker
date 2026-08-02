@@ -244,3 +244,10 @@ Developed as part of a Flutter and mobile application development learning journ
 ## License
 
 This project is intended for educational and portfolio purposes.
+
+
+## Demo
+
+Watch the MindBloom web application demonstration:
+
+[View MindBloom Demo](https://drive.google.com/file/d/1vrdgeqSTig4rzNKkDux2VPT8kpGkJTdL/view?usp=drive_link)

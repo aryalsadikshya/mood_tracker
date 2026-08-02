@@ -1,4 +1,4 @@
-# MindBloom 🌸
+# MindBloom
 
 MindBloom is a Flutter-based mood tracking and mental wellness application designed to help users understand their emotions, record personal reflections, and access supportive wellness tools in one place.
 
@@ -17,7 +17,7 @@ The application combines mood tracking, journaling, guided wellness activities, 
 - Water reminder feature
 - Wellness support tools
 - User profile management
-- Dark mode support
+- Night Bloom Mode
 - Local notifications
 - Responsive Android and Web layouts
 
@@ -44,12 +44,12 @@ The application screenshots are stored in:
 assets/screenshots/
 ```
 
-| Login | Home                                          | Mood Tracker |
-|---|-----------------------------------------------|---|
+| Login | Home | Mood Tracker |
+|:---:|:---:|:---:|
 | ![Login](assets/screenshots/login.jpg) | ![Home](assets/screenshots/homedashboard.jpg) | ![Mood Tracker](assets/screenshots/moodtracker.jpg) |
 
-| Journal | AI Comfort Companion                                        | Wellness Hub                                        |
-|---|-------------------------------------------------------------|-----------------------------------------------------|
+| Journal | AI Comfort Companion | Wellness Hub |
+|:---:|:---:|:---:|
 | ![Journal](assets/screenshots/journal.jpg) | ![AI Comfort Companion](assets/screenshots/aicompanion.jpg) | ![Wellness Hub](assets/screenshots/wellnesshub.jpg) |
 
 ## Project Structure
@@ -65,8 +65,6 @@ lib/
 ├── firebase_options.dart
 └── main.dart
 ```
-
-The exact folder structure may vary as the application continues to develop.
 
 ## Getting Started
 
@@ -92,7 +90,7 @@ flutter doctor
 Clone the repository:
 
 ```powershell
-git clone <your-repository-url>
+git clone https://github.com/aryalsadikshya/mood_tracker.git
 ```
 
 Move into the project folder:
@@ -112,8 +110,6 @@ Run the application:
 ```powershell
 flutter run
 ```
-
-Replace `<https://github.com/aryalsadikshya/mood_tracker>` with the actual GitHub repository URL.
 
 ## Firebase Setup
 
@@ -217,7 +213,7 @@ Users should avoid entering highly sensitive personal or medical information int
 ## Future Improvements
 
 - Secure backend integration for Gemini
-- Firebase App Check
+- Firebase App Check for Web
 - Improved Firestore Security Rules
 - Cloud backup and synchronization
 - Additional accessibility options
@@ -233,6 +229,12 @@ MindBloom was developed as a portfolio and learning project during the `#111Days
 
 The project demonstrates practical experience with Flutter development, Firebase integration, responsive design, accessibility, application security, user experience, and AI-assisted features.
 
+## Demo
+
+Watch the MindBloom web application demonstration:
+
+[View MindBloom Demo](https://drive.google.com/file/d/1vrdgeqSTig4rzNKkDux2VPT8kpGkJTdL/view?usp=drive_link)
+
 ## Disclaimer
 
 MindBloom is a wellness support application and is not a replacement for professional medical or mental health care.
@@ -244,10 +246,3 @@ Developed as part of a Flutter and mobile application development learning journ
 ## License
 
 This project is intended for educational and portfolio purposes.
-
-
-## Demo
-
-Watch the MindBloom web application demonstration:
-
-[View MindBloom Demo](https://drive.google.com/file/d/1vrdgeqSTig4rzNKkDux2VPT8kpGkJTdL/view?usp=drive_link)
